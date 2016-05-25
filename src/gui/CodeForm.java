@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 /**
  * Created by HerrSergio on 06.04.2016.
  */
-public class CodeForm {
+public class CodeForm extends JPanel {
     private JPanel iconPanel;
     private JLabel phoneLabel;
     private JTextPane hintTextPane;
@@ -36,12 +36,12 @@ public class CodeForm {
         this.iconPanel.setBorder(BorderFactory.createEmptyBorder());
     }
 
-    public JPanel getRootPanel() {
-        return rootPanel;
+    public void setPhoneLabelText(String text) {
+        phoneLabel.setText(text);
     }
 
-    public JLabel getPhoneLabel() {
-        return phoneLabel;
+    public String getPhoneLabelText() {
+        return phoneLabel.getText();
     }
 
     public BufferedImage getMainImage() {
@@ -50,22 +50,23 @@ public class CodeForm {
 
     public void setMainImage(BufferedImage mainImage) {
         this.mainImage = mainImage;
+        repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        if(mainImage == null)
+            return;
+
+        g.drawImage(mainImage, 0, 0, this.getWidth(), this.getHeight(), null);
+
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        rootPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-
-                if(mainImage == null)
-                    return;
-
-                g.drawImage(mainImage, 0, 0, this.getWidth(), this.getHeight(), null);
-
-            }
-        };
+        rootPanel = this;
 
         iconPanel = new JPanel() {
             @Override
@@ -86,18 +87,17 @@ public class CodeForm {
 
     public void setIconImage(BufferedImage iconImage) {
         this.iconImage = iconImage;
+        repaint();
     }
 
-    public void runOnNextEvent(Runnable run) {
-        ActionListener actionListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                run.run();
-            }
-        };
+    public void addActionListenerForConfirm(ActionListener actionListener) {
+        okButton.addActionListener(actionListener);
+        codePasswordField.addActionListener(actionListener);
+    }
 
-        this.okButton.addActionListener(actionListener);
-        this.codePasswordField.addActionListener(actionListener);
+    public void removeActionListenerForConfirm(ActionListener actionListener) {
+        okButton.removeActionListener(actionListener);
+        codePasswordField.removeActionListener(actionListener);
     }
 
     public String getCode() {

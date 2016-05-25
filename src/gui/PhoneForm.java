@@ -3,6 +3,8 @@ package gui;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
@@ -10,22 +12,21 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.ParseException;
 
 /**
  * Created by HerrSergio on 05.04.2016.
  */
-public class PhoneForm {
+public class PhoneForm extends JPanel {
     private JPanel rootPanel;
     private JPanel iconPanel;
     private JTextPane hintTextPane;
-    private JTextField phoneTextField;
+    private JFormattedTextField phoneTextField;
     private JPanel phonePanel;
     private JButton okButton;
 
     private BufferedImage mainImage;
     private BufferedImage iconImage;
-
-    private final int MAX_PHONE_LENGTH = 15;
 
     {
         SimpleAttributeSet attribs = new SimpleAttributeSet();
@@ -33,48 +34,13 @@ public class PhoneForm {
         hintTextPane.setParagraphAttributes(attribs, false);
 
         phoneTextField.setBorder(BorderFactory.createEmptyBorder());
-        phoneTextField.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                needValidation();
-            }
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                needValidation();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                needValidation();
-            }
-
-
-            private void needValidation() {
-                EventQueue.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        String oldText = phoneTextField.getText();
-                        String text = oldText;
-                        int caretPosition = phoneTextField.getCaretPosition();
-
-                        if(text.length() > MAX_PHONE_LENGTH)
-                            text = text.substring(0, MAX_PHONE_LENGTH);
-                        text = text.replaceAll("[^ \\d+()-]+", "");
-                        if(!oldText.equals(text)) {
-                            phoneTextField.setText(text);
-                            if(caretPosition <= text.length())
-                                phoneTextField.setCaretPosition(caretPosition);
-                            else
-                                phoneTextField.setCaretPosition(text.length());
-                        }
-                    }
-                });
-            }
-
-
-        });
-      //  phoneTextField.setCaretPosition(phoneTextField.getText().length());
+        try {
+            MaskFormatter maskFormatter = new MaskFormatter("+7 (###) ###-##-##");
+            phoneTextField.setFormatterFactory(new DefaultFormatterFactory(maskFormatter));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         this.okButton.setContentAreaFilled(false);
         this.okButton.setOpaque(true);
@@ -82,25 +48,23 @@ public class PhoneForm {
         this.iconPanel.setBorder(BorderFactory.createEmptyBorder());
     }
 
-    public JPanel getRootPanel() {
-        return rootPanel;
-    }
-
     public String getPhoneNumber() {
-        return phoneTextField.getText();//.replaceAll("[\\D]+", "");
+        try {
+            phoneTextField.commitEdit();
+            return phoneTextField.getValue().toString();
+        } catch (ParseException|NullPointerException e) {
+            return null;
+        }
     }
 
-    public void runOnNextEvent(Runnable run) {
-        if(run == null)
-            return;
-        ActionListener actionListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                run.run();
-            }
-        };
+    public void addActionListenerForConfirm(ActionListener actionListener) {
         okButton.addActionListener(actionListener);
         phoneTextField.addActionListener(actionListener);
+    }
+
+    public void removeActionListenerForConfirm(ActionListener actionListener) {
+        okButton.removeActionListener(actionListener);
+        phoneTextField.removeActionListener(actionListener);
     }
 
     public BufferedImage getMainImage() {
@@ -109,21 +73,22 @@ public class PhoneForm {
 
     public void setMainImage(BufferedImage mainImage) {
         this.mainImage = mainImage;
+        repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        if(mainImage == null)
+            return;
+
+        g.drawImage(mainImage, 0, 0, this.getWidth(), this.getHeight(), null);
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        rootPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-
-                if(mainImage == null)
-                    return;
-
-                g.drawImage(mainImage, 0, 0, this.getWidth(), this.getHeight(), null);
-            }
-        };
+        rootPanel = this;
 
         iconPanel = new JPanel() {
             @Override
@@ -138,11 +103,14 @@ public class PhoneForm {
         };
     }
 
+
+
     public BufferedImage getIconImage() {
         return iconImage;
     }
 
     public void setIconImage(BufferedImage iconImage) {
         this.iconImage = iconImage;
+        repaint();
     }
 }

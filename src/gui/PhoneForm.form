@@ -59,16 +59,16 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="604c8" class="javax.swing.JTextField" binding="phoneTextField">
+          <component id="3e521" class="javax.swing.JFormattedTextField" binding="phoneTextField">
             <constraints/>
             <properties>
               <caretColor color="-1"/>
               <disabledTextColor color="-1"/>
               <font name="Courier New" size="24"/>
               <foreground color="-1"/>
-              <minimumSize width="250" height="24"/>
+              <minimumSize width="270" height="24"/>
               <opaque value="false"/>
-              <preferredSize width="250" height="24"/>
+              <preferredSize width="270" height="24"/>
               <text value="+7 "/>
             </properties>
           </component>

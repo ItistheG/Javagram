@@ -7,7 +7,7 @@ import java.awt.*;
 /**
  * Created by HerrSergio on 06.04.2016.
  */
-public class MainForm {
+public class MainForm extends JPanel {
     private JPanel rooPanel;
     private JPanel titlePanel;
     private JPanel contactsPanel;
@@ -15,10 +15,6 @@ public class MainForm {
     private JPanel bottomPanel;
     private JScrollPane contactsScrollPane;
     private JPanel testPanel;
-
-    public JPanel getRooPanel() {
-        return rooPanel;
-    }
 
     {
         Dimension dim = new Dimension(1000, 1000);
@@ -30,34 +26,25 @@ public class MainForm {
 
         JScrollBar verticalScrollBar =  contactsScrollPane.getVerticalScrollBar();
         verticalScrollBar.setUI(new MyScrollbarUI());
-        verticalScrollBar.setPreferredSize(new Dimension(3, Integer.MAX_VALUE));
+        verticalScrollBar.setPreferredSize(new Dimension(width, Integer.MAX_VALUE));
+
         JScrollBar horizontalScrollBar =  contactsScrollPane.getHorizontalScrollBar();
         horizontalScrollBar.setUI(new MyScrollbarUI());
-        horizontalScrollBar.setPreferredSize(new Dimension(Integer.MAX_VALUE, 3));
+        horizontalScrollBar.setPreferredSize(new Dimension(Integer.MAX_VALUE, width));
+
         contactsScrollPane.setBorder(BorderFactory.createEmptyBorder());
-        contactsScrollPane.revalidate();
+       // contactsScrollPane.revalidate();
 
         for (String corner : new String[] {ScrollPaneConstants.LOWER_RIGHT_CORNER, ScrollPaneConstants.LOWER_LEFT_CORNER,
                 ScrollPaneConstants.UPPER_LEFT_CORNER, ScrollPaneConstants.UPPER_RIGHT_CORNER}) {
-
-            contactsScrollPane.setCorner(corner, new JPanel() {
-
-                {
-                    setBorder(BorderFactory.createEmptyBorder());
-                }
-
-                @Override
-                public void paint(Graphics g) {
-                    super.paint(g);
-                    g.setColor(Color.white);
-                    g.drawRect(0, 0, this.getWidth(), this.getHeight());
-                }
-            });
+            contactsScrollPane.setCorner(corner, new MyScrollBarCorner(Color.white));
         }
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+        rooPanel = this;
+
         testPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {

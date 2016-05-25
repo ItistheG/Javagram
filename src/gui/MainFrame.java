@@ -1,11 +1,17 @@
 package gui;
 
-import entities.TLSelfUser;
+import org.javagram.dao.TelegramDAO;
+import org.javagram.dao.proxy.TelegramProxy;
+import resources.Images;
+import undecorated.ComponentResizerAbstract;
+import undecorated.UndecoratedFrame;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 /**
@@ -13,86 +19,126 @@ import java.io.IOException;
  */
 public class MainFrame extends JFrame {
 
-    private TLSelfUser selfUser;
+    private UndecoratedFrame undecoratedFrame = new UndecoratedFrame(this, ComponentResizerAbstract.KEEP_RATIO_CENTER);
+
+    private TelegramDAO telegramDAO;
+    private TelegramProxy telegramProxy;
 
     private PhoneForm phoneForm = new PhoneForm();
-    private  CodeForm codeForm = new CodeForm();
-    private  MainForm mainForm = new MainForm();
-
-    private BufferedImage mainImage;
-    private BufferedImage iconImage;
+    private CodeForm codeForm = new CodeForm();
+    private MainForm mainForm = new MainForm();
 
     {
         setTitle("Javagram");
-        setContentPane(phoneForm.getRootPanel());
+        setContentPane(undecoratedFrame);
+        changeContentPanel(phoneForm);
         setSize(800, 600);
         setMinimumSize(new Dimension(600, 450));
         setLocationRelativeTo(null);
 
-        phoneForm.runOnNextEvent(new Runnable() {
+        undecoratedFrame.addActionListenerForClose(e -> this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING)));
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        undecoratedFrame.addActionListenerForMinimize(e -> this.setState(ICONIFIED));
+
+        addWindowListener(new WindowAdapter() {
             @Override
-            public void run() {
+            public void windowClosing(WindowEvent windowEvent) {
+                exit();
+            }
+        });
+
+//-----------------------------ИЛИ--------------------------------------------//
+//        undecoratedFrame.addActionListenerForClose(e -> dispose());
+//        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+//        undecoratedFrame.addActionListenerForMinimize(e -> this.setState(ICONIFIED));
+//
+//        addWindowListener(new WindowAdapter() {
+//            @Override
+//            public void windowClosed(WindowEvent windowEvent) {
+//                exit();
+//            }
+//        });
+
+        phoneForm.addActionListenerForConfirm(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
                 String phoneNumber = phoneForm.getPhoneNumber();
-                if(phoneNumber.isEmpty())
+                if(phoneNumber == null)
                     JOptionPane.showMessageDialog(MainFrame.this, "Введите корректный номер телефона!",  "Ошибка!", JOptionPane.ERROR_MESSAGE);
                 else
                     switchFromPhoneToCode(phoneNumber);
             }
         });
 
-        codeForm.runOnNextEvent(new Runnable() {
+        codeForm.addActionListenerForConfirm(new ActionListener() {
             @Override
-            public void run() {
+            public void actionPerformed(ActionEvent actionEvent) {
                 String authCode = codeForm.getCode();
                 switchFromCodeToMain(authCode);
             }
         });
 
-        try {
-            mainImage = ImageIO.read(this.getClass().getResourceAsStream("/images/Writing_a_letter.jpg"));
-            phoneForm.setMainImage(mainImage);
-            codeForm.setMainImage(mainImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        phoneForm.setMainImage(Images.getBackground());
+        codeForm.setMainImage(Images.getBackground());
 
-        try {
-            iconImage = ImageIO.read(this.getClass().getResource("/images/pre_mail.png"));
-            phoneForm.setIconImage(iconImage);
-            codeForm.setIconImage(iconImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        phoneForm.setIconImage(Images.getLogo());
+        codeForm.setIconImage(Images.getLogo());
     }
 
+    public MainFrame(TelegramDAO telegramDAO) throws HeadlessException {
+        this.telegramDAO = telegramDAO;
+    }
 
     private void switchFromPhoneToCode(String phoneNumber) {
 
         try {
-            //selfUser = new TLSelfUser(phoneNumber);
-            //selfUser.sendCode();
-            if(selfUser != null)
-                throw new IOException();
+            telegramDAO.acceptNumber(phoneNumber.replaceAll("[\\D]+", ""));
         } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(MainFrame.this, "Критическая ошибка ApiBridge!",  "Ошибка!", JOptionPane.ERROR_MESSAGE);
-            System.exit(-1);
+
+            return;
         }
 
+        if(telegramDAO.canSignIn()) {
+            try {
+                telegramDAO.sendCode();
+                codeForm.setPhoneLabelText(phoneNumber);
+                changeContentPanel(codeForm);
+            } catch (Exception e) {
+                abort(e);
+            }
+        } else if(telegramDAO.canSignUp()) {
 
-        this.changeContentPane(codeForm.getRootPanel());
-        codeForm.getPhoneLabel().setText(phoneNumber);
-        //JOptionPane.showMessageDialog(MainFrame.this, "Код отправлен",  "Информация", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        } else {
+            abort(null);
+        }
 
     }
 
     private void switchFromCodeToMain(String code) {
-        changeContentPane(mainForm.getRooPanel());
+        try {
+            telegramDAO.signIn(code);
+            changeContentPanel(mainForm);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void changeContentPane(Container contentPane) {
-        this.setContentPane(contentPane);
-        this.getContentPane().revalidate();
-        this.getContentPane().repaint();
+    private void changeContentPanel(Container contentPanel) {
+        undecoratedFrame.setContentPanel(contentPanel);
+    }
+
+    private void abort(Exception e) {
+        if(e != null)
+            e.printStackTrace();
+        else
+            System.err.println("Unknown Error");
+        telegramDAO.close();
+        System.exit(-1);
+    }
+
+    private void exit() {
+        telegramDAO.close();
+        System.exit(0);
     }
 }
