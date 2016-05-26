@@ -17,7 +17,7 @@ public class MainForm extends JPanel {
     private JPanel testPanel;
 
     {
-        Dimension dim = new Dimension(1000, 1000);
+        /*Dimension dim = new Dimension(1000, 1000);
         testPanel.setPreferredSize(dim);
         testPanel.setMinimumSize(dim);
         testPanel.setMaximumSize(dim);
@@ -32,13 +32,13 @@ public class MainForm extends JPanel {
         horizontalScrollBar.setUI(new MyScrollbarUI());
         horizontalScrollBar.setPreferredSize(new Dimension(Integer.MAX_VALUE, width));
 
-        contactsScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        contactsScrollPane.setBorder(BorderFactory.createEmptyBorder());*/
        // contactsScrollPane.revalidate();
 
-        for (String corner : new String[] {ScrollPaneConstants.LOWER_RIGHT_CORNER, ScrollPaneConstants.LOWER_LEFT_CORNER,
+        /*for (String corner : new String[] {ScrollPaneConstants.LOWER_RIGHT_CORNER, ScrollPaneConstants.LOWER_LEFT_CORNER,
                 ScrollPaneConstants.UPPER_LEFT_CORNER, ScrollPaneConstants.UPPER_RIGHT_CORNER}) {
             contactsScrollPane.setCorner(corner, new MyScrollBarCorner(Color.white));
-        }
+        }*/
     }
 
     private void createUIComponents() {
@@ -64,6 +64,14 @@ public class MainForm extends JPanel {
                 g.fillRect(0, 0, this.getWidth(), this.getHeight());
             }
         };
-       // contactsScrollPane = new JScrollPane(testPanel);
+    }
+
+    public Component getContactsPanel() {
+        return this.contactsPanel.getComponent(0);
+    }
+
+    public void setContactsPanel(Component contactsPanel) {
+        this.contactsPanel.removeAll();
+        this.contactsPanel.add(contactsPanel);
     }
 }

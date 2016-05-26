@@ -12,7 +12,7 @@
       <size top="3" left="3" bottom="3" right="3"/>
     </border>
     <children>
-      <grid id="c45c4" binding="topPanel" layout-manager="FlowLayout" hgap="5" vgap="2" flow-align="2">
+      <grid id="c45c4" binding="topPanel" custom-create="true" layout-manager="FlowLayout" hgap="5" vgap="2" flow-align="2">
         <constraints border-constraint="North"/>
         <properties>
           <background color="-13392152"/>

@@ -12,6 +12,8 @@ public class Images {
 
     private static BufferedImage background;
     private static BufferedImage logo;
+    private static BufferedImage smallUserImage;
+    private static BufferedImage largeUserImage;
 
     public synchronized static BufferedImage getBackground() {
         if(background == null) {
@@ -33,5 +35,31 @@ public class Images {
             }
         }
         return logo;
+    }
+
+    public synchronized static BufferedImage getSmallUserImage() {
+        if(smallUserImage == null) {
+            try {
+                smallUserImage = ImageIO.read(Images.class.getResource("/images/images (2).jpg"));
+            } catch (Exception e) {
+                smallUserImage = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
+            }
+        }
+        return smallUserImage;
+    }
+
+    public synchronized static BufferedImage getLargeUserImage() {
+        if(largeUserImage == null) {
+            try {
+                largeUserImage = ImageIO.read(Images.class.getResource("/images/User-icon.png"));
+            } catch (Exception e) {
+                largeUserImage = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
+            }
+        }
+        return largeUserImage;
+    }
+
+    public static BufferedImage getUserImage(boolean small) {
+        return small ? getSmallUserImage() : getLargeUserImage();
     }
 }
