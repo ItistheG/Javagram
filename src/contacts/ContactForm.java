@@ -18,7 +18,7 @@ import java.util.Map;
 public class ContactForm extends JPanel implements ListCellRenderer <Person>{
     private JPanel rootPanel;
     private JLabel nameLabel;
-    private JLabel lastMessageLabel;
+    private JTextPane lastMessageLabel;
     private JPanel photoPanel;
     private JButton button1;
 
@@ -70,6 +70,9 @@ public class ContactForm extends JPanel implements ListCellRenderer <Person>{
                     int x = this.getWidth() - dx;
                     int y = this.getHeight() - dy;
 
+                    dx -= 2;
+                    dy -= 2;
+
                     graphics.setColor(new Color(0x00B000));
                     graphics.fillRoundRect(x, y, dx, dy, dx, dy);
 
@@ -85,7 +88,7 @@ public class ContactForm extends JPanel implements ListCellRenderer <Person>{
         super.paintComponent(graphics);
         if(hasFocus) {
             graphics.setColor(Color.blue);
-            graphics.fillRect(this.getWidth() - focusMarkerWidth, 0, focusMarkerWidth, this.getHeight());
+            graphics.fillRect(0/*this.getWidth() - focusMarkerWidth*/, 0, focusMarkerWidth, this.getHeight());
         }
     }
 

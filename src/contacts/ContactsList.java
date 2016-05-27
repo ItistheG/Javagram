@@ -32,7 +32,9 @@ public class ContactsList extends JPanel {
 
         for (String corner : new String[] {ScrollPaneConstants.LOWER_RIGHT_CORNER, ScrollPaneConstants.LOWER_LEFT_CORNER,
                 ScrollPaneConstants.UPPER_LEFT_CORNER, ScrollPaneConstants.UPPER_RIGHT_CORNER}) {
-            scrollPane.setCorner(corner, new MyScrollBarCorner(Color.white));
+            JPanel panel = new JPanel();
+            panel.setBackground(Color.white);
+            scrollPane.setCorner(corner, panel);
         }
 
     }
@@ -66,7 +68,15 @@ public class ContactsList extends JPanel {
     }
 
     public void setSelectedValue(Person person) {
-        int index = telegramProxy.getPersons().indexOf(person);
-        list.setSelectedIndex(index);
+        if(person != null) {
+            ListModel<Person> model = list.getModel();
+            for (int i = 0; i < model.getSize(); i++) {
+                if (model.getElementAt(i).equals(person)) {
+                    list.setSelectedIndex(i);
+                    return;
+                }
+            }
+        }
+        list.setSelectedIndex(-1);
     }
 }

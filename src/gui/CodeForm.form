@@ -31,9 +31,9 @@
         <properties>
           <font name="Georgia" size="24"/>
           <foreground color="-1"/>
-          <maximumSize width="197" height="40"/>
-          <minimumSize width="197" height="40"/>
-          <preferredSize width="197" height="40"/>
+          <maximumSize width="237" height="40"/>
+          <minimumSize width="237" height="40"/>
+          <preferredSize width="237" height="40"/>
           <text value="+7 999 999-99-99"/>
         </properties>
       </component>

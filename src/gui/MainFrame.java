@@ -7,8 +7,7 @@ import org.javagram.dao.proxy.TelegramProxy;
 import org.javagram.dao.proxy.changes.UpdateChanges;
 import resources.Images;
 import undecorated.ComponentResizerAbstract;
-import undecorated.UndecoratedFrame;
-import undecorated.UndecoratedOptionPane;
+import undecorated.Undecorated;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -26,7 +25,7 @@ import java.io.IOException;
  */
 public class MainFrame extends JFrame {
 
-    private UndecoratedFrame undecoratedFrame;
+    private Undecorated undecoratedFrame;
 
     private TelegramDAO telegramDAO;
     private TelegramProxy telegramProxy;
@@ -40,7 +39,7 @@ public class MainFrame extends JFrame {
 
     {
         setTitle("Javagram");
-        undecoratedFrame = new UndecoratedFrame(this, ComponentResizerAbstract.KEEP_RATIO_CENTER);
+        undecoratedFrame = new Undecorated(this, ComponentResizerAbstract.KEEP_RATIO_CENTER);
 
         changeContentPanel(phoneForm);
         setSize(925 + 4, 390 + 39);
@@ -48,33 +47,20 @@ public class MainFrame extends JFrame {
         setMinimumSize(new Dimension(800, 600));
         setLocationRelativeTo(null);
 
-        undecoratedFrame.addActionListenerForClose(e -> this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING)));
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        undecoratedFrame.addActionListenerForMinimize(e -> this.setState(ICONIFIED));
 
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                exit();
+                if(showQuestionMessage("Уверены, что хотите выйти?", "Вопрос"))
+                    exit();
             }
         });
-
-//-----------------------------ИЛИ--------------------------------------------//
-//        undecoratedFrame.addActionListenerForClose(e -> dispose());
-//        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-//        undecoratedFrame.addActionListenerForMinimize(e -> this.setState(ICONIFIED));
-//
-//        addWindowListener(new WindowAdapter() {
-//            @Override
-//            public void windowClosed(WindowEvent windowEvent) {
-//                exit();
-//            }
-//        });
 
         phoneForm.addActionListenerForConfirm(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String phoneNumber = phoneForm.getPhoneNumber();
+               String phoneNumber = phoneForm.getPhoneNumber();
                 if(phoneNumber == null) {
                     showErrorMessage("Введите корректный номер телефона!", "Ошибка!");
                 } else {
@@ -213,15 +199,19 @@ public class MainFrame extends JFrame {
 
 
     private void showErrorMessage(String text, String title) {
-        showDialog(new JOptionPane(text, JOptionPane.ERROR_MESSAGE), title);
+        Undecorated.showDialog(this, text, title, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION);
     }
 
     private void showWarningMessage(String text, String title) {
-        showDialog(new JOptionPane(text, JOptionPane.WARNING_MESSAGE), title);
+        Undecorated.showDialog(this, text, title, JOptionPane.WARNING_MESSAGE, JOptionPane.DEFAULT_OPTION);
     }
 
-
-    private int showDialog(JOptionPane optionPane, String title) {
-        return UndecoratedOptionPane.showDialogInt(this, optionPane, title);
+    private void showInformationMessage(String text, String title) {
+        Undecorated.showDialog(this, text, title, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION);
     }
+
+    private boolean showQuestionMessage(String text, String title) {
+        return Undecorated.showDialog(this, text, title, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+    }
+
 }

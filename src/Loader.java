@@ -3,6 +3,8 @@ import org.javagram.dao.ApiBridgeTelegramDAO;
 import org.javagram.dao.DebugTelegramDAO;
 import org.javagram.dao.TelegramDAO;
 import resources.Config;
+import resources.Images;
+import undecorated.Undecorated;
 
 import javax.swing.*;
 
