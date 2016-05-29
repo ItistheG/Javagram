@@ -1,6 +1,9 @@
 package gui;
 
+import misc.MaxLengthDocumentFilter;
+
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
@@ -29,6 +32,8 @@ public class CodeForm extends JPanel {
         hintTextPane.setParagraphAttributes(attribs, false);
 
         codePasswordField.setBorder(BorderFactory.createEmptyBorder());
+        if(codePasswordField.getDocument() instanceof AbstractDocument)
+            ((AbstractDocument) codePasswordField.getDocument()).setDocumentFilter(new MaxLengthDocumentFilter(5));
 
         this.okButton.setContentAreaFilled(false);
         this.okButton.setOpaque(true);

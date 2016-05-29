@@ -11,11 +11,15 @@ public class MainForm extends JPanel {
     private JPanel rooPanel;
     private JPanel titlePanel;
     private JPanel contactsPanel;
-    private JPanel mainPanel;
+    private JPanel messagesPanel;
     private JPanel bottomPanel;
     private JScrollPane contactsScrollPane;
     private JPanel testPanel;
 
+    {
+        contactsPanel.add(new JPanel());
+        messagesPanel.add(new JPanel());
+    }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
@@ -49,5 +53,14 @@ public class MainForm extends JPanel {
     public void setContactsPanel(Component contactsPanel) {
         this.contactsPanel.removeAll();
         this.contactsPanel.add(contactsPanel);
+    }
+
+    public Component getMessagesPanel() {
+        return this.messagesPanel.getComponent(0);
+    }
+
+    public void setMessagesPanel(Component messagesPanel) {
+        this.messagesPanel.removeAll();
+        this.messagesPanel.add(messagesPanel);
     }
 }

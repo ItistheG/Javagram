@@ -1,8 +1,9 @@
 package gui;
 
 import contacts.ContactsList;
-import org.javagram.dao.Person;
-import org.javagram.dao.TelegramDAO;
+import messsages.MessagesForm;
+import org.javagram.dao.*;
+import org.javagram.dao.Dialog;
 import org.javagram.dao.proxy.TelegramProxy;
 import org.javagram.dao.proxy.changes.UpdateChanges;
 import resources.Images;
@@ -36,6 +37,7 @@ public class MainFrame extends JFrame {
     private ContactsList contactsList = new ContactsList();
 
     private Timer timer;
+    private int messagesFrozen;
 
     {
         setTitle("Javagram");
@@ -89,24 +91,52 @@ public class MainFrame extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
 
+                if(messagesFrozen != 0)
+                    return;
+
+                if(telegramProxy == null)  {
+                    displayDialog(null);
+                    return;
+                }
+
+                displayDialog(contactsList.getSelectedValue());
             }
         });
 
         timer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(telegramProxy != null) {
+                if (telegramProxy != null) {
                     UpdateChanges updateChanges = telegramProxy.update();
-                    if(updateChanges.getListChanged()) {
-                        updateTelegramProxy();
-                    } else if(updateChanges.getLargePhotosChanged().size() +
+
+                    if (updateChanges.getListChanged()) {
+                        updateContacts();
+                    } else if (updateChanges.getLargePhotosChanged().size() +
                             updateChanges.getSmallPhotosChanged().size() +
                             updateChanges.getStatusesChanged().size() != 0) {
                         contactsList.repaint();
                     } else {
 
                     }
+
+                    Person currentBuddy = getMessagesForm().getPerson();
+                    Person targetPerson = contactsList.getSelectedValue();
+
+                    Dialog currentDialog = currentBuddy != null ? telegramProxy.getDialog(currentBuddy) : null;
+
+                    if (!equal(targetPerson, currentBuddy) ||
+                            updateChanges.getDialogsToReset().contains(currentDialog) ||
+                            updateChanges.getDialogsChanged().getChanged().containsKey(currentDialog) ||
+                            updateChanges.getDialogsChanged().getDeleted().contains(currentDialog)) {
+                        updateMessages();
+                    }
+
                 }
+
+            }
+
+            private boolean equal(Object a, Object b) {
+                return a == b || a != null && a.equals(b);
             }
         });
         timer.start();
@@ -141,7 +171,6 @@ public class MainFrame extends JFrame {
         } else {
             abort(null);
         }
-
     }
 
     private void switchFromCodeToMain(String code) {
@@ -176,9 +205,63 @@ public class MainFrame extends JFrame {
     }
 
     private void updateTelegramProxy() {
-        Person person = contactsList.getSelectedValue();
-        contactsList.setTelegramProxy(telegramProxy);
-        contactsList.setSelectedValue(person);
+
+        messagesFrozen++;
+        try {
+            contactsList.setTelegramProxy(telegramProxy);
+            contactsList.setSelectedValue(null);
+            createMessagesForm();
+            displayDialog(null);
+        } finally {
+            messagesFrozen--;
+        }
+
+        mainForm.revalidate();
+        mainForm.repaint();
+    }
+
+    private void updateContacts() {
+        messagesFrozen++;
+        try {
+            Person person = contactsList.getSelectedValue();
+            contactsList.setTelegramProxy(telegramProxy);
+            contactsList.setSelectedValue(person);
+        } finally {
+            messagesFrozen--;
+        }
+    }
+
+    private void updateMessages() {
+        displayDialog(contactsList.getSelectedValue());
+        mainForm.revalidate();
+        mainForm.repaint();
+    }
+
+    private MessagesForm createMessagesForm() {
+        MessagesForm messagesForm = new MessagesForm(telegramProxy);
+        mainForm.setMessagesPanel(messagesForm);
+        mainForm.revalidate();
+        mainForm.repaint();
+        return messagesForm;
+    }
+
+    private MessagesForm getMessagesForm() {
+        if(mainForm.getMessagesPanel() instanceof MessagesForm) {
+            return (MessagesForm) mainForm.getMessagesPanel();
+        } else {
+            return createMessagesForm();
+        }
+    }
+
+    private void displayDialog(Person person) {
+        try {
+            MessagesForm messagesForm = getMessagesForm();
+            messagesForm.display(person);
+            messagesForm.revalidate();
+            messagesForm.repaint();
+        } catch (Exception e) {
+            showErrorMessage("Проблема соединения с сервером", "проблемы в сети");
+        }
     }
 
     private void abort(Exception e) {

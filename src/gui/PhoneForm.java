@@ -37,6 +37,8 @@ public class PhoneForm extends JPanel {
 
         try {
             MaskFormatter maskFormatter = new MaskFormatter("+7 (###) ###-##-##");
+            maskFormatter.setPlaceholder(null);
+            maskFormatter.setPlaceholderCharacter('.');
             phoneTextField.setFormatterFactory(new DefaultFormatterFactory(maskFormatter));
         } catch (ParseException e) {
             e.printStackTrace();

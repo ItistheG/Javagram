@@ -1,4 +1,4 @@
-package contacts;
+package misc;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;

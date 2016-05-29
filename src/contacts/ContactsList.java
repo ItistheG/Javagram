@@ -1,5 +1,6 @@
 package contacts;
 
+import misc.MyScrollbarUI;
 import org.javagram.dao.Dialog;
 import org.javagram.dao.Person;
 import org.javagram.dao.proxy.TelegramProxy;
@@ -50,9 +51,9 @@ public class ContactsList extends JPanel {
 
     public void setTelegramProxy(TelegramProxy telegramProxy) {
         this.telegramProxy = telegramProxy;
-        Map<Person, Dialog> dialogs = telegramProxy.getDialogs(true);
+        java.util.List<Person> dialogs = telegramProxy.getPersons();
         list.setCellRenderer(new ContactForm(telegramProxy));
-        list.setListData(dialogs.keySet().toArray(new Person[dialogs.size()]));
+        list.setListData(dialogs.toArray(new Person[dialogs.size()]));
     }
 
     public void addListSelectionListener(ListSelectionListener listSelectionListener)  {

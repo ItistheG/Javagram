@@ -20,7 +20,7 @@ public class Loader {
                 try {
                     UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                     TelegramDAO telegramDAO = new ApiBridgeTelegramDAO(Config.SERVER, Config.APP_ID, Config.APP_HASH);
-                          //  new DebugTelegramDAO();
+                            //new DebugTelegramDAO();
                     MainFrame frame = new MainFrame(telegramDAO);
                     frame.setVisible(true);
                 } catch (Exception e) {
