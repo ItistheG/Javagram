@@ -1,6 +1,9 @@
 package messsages;
 
 import javax.swing.*;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
 
 /**
@@ -26,8 +29,11 @@ public class MessageForm extends JPanel {
         dateLabel.setAlignmentX(0.0f);
         add(dateLabel);
 
+        textPane.setContentType("text/html");
         textPane.setSize(width, Short.MAX_VALUE);
-        textPane.setText(text);
+        textPane.setText("<HTML><BODY><TABLE style=\'table-layout: fixed;\' width=\'" +
+                width + "px\' max-width=\'" + width + "px><TR><TD style=\"word-wrap: break-word;\" width=\'" +
+                width + "px\' max-width=\'" + width + "px\'>" + text.replaceAll("\n", "<br/>") + "</TD></TR></TABLE></BODY></HTML>");
         textPane.setOpaque(false);
         textPane.setEditable(false);
         textPane.setMargin(new Insets(MARGIN, MARGIN, MARGIN, MARGIN));

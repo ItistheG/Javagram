@@ -16,50 +16,39 @@ public class Images {
     private static BufferedImage largeUserImage;
 
     public synchronized static BufferedImage getBackground() {
-        if(background == null) {
-            try {
-                background = ImageIO.read(Images.class.getResource("/images/Writing_a_letter.jpg"));
-            } catch (Exception e) {
-                background = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
-            }
-        }
+        if (background == null)
+            background = loadImage("images/Writing_a_letter.jpg");
         return background;
     }
 
     public synchronized static BufferedImage getLogo() {
-        if(logo == null) {
-            try {
-                logo = ImageIO.read(Images.class.getResource("/images/pre_mail.png"));
-            } catch (Exception e) {
-                logo = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
-            }
-        }
+        if (logo == null)
+            logo = loadImage("images/pre_mail.png");
         return logo;
     }
 
     public synchronized static BufferedImage getSmallUserImage() {
-        if(smallUserImage == null) {
-            try {
-                smallUserImage = ImageIO.read(Images.class.getResource("/images/images (2).jpg"));
-            } catch (Exception e) {
-                smallUserImage = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
-            }
-        }
+        if (smallUserImage == null)
+            smallUserImage = loadImage("images/images (2).jpg");
         return smallUserImage;
     }
 
     public synchronized static BufferedImage getLargeUserImage() {
-        if(largeUserImage == null) {
-            try {
-                largeUserImage = ImageIO.read(Images.class.getResource("/images/User-icon.png"));
-            } catch (Exception e) {
-                largeUserImage = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
-            }
-        }
+        if (largeUserImage == null)
+            largeUserImage = loadImage("images/User-icon.png");
         return largeUserImage;
     }
 
     public static BufferedImage getUserImage(boolean small) {
         return small ? getSmallUserImage() : getLargeUserImage();
+    }
+
+    private static BufferedImage loadImage(String name) {
+        try {
+            return ImageIO.read(Images.class.getResource(name));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
+        }
     }
 }

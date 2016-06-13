@@ -201,10 +201,6 @@ public class MainFrame extends JFrame {
 
     private void createTelegramProxy() {
         telegramProxy = new TelegramProxy(telegramDAO);
-        updateTelegramProxy();
-    }
-
-    private void updateTelegramProxy() {
 
         messagesFrozen++;
         try {
