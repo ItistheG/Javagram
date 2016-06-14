@@ -47,17 +47,54 @@
           </scrollpane>
         </children>
       </grid>
-      <grid id="65e1f" binding="messagesPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
-        <constraints border-constraint="Center"/>
-        <properties/>
-        <border type="none"/>
-        <children/>
-      </grid>
       <grid id="659ab" binding="bottomPanel" layout-manager="GridBagLayout">
         <constraints border-constraint="South"/>
         <properties/>
         <border type="none"/>
         <children/>
+      </grid>
+      <grid id="db6c7" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="65e1f" binding="messagesPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+          <grid id="d2b9a" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="South"/>
+            <properties>
+              <background color="-1"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <scrollpane id="1c0f7" binding="messageTextScrollPane">
+                <constraints border-constraint="Center"/>
+                <properties>
+                  <minimumSize width="17" height="80"/>
+                  <preferredSize width="17" height="80"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="87240" class="javax.swing.JTextArea" binding="messageTextArea">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+              <component id="792e" class="javax.swing.JButton" binding="sendMessageButton" custom-create="true">
+                <constraints border-constraint="East"/>
+                <properties>
+                  <opaque value="false"/>
+                  <text value="Button"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
       </grid>
     </children>
   </grid>

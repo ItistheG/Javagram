@@ -1,7 +1,13 @@
 package gui;
 
+import misc.GuiHelper;
+import misc.MyScrollbarUI;
+import resources.Images;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 
 /**
@@ -15,10 +21,15 @@ public class MainForm extends JPanel {
     private JPanel bottomPanel;
     private JScrollPane contactsScrollPane;
     private JPanel testPanel;
+    private JTextArea messageTextArea;
+    private JButton sendMessageButton;
+    private JScrollPane messageTextScrollPane;
 
     {
         contactsPanel.add(new JPanel());
         messagesPanel.add(new JPanel());
+
+        GuiHelper.decorateScrollPane(messageTextScrollPane);
     }
 
     private void createUIComponents() {
@@ -44,6 +55,19 @@ public class MainForm extends JPanel {
                 g.fillRect(0, 0, this.getWidth(), this.getHeight());
             }
         };
+
+        sendMessageButton = new JButton() {
+            @Override
+            protected void paintComponent(Graphics graphics) {
+                //super.paintComponent(graphics);
+                GuiHelper.drawImage(graphics, Images.getSendMessageImage(), 0, 0, this.getWidth(), this.getHeight());
+            }
+
+            @Override
+            protected void paintBorder(Graphics graphics) {
+                //super.paintBorder(graphics);
+            }
+        };
     }
 
     public Component getContactsPanel() {
@@ -62,5 +86,21 @@ public class MainForm extends JPanel {
     public void setMessagesPanel(Component messagesPanel) {
         this.messagesPanel.removeAll();
         this.messagesPanel.add(messagesPanel);
+    }
+
+    public void addSendMessageListener(ActionListener listener) {
+        this.sendMessageButton.addActionListener(listener);
+    }
+
+    public void removeSendMessageListener(ActionListener listener) {
+        this.sendMessageButton.removeActionListener(listener);
+    }
+
+    public String getMessageText() {
+        return this.messageTextArea.getText();
+    }
+
+    public void setMessageText(String text) {
+        this.messageTextArea.setText(text);
     }
 }

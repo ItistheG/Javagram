@@ -1,9 +1,11 @@
 package contacts;
 
+import misc.GuiHelper;
 import misc.MyScrollbarUI;
 import org.javagram.dao.Dialog;
 import org.javagram.dao.Person;
 import org.javagram.dao.proxy.TelegramProxy;
+import org.javagram.response.Helper;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
@@ -21,23 +23,7 @@ public class ContactsList extends JPanel {
     private TelegramProxy telegramProxy;
 
     {
-        int width = 3;
-
-        JScrollBar verticalScrollBar =  scrollPane.getVerticalScrollBar();
-        verticalScrollBar.setUI(new MyScrollbarUI());
-        verticalScrollBar.setPreferredSize(new Dimension(width, Integer.MAX_VALUE));
-
-        JScrollBar horizontalScrollBar =  scrollPane.getHorizontalScrollBar();
-        horizontalScrollBar.setUI(new MyScrollbarUI());
-        horizontalScrollBar.setPreferredSize(new Dimension(Integer.MAX_VALUE, width));
-
-        for (String corner : new String[] {ScrollPaneConstants.LOWER_RIGHT_CORNER, ScrollPaneConstants.LOWER_LEFT_CORNER,
-                ScrollPaneConstants.UPPER_LEFT_CORNER, ScrollPaneConstants.UPPER_RIGHT_CORNER}) {
-            JPanel panel = new JPanel();
-            panel.setBackground(Color.white);
-            scrollPane.setCorner(corner, panel);
-        }
-
+        GuiHelper.decorateScrollPane(scrollPane);
     }
 
     private void createUIComponents() {

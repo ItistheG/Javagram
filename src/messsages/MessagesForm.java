@@ -1,6 +1,7 @@
 package messsages;
 
 import messsages.MessageForm;
+import misc.GuiHelper;
 import misc.MyScrollbarUI;
 import org.javagram.dao.Me;
 import org.javagram.dao.Message;
@@ -31,22 +32,7 @@ public class MessagesForm extends JPanel {
     private Person person;
 
     {
-        int width = 3;
-
-        JScrollBar verticalScrollBar =  scrollPane.getVerticalScrollBar();
-        verticalScrollBar.setUI(new MyScrollbarUI());
-        verticalScrollBar.setPreferredSize(new Dimension(width, Integer.MAX_VALUE));
-
-        JScrollBar horizontalScrollBar =  scrollPane.getHorizontalScrollBar();
-        horizontalScrollBar.setUI(new MyScrollbarUI());
-        horizontalScrollBar.setPreferredSize(new Dimension(Integer.MAX_VALUE, width));
-
-        for (String corner : new String[] {ScrollPaneConstants.LOWER_RIGHT_CORNER, ScrollPaneConstants.LOWER_LEFT_CORNER,
-                ScrollPaneConstants.UPPER_LEFT_CORNER, ScrollPaneConstants.UPPER_RIGHT_CORNER}) {
-            JPanel panel = new JPanel();
-            panel.setBackground(Color.white);
-            scrollPane.setCorner(corner, panel);
-        }
+        GuiHelper.decorateScrollPane(scrollPane);
     }
 
     public MessagesForm(TelegramProxy telegramProxy) {

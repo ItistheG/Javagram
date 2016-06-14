@@ -86,6 +86,8 @@ public class ContactForm extends JPanel implements ListCellRenderer <Person>{
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
+        graphics.setColor(Color.lightGray);
+        graphics.drawRect(0, 0, this.getWidth() - 1, this.getHeight() - 1);
         if(hasFocus) {
             graphics.setColor(Color.blue);
             graphics.fillRect(0/*this.getWidth() - focusMarkerWidth*/, 0, focusMarkerWidth, this.getHeight());

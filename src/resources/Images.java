@@ -12,6 +12,7 @@ public class Images {
 
     private static BufferedImage background;
     private static BufferedImage logo;
+    private static BufferedImage sendMessageImage;
     private static BufferedImage smallUserImage;
     private static BufferedImage largeUserImage;
 
@@ -25,6 +26,12 @@ public class Images {
         if (logo == null)
             logo = loadImage("images/pre_mail.png");
         return logo;
+    }
+
+    public synchronized static BufferedImage getSendMessageImage() {
+        if (sendMessageImage == null)
+            sendMessageImage = loadImage("images/letter2.png");
+        return sendMessageImage;
     }
 
     public synchronized static BufferedImage getSmallUserImage() {

@@ -2,6 +2,7 @@ package gui;
 
 import contacts.ContactsList;
 import messsages.MessagesForm;
+import misc.GuiHelper;
 import org.javagram.dao.*;
 import org.javagram.dao.Dialog;
 import org.javagram.dao.proxy.TelegramProxy;
@@ -103,40 +104,27 @@ public class MainFrame extends JFrame {
             }
         });
 
+        mainForm.addSendMessageListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Person buddy =  contactsList.getSelectedValue();
+                String text = mainForm.getMessageText().trim();
+                if(telegramProxy != null && buddy != null && !text.isEmpty()) {
+                    try {
+                        telegramProxy.sendMessage(buddy, text);
+                        mainForm.setMessageText("");
+                        checkForUpdates();
+                    } catch (Exception e) {
+                        showErrorMessage("Не могу отправить сообщение", "Ошибка!");
+                    }
+                }
+            }
+        });
+
         timer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (telegramProxy != null) {
-                    UpdateChanges updateChanges = telegramProxy.update();
-
-                    if (updateChanges.getListChanged()) {
-                        updateContacts();
-                    } else if (updateChanges.getLargePhotosChanged().size() +
-                            updateChanges.getSmallPhotosChanged().size() +
-                            updateChanges.getStatusesChanged().size() != 0) {
-                        contactsList.repaint();
-                    } else {
-
-                    }
-
-                    Person currentBuddy = getMessagesForm().getPerson();
-                    Person targetPerson = contactsList.getSelectedValue();
-
-                    Dialog currentDialog = currentBuddy != null ? telegramProxy.getDialog(currentBuddy) : null;
-
-                    if (!equal(targetPerson, currentBuddy) ||
-                            updateChanges.getDialogsToReset().contains(currentDialog) ||
-                            updateChanges.getDialogsChanged().getChanged().containsKey(currentDialog) ||
-                            updateChanges.getDialogsChanged().getDeleted().contains(currentDialog)) {
-                        updateMessages();
-                    }
-
-                }
-
-            }
-
-            private boolean equal(Object a, Object b) {
-                return a == b || a != null && a.equals(b);
+                checkForUpdates();
             }
         });
         timer.start();
@@ -145,6 +133,36 @@ public class MainFrame extends JFrame {
     public MainFrame(TelegramDAO telegramDAO) throws HeadlessException {
         this.telegramDAO = telegramDAO;
     }
+
+    protected void checkForUpdates() {
+        if (telegramProxy != null) {
+            UpdateChanges updateChanges = telegramProxy.update();
+
+            if (updateChanges.getListChanged()) {
+                updateContacts();
+            } else if (updateChanges.getLargePhotosChanged().size() +
+                    updateChanges.getSmallPhotosChanged().size() +
+                    updateChanges.getStatusesChanged().size() != 0) {
+                contactsList.repaint();
+            } else {
+
+            }
+
+            Person currentBuddy = getMessagesForm().getPerson();
+            Person targetPerson = contactsList.getSelectedValue();
+
+            Dialog currentDialog = currentBuddy != null ? telegramProxy.getDialog(currentBuddy) : null;
+
+            if (!GuiHelper.equal(targetPerson, currentBuddy) ||
+                    updateChanges.getDialogsToReset().contains(currentDialog) ||
+                    //updateChanges.getDialogsChanged().getChanged().containsKey(currentDialog) ||
+                    updateChanges.getDialogsChanged().getDeleted().contains(currentDialog)) {
+                updateMessages();
+            }
+
+        }
+    }
+
 
     private void switchFromPhoneToCode(String phoneNumber) {
 
