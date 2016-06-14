@@ -18,31 +18,31 @@ public class Images {
 
     public synchronized static BufferedImage getBackground() {
         if (background == null)
-            background = loadImage("images/Writing_a_letter.jpg");
+            background = loadImage("Writing_a_letter.jpg");
         return background;
     }
 
     public synchronized static BufferedImage getLogo() {
         if (logo == null)
-            logo = loadImage("images/pre_mail.png");
+            logo = loadImage("pre_mail.png");
         return logo;
     }
 
     public synchronized static BufferedImage getSendMessageImage() {
         if (sendMessageImage == null)
-            sendMessageImage = loadImage("images/letter2.png");
+            sendMessageImage = loadImage("letter2.png");
         return sendMessageImage;
     }
 
     public synchronized static BufferedImage getSmallUserImage() {
         if (smallUserImage == null)
-            smallUserImage = loadImage("images/images (2).jpg");
+            smallUserImage = loadImage("images (2).jpg");
         return smallUserImage;
     }
 
     public synchronized static BufferedImage getLargeUserImage() {
         if (largeUserImage == null)
-            largeUserImage = loadImage("images/User-icon.png");
+            largeUserImage = loadImage("User-icon.png");
         return largeUserImage;
     }
 
@@ -52,7 +52,7 @@ public class Images {
 
     private static BufferedImage loadImage(String name) {
         try {
-            return ImageIO.read(Images.class.getResource(name));
+            return ImageIO.read(Images.class.getResource("images/" + name));
         } catch (Exception e) {
             e.printStackTrace();
             return new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
