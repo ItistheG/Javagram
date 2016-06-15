@@ -271,8 +271,9 @@ public class MainFrame extends JFrame {
         try {
             MessagesForm messagesForm = getMessagesForm();
             messagesForm.display(person);
-            messagesForm.revalidate();
-            messagesForm.repaint();
+            mainForm.setText(person != null ? person.getFirstName() + " " + person.getLastName() : null);
+            revalidate();
+            repaint();
         } catch (Exception e) {
             showErrorMessage("Проблема соединения с сервером", "проблемы в сети");
         }

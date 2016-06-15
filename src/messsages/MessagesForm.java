@@ -39,9 +39,9 @@ public class MessagesForm extends JPanel {
         this(telegramProxy, null);
     }
 
-    public MessagesForm(TelegramProxy telegramProxy, Person perosn) {
+    public MessagesForm(TelegramProxy telegramProxy, Person person) {
         this.telegramProxy = telegramProxy;
-        display(perosn);
+        display(person);
     }
 
     public void display(Person person) {
@@ -71,18 +71,22 @@ public class MessagesForm extends JPanel {
             Message message = messages.get(i);
             int alignment;
             Color color;
+            String fontColor;
             if(message.getReceiver() instanceof Me) {
                 alignment = FlowLayout.LEFT;
                 color = Color.blue;
+                fontColor = "white";
             } else if(message.getSender() instanceof Me) {
                 alignment = FlowLayout.RIGHT;
                 color = Color.cyan;
+                fontColor = "black";
             } else {
                 alignment = FlowLayout.CENTER;
                 color = Color.red;
+                fontColor = "green";
             }
             panel.setLayout(new FlowLayout(alignment));
-            panel.add(new MessageForm(message.getText(), dateFormat.format(message.getDate()), width, color));
+            panel.add(new MessageForm(message.getText(), dateFormat.format(message.getDate()), width, color, fontColor));
             scrollPanel.add(panel);
         }
 

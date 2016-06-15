@@ -10,7 +10,7 @@
     </properties>
     <border type="none"/>
     <children>
-      <grid id="68149" binding="titlePanel" custom-create="true" layout-manager="GridBagLayout">
+      <grid id="68149" binding="titlePanel" custom-create="true" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="2">
         <constraints border-constraint="North"/>
         <properties>
           <maximumSize width="2147483647" height="70"/>
@@ -18,7 +18,18 @@
           <preferredSize width="0" height="70"/>
         </properties>
         <border type="none"/>
-        <children/>
+        <children>
+          <component id="1d958" class="javax.swing.JButton" binding="gearButton" custom-create="true">
+            <constraints/>
+            <properties>
+              <maximumSize width="60" height="60"/>
+              <minimumSize width="60" height="60"/>
+              <opaque value="false"/>
+              <preferredSize width="60" height="60"/>
+              <text value="Button"/>
+            </properties>
+          </component>
+        </children>
       </grid>
       <grid id="3485f" binding="contactsPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="West"/>

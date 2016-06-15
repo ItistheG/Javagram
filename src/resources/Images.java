@@ -15,6 +15,7 @@ public class Images {
     private static BufferedImage sendMessageImage;
     private static BufferedImage smallUserImage;
     private static BufferedImage largeUserImage;
+    private static BufferedImage gearIcon;
 
     public synchronized static BufferedImage getBackground() {
         if (background == null)
@@ -32,6 +33,12 @@ public class Images {
         if (sendMessageImage == null)
             sendMessageImage = loadImage("letter2.png");
         return sendMessageImage;
+    }
+
+    public static BufferedImage getGearIcon() {
+        if(gearIcon == null)
+            gearIcon = loadImage("ModelcheckingPlugin.ICON.png");
+        return gearIcon;
     }
 
     public synchronized static BufferedImage getSmallUserImage() {

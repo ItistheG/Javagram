@@ -1,5 +1,7 @@
 package undecorated;
 
+import resources.Fonts;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;

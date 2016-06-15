@@ -19,7 +19,7 @@ public class MessageForm extends JPanel {
     private final int MARGIN = 5;
     private final int RADIUS = 25;
 
-    public MessageForm(String text, String date, int width, Color color) {
+    public MessageForm(String text, String date, int width, Color color, String fontColor) {
 
         setLayout(boxLayout);
 
@@ -31,7 +31,7 @@ public class MessageForm extends JPanel {
 
         textPane.setContentType("text/html");
         textPane.setSize(width, Short.MAX_VALUE);
-        textPane.setText("<HTML><BODY><TABLE style=\'table-layout: fixed;\' width=\'" +
+        textPane.setText("<HTML><BODY><TABLE color=\"" + fontColor +"\" style=\'table-layout: fixed;\' width=\'" +
                 width + "px\' max-width=\'" + width + "px><TR><TD style=\"word-wrap: break-word;\" width=\'" +
                 width + "px\' max-width=\'" + width + "px\'>" + text.replaceAll("\n", "<br/>") + "</TD></TR></TABLE></BODY></HTML>");
         textPane.setOpaque(false);
