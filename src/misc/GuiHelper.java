@@ -47,4 +47,9 @@ public class GuiHelper {
         return a == b || a != null && a.equals(b);
     }
 
+    public static Color makeTransparent(Color color,float transparency) {
+        if(transparency < 0.0f || transparency > 1.0f)
+            throw new IllegalArgumentException();
+        return new Color(color.getRed(),color.getGreen(), color.getBlue(), (int)Math.round(color.getAlpha() * transparency));
+    }
 }

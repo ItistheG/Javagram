@@ -269,6 +269,7 @@ public class Undecorated extends JPanel {
                 }
 
                 graphics.setColor(Color.black);
+                graphics.setFont(graphics.getFont().deriveFont(Font.ITALIC));
                 graphics.drawString(text, start, pos);
             }
         };

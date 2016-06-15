@@ -7,6 +7,8 @@ import org.javagram.dao.*;
 import org.javagram.dao.Dialog;
 import org.javagram.dao.proxy.TelegramProxy;
 import org.javagram.dao.proxy.changes.UpdateChanges;
+import overlays.MyBufferedOverlayDialog;
+import overlays.ProfileForm;
 import resources.Images;
 import undecorated.ComponentResizerAbstract;
 import undecorated.Undecorated;
@@ -36,6 +38,10 @@ public class MainFrame extends JFrame {
     private CodeForm codeForm = new CodeForm();
     private MainForm mainForm = new MainForm();
     private ContactsList contactsList = new ContactsList();
+
+    private ProfileForm profileForm = new ProfileForm();
+    private MyBufferedOverlayDialog mainWidowManager = new MyBufferedOverlayDialog(mainForm, profileForm);
+    private static final int MAIN_WINDOW = -1, PROFILE_FORM = 0;
 
     private Timer timer;
     private int messagesFrozen;
@@ -121,6 +127,28 @@ public class MainFrame extends JFrame {
             }
         });
 
+        mainForm.addGearEventListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                profileForm.setTelegramProxy(telegramProxy);
+                mainWidowManager.setIndex(PROFILE_FORM);
+            }
+        });
+
+        profileForm.addActionListenerForClose(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                mainWidowManager.setIndex(MAIN_WINDOW);
+            }
+        });
+
+        profileForm.addActionListenerForLogout(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                showInformationMessage("Not implemented yet", "Информация");
+            }
+        });
+
         timer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -194,7 +222,7 @@ public class MainFrame extends JFrame {
     private void switchFromCodeToMain(String code) {
         try {
             telegramDAO.signIn(code);
-            changeContentPanel(mainForm);
+            changeContentPanel(mainWidowManager);
             createTelegramProxy();
         } catch (Exception e) {
             showWarningMessage("Неверный код", "Внимание!");
