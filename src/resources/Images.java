@@ -16,6 +16,10 @@ public class Images {
     private static BufferedImage smallUserImage;
     private static BufferedImage largeUserImage;
     private static BufferedImage gearIcon;
+    private static BufferedImage plusImage;
+    private static BufferedImage magnifyingGlassIcon;
+    private static BufferedImage pencilIcon;
+    private static BufferedImage penIcon;
 
     public synchronized static BufferedImage getBackground() {
         if (background == null)
@@ -39,6 +43,30 @@ public class Images {
         if(gearIcon == null)
             gearIcon = loadImage("ModelcheckingPlugin.ICON.png");
         return gearIcon;
+    }
+
+    public static BufferedImage getPlus() {
+        if(plusImage == null)
+            plusImage = loadImage("LTKjko5Ta.png");
+        return plusImage;
+    }
+
+    public static BufferedImage getMagnifyingGlassIcon() {
+        if(magnifyingGlassIcon == null)
+            magnifyingGlassIcon = loadImage("Magnifying_glass_icon.svg.png");
+        return magnifyingGlassIcon;
+    }
+
+    public static BufferedImage getPencilIcon() {
+        if(pencilIcon == null)
+            pencilIcon = loadImage("blue-pencil.jpg");
+        return pencilIcon;
+    }
+
+    public static BufferedImage getPenIcon() {
+        if(penIcon == null)
+            penIcon = loadImage("writing-146913_960_720.png");
+        return penIcon;
     }
 
     public synchronized static BufferedImage getSmallUserImage() {

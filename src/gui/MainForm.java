@@ -1,7 +1,7 @@
 package gui;
 
 import misc.GuiHelper;
-import misc.MyScrollbarUI;
+import misc.HintTextField;
 import resources.Fonts;
 import resources.Images;
 
@@ -16,21 +16,28 @@ import java.awt.image.BufferedImage;
  * Created by HerrSergio on 06.04.2016.
  */
 public class MainForm extends JPanel {
-    private JPanel rooPanel;
+    private JPanel rootPanel;
     private JPanel titlePanel;
     private JPanel contactsPanel;
     private JPanel messagesPanel;
-    private JPanel bottomPanel;
-    private JScrollPane contactsScrollPane;
     private JPanel testPanel;
     private JTextArea messageTextArea;
     private JButton sendMessageButton;
     private JScrollPane messageTextScrollPane;
     private JButton gearButton;
+    private JTextField searchTextField;
+    private JPanel searchIconPanel;
+    private JPanel buddyPanel;
+    private JButton buddyEditButton;
 
-    private String text;
+    private String meText;
+    private BufferedImage mePhoto;
 
-    {
+    private String buddyText;
+    private BufferedImage buddyPhoto;
+
+
+    public MainForm() {
         contactsPanel.add(new JPanel());
         messagesPanel.add(new JPanel());
 
@@ -39,7 +46,7 @@ public class MainForm extends JPanel {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
-        rooPanel = this;
+        rootPanel = this;
 
         testPanel = new JPanel() {
             @Override
@@ -59,32 +66,26 @@ public class MainForm extends JPanel {
                 g.setColor(new Color(0x82B7E8));
                 g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
-                if(text == null)
-                    return;
+                int leftMostPoint = gearButton.getX();
 
-                int inset = 25;
-                Font font = Fonts.getNameFont().deriveFont(Font.ITALIC, 30);
-                String line = text;
+                if (meText != null) {
 
-                int x = inset;
-                int maxWidth = (gearButton.getX() - x - inset);
-                FontMetrics fontMetrics = getFontMetrics(font);
+                    int inset = 25;
+                    Font font = Fonts.getNameFont().deriveFont(Font.ITALIC, 30);
+                    Color color = Color.white;
+                    String text = meText;
 
-                while(fontMetrics.stringWidth(line) > maxWidth) {
-                    if(line.length() > 3)
-                        line = line.substring(0, line.length() - 4) + "...";
-                    else
-                        return;
+                    leftMostPoint = GuiHelper.drawText(g, text, color, font, 0, 0, leftMostPoint, this.getHeight(), inset, true);
                 }
 
-                LineMetrics lineMetrics = fontMetrics.getLineMetrics(line, g);
-                int y = (int)Math.round((this.getHeight() - lineMetrics.getHeight()) / 2.0 + fontMetrics.getAscent());
+                if (mePhoto != null) {
+                    int inset = 2;
+                    BufferedImage image = mePhoto;
 
-                x += maxWidth - fontMetrics.stringWidth(line);
+                    leftMostPoint = GuiHelper.drawImage(g, image, 0, 0, leftMostPoint, this.getHeight(), inset, true);
+                }
 
-                g.setColor(Color.white);
-                g.setFont(font);
-                g.drawString(line, x, y);
+                GuiHelper.drawImage(g, Images.getPenIcon(), 12, 0, leftMostPoint, this.getHeight(), 3, false);
             }
         };
 
@@ -111,6 +112,62 @@ public class MainForm extends JPanel {
             @Override
             protected void paintBorder(Graphics graphics) {
                 //super.paintBorder(graphics);
+            }
+        };
+
+        buddyPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics graphics) {
+                super.paintComponent(graphics);
+
+                int leftMostPoint = buddyEditButton.getX();
+
+                if (buddyText != null) {
+
+                    int inset = 10;
+                    Font font = Fonts.getNameFont().deriveFont(Font.ITALIC, 18);
+                    Color color = Color.cyan;
+                    String text = buddyText;
+
+                    leftMostPoint = GuiHelper.drawText(graphics, text, color, font, 0, 0, leftMostPoint, this.getHeight(), inset, true);
+                }
+
+                if (buddyPhoto != null) {
+                    int inset = 2;
+                    BufferedImage image = buddyPhoto;
+
+                    GuiHelper.drawImage(graphics, image, 0, 0, leftMostPoint, this.getHeight(), inset, true);
+                }
+
+            }
+        };
+
+        buddyEditButton = new JButton() {
+            @Override
+            protected void paintComponent(Graphics graphics) {
+                //super.paintComponent(graphics);
+                GuiHelper.drawImage(graphics, Images.getPencilIcon(), 0, 0, this.getWidth(), this.getHeight());
+            }
+
+            @Override
+            protected void paintBorder(Graphics graphics) {
+                //super.paintBorder(graphics);
+            }
+        };
+
+        searchTextField = new HintTextField("", "Поиск...", false) {
+            @Override
+            protected void paintBorder(Graphics graphics) {
+                //super.paintBorder(graphics);
+            }
+        };
+
+        searchIconPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics graphics) {
+                super.paintComponent(graphics);
+                int inset = 2;
+                GuiHelper.drawImage(graphics, Images.getMagnifyingGlassIcon(), inset, inset, this.getWidth() - inset * 2, this.getHeight() - inset * 2);
             }
         };
     }
@@ -149,6 +206,25 @@ public class MainForm extends JPanel {
         this.gearButton.addActionListener(listener);
     }
 
+    public void removeBuddyEditEventListener(ActionListener listener) {
+        this.buddyEditButton.removeActionListener(listener);
+    }
+
+    public void addBuddyEditEventListener(ActionListener listener) {
+        this.buddyEditButton.addActionListener(listener);
+    }
+
+    public void removeSearchEventListener(ActionListener listener) {
+        this.searchTextField.removeActionListener(listener);
+    }
+
+    public void addSearchEventListener(ActionListener listener) {
+        this.searchTextField.addActionListener(listener);
+    }
+
+    public String getSearchText() {
+        return this.searchTextField.getText();
+    }
 
     public String getMessageText() {
         return this.messageTextArea.getText();
@@ -158,12 +234,39 @@ public class MainForm extends JPanel {
         this.messageTextArea.setText(text);
     }
 
-    public String getText() {
-        return text;
+    public String getMeText() {
+        return meText;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setMeText(String meText) {
+        this.meText = meText;
+        repaint();
+    }
+
+    public BufferedImage getMePhoto() {
+        return mePhoto;
+    }
+
+    public void setMePhoto(BufferedImage mePhoto) {
+        this.mePhoto = mePhoto;
+        repaint();
+    }
+
+    public String getBuddyText() {
+        return buddyText;
+    }
+
+    public void setBuddyText(String buddyText) {
+        this.buddyText = buddyText;
+        repaint();
+    }
+
+    public BufferedImage getBuddyPhoto() {
+        return buddyPhoto;
+    }
+
+    public void setBuddyPhoto(BufferedImage buddyPhoto) {
+        this.buddyPhoto = buddyPhoto;
         repaint();
     }
 
