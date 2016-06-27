@@ -1,4 +1,4 @@
-package misc;
+package components;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;

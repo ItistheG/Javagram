@@ -1,9 +1,8 @@
-package misc;
-
-import com.sun.org.apache.regexp.internal.RECompiler;
-import resources.Fonts;
+package components;
 
 import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.font.LineMetrics;
 import java.awt.image.BufferedImage;
@@ -110,13 +109,15 @@ public class GuiHelper {
             return x + fontMetrics.stringWidth(line) + inset;
     }
 
-    public static boolean equal(Object a, Object b) {
-        return a == b || a != null && a.equals(b);
-    }
-
     public static Color makeTransparent(Color color,float transparency) {
         if(transparency < 0.0f || transparency > 1.0f)
             throw new IllegalArgumentException();
         return new Color(color.getRed(),color.getGreen(), color.getBlue(), (int)Math.round(color.getAlpha() * transparency));
+    }
+
+    public static void adjustTextPane(JTextPane textPane) {
+        SimpleAttributeSet attribs = new SimpleAttributeSet();
+        StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
+        textPane.setParagraphAttributes(attribs, false);
     }
 }

@@ -20,6 +20,7 @@ public class Images {
     private static BufferedImage magnifyingGlassIcon;
     private static BufferedImage pencilIcon;
     private static BufferedImage penIcon;
+    private static BufferedImage penLogo;
 
     public synchronized static BufferedImage getBackground() {
         if (background == null)
@@ -67,6 +68,12 @@ public class Images {
         if(penIcon == null)
             penIcon = loadImage("writing-146913_960_720.png");
         return penIcon;
+    }
+
+    public static BufferedImage getPenLogo() {
+        if(penLogo == null)
+            penLogo = loadImage("handposition3png.png");
+        return penLogo;
     }
 
     public synchronized static BufferedImage getSmallUserImage() {

@@ -1,6 +1,6 @@
 package overlays;
 
-import misc.GuiHelper;
+import components.GuiHelper;
 import resources.Images;
 
 import javax.swing.*;

@@ -47,6 +47,7 @@ public class ContactForm extends JPanel implements ListCellRenderer <Person>{
             @Override
             protected void paintComponent(Graphics graphics) {
                 super.paintComponent(graphics);
+
                 boolean small = true;
                 BufferedImage image;
 

@@ -1,9 +1,6 @@
-package misc;
-
-import com.sun.javafx.scene.layout.region.Margins;
+package components;
 
 import javax.swing.*;
-import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;

@@ -1,17 +1,13 @@
 package messsages;
 
-import messsages.MessageForm;
-import misc.GuiHelper;
-import misc.MyScrollbarUI;
+import components.GuiHelper;
 import org.javagram.dao.Me;
 import org.javagram.dao.Message;
-import org.javagram.dao.Dialog;
 import org.javagram.dao.Person;
 import org.javagram.dao.proxy.TelegramProxy;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;

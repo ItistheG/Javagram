@@ -1,15 +1,17 @@
 package gui;
 
-import misc.GuiHelper;
-import misc.HintTextField;
+import components.GuiHelper;
+import components.HintTextField;
+import components.ImageButton;
+import components.ImagePanel;
 import resources.Fonts;
 import resources.Images;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.font.LineMetrics;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 
 /**
@@ -20,7 +22,6 @@ public class MainForm extends JPanel {
     private JPanel titlePanel;
     private JPanel contactsPanel;
     private JPanel messagesPanel;
-    private JPanel testPanel;
     private JTextArea messageTextArea;
     private JButton sendMessageButton;
     private JScrollPane messageTextScrollPane;
@@ -48,17 +49,6 @@ public class MainForm extends JPanel {
         // TODO: place custom component creation code here
         rootPanel = this;
 
-        testPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(Color.white);
-                g.fillRect(0, 0, this.getWidth(), this.getHeight());
-                g.setColor(Color.cyan);
-                g.drawRect(100, 100, 200, 200);
-            }
-        };
-
         titlePanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -67,6 +57,7 @@ public class MainForm extends JPanel {
                 g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
                 int leftMostPoint = gearButton.getX();
+                int rightMostPoint = 12;
 
                 if (meText != null) {
 
@@ -75,45 +66,24 @@ public class MainForm extends JPanel {
                     Color color = Color.white;
                     String text = meText;
 
-                    leftMostPoint = GuiHelper.drawText(g, text, color, font, 0, 0, leftMostPoint, this.getHeight(), inset, true);
+                    leftMostPoint = GuiHelper.drawText(g, text, color, font, rightMostPoint, 0, leftMostPoint - rightMostPoint, this.getHeight(), inset, true);
                 }
 
                 if (mePhoto != null) {
                     int inset = 2;
                     BufferedImage image = mePhoto;
 
-                    leftMostPoint = GuiHelper.drawImage(g, image, 0, 0, leftMostPoint, this.getHeight(), inset, true);
+                    leftMostPoint = GuiHelper.drawImage(g, image, rightMostPoint, 0, leftMostPoint - rightMostPoint, this.getHeight(), inset, true);
                 }
 
-                GuiHelper.drawImage(g, Images.getPenIcon(), 12, 0, leftMostPoint, this.getHeight(), 3, false);
+                rightMostPoint = GuiHelper.drawImage(g, Images.getPenIcon(), rightMostPoint, 0, leftMostPoint - rightMostPoint, this.getHeight(), 3, false);
+                rightMostPoint = GuiHelper.drawImage(g,  Images.getPenLogo(), rightMostPoint, 0, leftMostPoint - rightMostPoint, this.getHeight(), 5, false);
             }
         };
 
-        gearButton = new JButton() {
-            @Override
-            protected void paintComponent(Graphics graphics) {
-                //super.paintComponent(graphics);
-                GuiHelper.drawImage(graphics, Images.getGearIcon(), 0, 0, this.getWidth(), this.getHeight());
-            }
+        gearButton = new ImageButton(Images.getGearIcon());
 
-            @Override
-            protected void paintBorder(Graphics graphics) {
-                //super.paintBorder(graphics);
-            }
-        };
-
-        sendMessageButton = new JButton() {
-            @Override
-            protected void paintComponent(Graphics graphics) {
-                //super.paintComponent(graphics);
-                GuiHelper.drawImage(graphics, Images.getSendMessageImage(), 0, 0, this.getWidth(), this.getHeight());
-            }
-
-            @Override
-            protected void paintBorder(Graphics graphics) {
-                //super.paintBorder(graphics);
-            }
-        };
+        sendMessageButton = new ImageButton(Images.getSendMessageImage());
 
         buddyPanel = new JPanel() {
             @Override
@@ -121,6 +91,14 @@ public class MainForm extends JPanel {
                 super.paintComponent(graphics);
 
                 int leftMostPoint = buddyEditButton.getX();
+                int rightMostPoint = 2;
+
+                if (buddyPhoto != null) {
+                    int inset = 2;
+                    BufferedImage image = buddyPhoto;
+
+                    rightMostPoint = GuiHelper.drawImage(graphics, image, rightMostPoint, 0, leftMostPoint - rightMostPoint, this.getHeight(), inset, false);
+                }
 
                 if (buddyText != null) {
 
@@ -129,31 +107,13 @@ public class MainForm extends JPanel {
                     Color color = Color.cyan;
                     String text = buddyText;
 
-                    leftMostPoint = GuiHelper.drawText(graphics, text, color, font, 0, 0, leftMostPoint, this.getHeight(), inset, true);
-                }
-
-                if (buddyPhoto != null) {
-                    int inset = 2;
-                    BufferedImage image = buddyPhoto;
-
-                    GuiHelper.drawImage(graphics, image, 0, 0, leftMostPoint, this.getHeight(), inset, true);
+                    rightMostPoint = GuiHelper.drawText(graphics, text, color, font, rightMostPoint, 0, leftMostPoint - rightMostPoint, this.getHeight(), inset, false);
                 }
 
             }
         };
 
-        buddyEditButton = new JButton() {
-            @Override
-            protected void paintComponent(Graphics graphics) {
-                //super.paintComponent(graphics);
-                GuiHelper.drawImage(graphics, Images.getPencilIcon(), 0, 0, this.getWidth(), this.getHeight());
-            }
-
-            @Override
-            protected void paintBorder(Graphics graphics) {
-                //super.paintBorder(graphics);
-            }
-        };
+        buddyEditButton = new ImageButton(Images.getPencilIcon());
 
         searchTextField = new HintTextField("", "Поиск...", false) {
             @Override
@@ -162,14 +122,7 @@ public class MainForm extends JPanel {
             }
         };
 
-        searchIconPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics graphics) {
-                super.paintComponent(graphics);
-                int inset = 2;
-                GuiHelper.drawImage(graphics, Images.getMagnifyingGlassIcon(), inset, inset, this.getWidth() - inset * 2, this.getHeight() - inset * 2);
-            }
-        };
+        searchIconPanel = new ImagePanel(Images.getMagnifyingGlassIcon(), true, true, 2);
     }
 
     public Component getContactsPanel() {
@@ -239,8 +192,10 @@ public class MainForm extends JPanel {
     }
 
     public void setMeText(String meText) {
-        this.meText = meText;
-        repaint();
+        if(!Objects.equals(this.meText, meText)) {
+            this.meText = meText;
+            repaint();
+        }
     }
 
     public BufferedImage getMePhoto() {
@@ -248,8 +203,10 @@ public class MainForm extends JPanel {
     }
 
     public void setMePhoto(BufferedImage mePhoto) {
-        this.mePhoto = mePhoto;
-        repaint();
+        if(this.mePhoto != mePhoto) {
+            this.mePhoto = mePhoto;
+            repaint();
+        }
     }
 
     public String getBuddyText() {
@@ -257,8 +214,10 @@ public class MainForm extends JPanel {
     }
 
     public void setBuddyText(String buddyText) {
-        this.buddyText = buddyText;
-        repaint();
+        if(!Objects.equals(this.buddyText, buddyText)) {
+            this.buddyText = buddyText;
+            repaint();
+        }
     }
 
     public BufferedImage getBuddyPhoto() {
@@ -269,6 +228,4 @@ public class MainForm extends JPanel {
         this.buddyPhoto = buddyPhoto;
         repaint();
     }
-
-
 }

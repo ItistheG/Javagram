@@ -1,16 +1,12 @@
 package contacts;
 
-import misc.GuiHelper;
-import misc.MyScrollbarUI;
-import org.javagram.dao.Dialog;
+import components.GuiHelper;
 import org.javagram.dao.Person;
 import org.javagram.dao.proxy.TelegramProxy;
-import org.javagram.response.Helper;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * Created by HerrSergio on 26.05.2016.
@@ -37,9 +33,15 @@ public class ContactsList extends JPanel {
 
     public void setTelegramProxy(TelegramProxy telegramProxy) {
         this.telegramProxy = telegramProxy;
-        java.util.List<Person> dialogs = telegramProxy.getPersons();
-        list.setCellRenderer(new ContactForm(telegramProxy));
-        list.setListData(dialogs.toArray(new Person[dialogs.size()]));
+
+        if(telegramProxy != null) {
+            java.util.List<Person> dialogs = telegramProxy.getPersons();
+            list.setCellRenderer(new ContactForm(telegramProxy));
+            list.setListData(dialogs.toArray(new Person[dialogs.size()]));
+        } else {
+            list.setCellRenderer(null);
+            list.setListData(new Person[0]);
+        }
     }
 
     public void addListSelectionListener(ListSelectionListener listSelectionListener)  {
@@ -64,6 +66,6 @@ public class ContactsList extends JPanel {
                 }
             }
         }
-        list.setSelectedIndex(-1);
+        list.clearSelection();
     }
 }

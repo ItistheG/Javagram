@@ -1,6 +1,6 @@
 package overlays;
 
-import misc.GuiHelper;
+import components.GuiHelper;
 import org.javagram.dao.Me;
 import org.javagram.dao.proxy.TelegramProxy;
 import resources.Fonts;

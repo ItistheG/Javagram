@@ -1,23 +1,19 @@
 package gui;
 
+import components.GuiHelper;
+import components.ImagePanel;
+import resources.Images;
+
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 
 /**
  * Created by HerrSergio on 05.04.2016.
  */
-public class PhoneForm extends JPanel {
+public class PhoneForm extends ImagePanel {
     private JPanel rootPanel;
     private JPanel iconPanel;
     private JTextPane hintTextPane;
@@ -25,13 +21,11 @@ public class PhoneForm extends JPanel {
     private JPanel phonePanel;
     private JButton okButton;
 
-    private BufferedImage mainImage;
-    private BufferedImage iconImage;
+    public PhoneForm() {
 
-    {
-        SimpleAttributeSet attribs = new SimpleAttributeSet();
-        StyleConstants.setAlignment(attribs , StyleConstants.ALIGN_CENTER);
-        hintTextPane.setParagraphAttributes(attribs, false);
+        super(Images.getBackground(), true, false, 0);
+
+        GuiHelper.adjustTextPane(hintTextPane);
 
         phoneTextField.setBorder(BorderFactory.createEmptyBorder());
 
@@ -69,50 +63,15 @@ public class PhoneForm extends JPanel {
         phoneTextField.removeActionListener(actionListener);
     }
 
-    public BufferedImage getMainImage() {
-        return mainImage;
-    }
-
-    public void setMainImage(BufferedImage mainImage) {
-        this.mainImage = mainImage;
-        repaint();
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        if(mainImage == null)
-            return;
-
-        g.drawImage(mainImage, 0, 0, this.getWidth(), this.getHeight(), null);
-    }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
         rootPanel = this;
 
-        iconPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-
-                if(iconImage == null)
-                    return;
-
-                g.drawImage(iconImage, 0, 0, this.getWidth(), this.getHeight(), null);
-            }
-        };
+        iconPanel = new ImagePanel(Images.getLogo(), false, true, 0);
     }
 
-
-
-    public BufferedImage getIconImage() {
-        return iconImage;
-    }
-
-    public void setIconImage(BufferedImage iconImage) {
-        this.iconImage = iconImage;
-        repaint();
+    public void clear() {
+        phoneTextField.setText("");
     }
 }

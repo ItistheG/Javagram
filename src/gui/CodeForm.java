@@ -1,20 +1,18 @@
 package gui;
 
-import misc.MaxLengthDocumentFilter;
+import components.GuiHelper;
+import components.ImagePanel;
+import components.MaxLengthDocumentFilter;
+import resources.Images;
 
 import javax.swing.*;
 import javax.swing.text.AbstractDocument;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
 /**
  * Created by HerrSergio on 06.04.2016.
  */
-public class CodeForm extends JPanel {
+public class CodeForm extends ImagePanel {
     private JPanel iconPanel;
     private JLabel phoneLabel;
     private JTextPane hintTextPane;
@@ -23,13 +21,10 @@ public class CodeForm extends JPanel {
     private JPasswordField codePasswordField;
     private JButton okButton;
 
-    private BufferedImage mainImage;
-    private BufferedImage iconImage;
+    public CodeForm() {
+        super(Images.getBackground(), true, false, 0);
 
-    {
-        SimpleAttributeSet attribs = new SimpleAttributeSet();
-        StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
-        hintTextPane.setParagraphAttributes(attribs, false);
+        GuiHelper.adjustTextPane(hintTextPane);
 
         codePasswordField.setBorder(BorderFactory.createEmptyBorder());
         if(codePasswordField.getDocument() instanceof AbstractDocument)
@@ -49,50 +44,11 @@ public class CodeForm extends JPanel {
         return phoneLabel.getText();
     }
 
-    public BufferedImage getMainImage() {
-        return mainImage;
-    }
-
-    public void setMainImage(BufferedImage mainImage) {
-        this.mainImage = mainImage;
-        repaint();
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        if(mainImage == null)
-            return;
-
-        g.drawImage(mainImage, 0, 0, this.getWidth(), this.getHeight(), null);
-
-    }
-
     private void createUIComponents() {
         // TODO: place custom component creation code here
         rootPanel = this;
 
-        iconPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-
-                if(iconImage == null)
-                    return;
-
-                g.drawImage(iconImage, 0, 0, this.getWidth(), this.getHeight(), null);
-            }
-        };
-    }
-
-    public BufferedImage getIconImage() {
-        return iconImage;
-    }
-
-    public void setIconImage(BufferedImage iconImage) {
-        this.iconImage = iconImage;
-        repaint();
+        iconPanel = new ImagePanel(Images.getLogo(), false, true, 0);
     }
 
     public void addActionListenerForConfirm(ActionListener actionListener) {
@@ -107,5 +63,10 @@ public class CodeForm extends JPanel {
 
     public String getCode() {
         return new String(this.codePasswordField.getPassword());
+    }
+
+    public void clear() {
+        codePasswordField.setText("");
+        phoneLabel.setText("");
     }
 }
