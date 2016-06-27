@@ -39,7 +39,7 @@ public class ContactsList extends JPanel {
             list.setCellRenderer(new ContactForm(telegramProxy));
             list.setListData(dialogs.toArray(new Person[dialogs.size()]));
         } else {
-            list.setCellRenderer(null);
+            list.setCellRenderer(new DefaultListCellRenderer());
             list.setListData(new Person[0]);
         }
     }
