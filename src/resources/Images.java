@@ -21,6 +21,11 @@ public class Images {
     private static BufferedImage pencilIcon;
     private static BufferedImage penIcon;
     private static BufferedImage penLogo;
+    private static BufferedImage addContact;
+    private static BufferedImage updateContact;
+    private static BufferedImage removeContact;
+    private static BufferedImage closeOverlay;
+    private static BufferedImage logoutIcon;
 
     public synchronized static BufferedImage getBackground() {
         if (background == null)
@@ -74,6 +79,36 @@ public class Images {
         if(penLogo == null)
             penLogo = loadImage("handposition3png.png");
         return penLogo;
+    }
+
+    public static BufferedImage getAddContact() {
+        if(addContact == null)
+            addContact = loadImage("Add-Male-User.png");
+        return addContact;
+    }
+
+    public static BufferedImage getUpdateContact() {
+        if(updateContact == null)
+            updateContact = loadImage("43781db5c40ecc39fd718685594f0956.png");
+        return updateContact;
+    }
+
+    public static BufferedImage getRemoveContact() {
+        if(removeContact == null)
+            removeContact = loadImage("Remove-Male-User.png");
+        return removeContact;
+    }
+
+    public static BufferedImage getCloseOverlay() {
+        if(closeOverlay == null)
+            closeOverlay = loadImage("Close.png");
+        return closeOverlay;
+    }
+
+    public static BufferedImage getLogoutIcon() {
+        if(logoutIcon == null)
+            logoutIcon = loadImage("logout-icon.png");
+        return logoutIcon;
     }
 
     public synchronized static BufferedImage getSmallUserImage() {

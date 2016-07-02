@@ -73,5 +73,6 @@ public class PhoneForm extends ImagePanel {
 
     public void clear() {
         phoneTextField.setText("");
+        phoneTextField.setValue("");
     }
 }

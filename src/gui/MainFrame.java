@@ -6,13 +6,10 @@ import org.javagram.dao.*;
 import org.javagram.dao.Dialog;
 import org.javagram.dao.proxy.TelegramProxy;
 import org.javagram.dao.proxy.changes.UpdateChanges;
-import overlays.MyBufferedOverlayDialog;
-import overlays.PlusOverlay;
-import overlays.ProfileForm;
+import overlays.*;
 import resources.Images;
 import undecorated.ComponentResizerAbstract;
 import undecorated.Undecorated;
-import overlays.MyLayeredPane;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -44,8 +41,10 @@ public class MainFrame extends JFrame {
     private ContactsList contactsList = new ContactsList();
 
     private ProfileForm profileForm = new ProfileForm();
-    private MyBufferedOverlayDialog mainWindowManager = new MyBufferedOverlayDialog(mainForm, profileForm);
-    private static final int MAIN_WINDOW = -1, PROFILE_FORM = 0;
+    private AddContactForm addContactForm = new AddContactForm();
+    private EditContactForm editContactForm = new EditContactForm();
+    private MyBufferedOverlayDialog mainWindowManager = new MyBufferedOverlayDialog(mainForm, profileForm, addContactForm, editContactForm);
+    private static final int MAIN_WINDOW = -1, PROFILE_FORM = 0, ADD_CONTACT_FORM = 1, EDIT_CONTACT_FORM = 2;
 
     private MyLayeredPane contactsLayeredPane = new MyLayeredPane();
     private PlusOverlay plusOverlay = new PlusOverlay();
@@ -122,7 +121,22 @@ public class MainFrame extends JFrame {
         plusOverlay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                showInformationMessage("Not implemented yet", "Информация");
+                addContactForm.setContactInfo(new ContactInfo());
+                mainWindowManager.setIndex(ADD_CONTACT_FORM);
+            }
+        });
+
+        addContactForm.addActionListenerForClose(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                mainWindowManager.setIndex(MAIN_WINDOW);
+            }
+        });
+
+        addContactForm.addActionListenerForAdd(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                tryAddContact(addContactForm.getContactInfo());
             }
         });
 
@@ -168,7 +182,32 @@ public class MainFrame extends JFrame {
         mainForm.addBuddyEditEventListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                showInformationMessage("Not implemented yet", "Информация");
+                Person person = contactsList.getSelectedValue();
+                if(person instanceof Contact) {
+                    editContactForm.setContactInfo(new ContactInfo((Contact) person));
+                    mainWindowManager.setIndex(EDIT_CONTACT_FORM);
+                }
+            }
+        });
+
+        editContactForm.addActionListenerForClose(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                mainWindowManager.setIndex(MAIN_WINDOW);
+            }
+        });
+
+        editContactForm.addActionListenerForSave(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                tryUpdateContact(editContactForm.getContactInfo());
+            }
+        });
+
+        editContactForm.addActionListenerForRemove(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                tryDeleteContact(editContactForm.getContactInfo());
             }
         });
 
@@ -423,6 +462,67 @@ public class MainFrame extends JFrame {
                 e.printStackTrace();
             }
         }
+    }
+
+    private boolean tryAddContact(ContactInfo info) {
+
+        String phone = info.getClearedPhone() ;
+        if(phone.isEmpty()) {
+            showWarningMessage("Пожалуйста, введите номер телефона", "Ошибка");
+            return false;
+        }
+        if(info.getFirstName().isEmpty() && info.getLastName().isEmpty()) {
+            showWarningMessage("Пожалуйста, введите имя и/или фамилию", "Ошибка");
+            return false;
+        }
+        for(Person person : telegramProxy.getPersons()) {
+            if(person instanceof Contact) {
+                if(((Contact) person).getPhoneNumber().replaceAll("\\D+", "").equals(phone)) {
+                    showWarningMessage("Контакт с таким номером уже существует", "Ошибка");
+                    return false;
+                }
+            }
+        }
+
+        if(!telegramProxy.importContact(info.getPhone(), info.getFirstName(), info.getLastName())) {
+            showErrorMessage("Ошибка на сервере при добавлении контакта", "Ошибка");
+            return  false;
+        }
+
+        mainWindowManager.setIndex(MAIN_WINDOW);
+        checkForUpdates();
+        return true;
+    }
+
+    private boolean tryUpdateContact(ContactInfo info) {
+        String phone = info.getClearedPhone() ;
+
+        if(info.getFirstName().isEmpty() && info.getLastName().isEmpty()) {
+            showWarningMessage("Пожалуйста, введите имя и/или фамилию", "Ошибка");
+            return false;
+        }
+
+        if(!telegramProxy.importContact(info.getPhone(), info.getFirstName(), info.getLastName())) {
+            showErrorMessage("Ошибка на сервере при изменении контакта", "Ошибка");
+            return  false;
+        }
+
+        mainWindowManager.setIndex(MAIN_WINDOW);
+        checkForUpdates();
+        return true;
+    }
+
+    private boolean tryDeleteContact(ContactInfo info) {
+       int id = info.getId();
+
+        if(!telegramProxy.deleteContact(id)) {
+            showErrorMessage("Ошибка на сервере при удалении контакта", "Ошибка");
+            return  false;
+        }
+
+        mainWindowManager.setIndex(MAIN_WINDOW);
+        checkForUpdates();
+        return true;
     }
 
     private void abort(Exception e) {
