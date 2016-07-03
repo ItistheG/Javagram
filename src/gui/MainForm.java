@@ -1,9 +1,6 @@
 package gui;
 
-import components.GuiHelper;
-import components.HintTextField;
-import components.ImageButton;
-import components.ImagePanel;
+import components.*;
 import resources.Fonts;
 import resources.Images;
 
@@ -115,12 +112,7 @@ public class MainForm extends JPanel {
 
         buddyEditButton = new ImageButton(Images.getPencilIcon());
 
-        searchTextField = new HintTextField("", "Поиск...", false) {
-            @Override
-            protected void paintBorder(Graphics graphics) {
-                //super.paintBorder(graphics);
-            }
-        };
+        searchTextField = new HintTextFieldUnderlined("", "Поиск...", false, false);
 
         searchIconPanel = new ImagePanel(Images.getMagnifyingGlassIcon(), true, true, 2);
     }
