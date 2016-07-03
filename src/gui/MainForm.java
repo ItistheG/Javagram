@@ -228,4 +228,12 @@ public class MainForm extends JPanel {
         this.buddyPhoto = buddyPhoto;
         repaint();
     }
+
+    public boolean isBuddyEditEnabled() {
+        return buddyEditButton.isEnabled();
+    }
+
+    public void setBuddyEditEnabled(boolean enabled) {
+        buddyEditButton.setEnabled(enabled);
+    }
 }

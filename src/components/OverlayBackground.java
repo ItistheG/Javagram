@@ -9,7 +9,7 @@ import java.awt.*;
 public class OverlayBackground extends JPanel {
     @Override
     protected void paintComponent(Graphics graphics) {
-        //super.paintComponent(graphics);
+        super.paintComponent(graphics);
         Color color = Color.black;
         graphics.setColor(GuiHelper.makeTransparent(color, 0.7f));
         graphics.fillRect(0, 0, this.getWidth(), this.getHeight());

@@ -1,6 +1,7 @@
 package overlays;
 
 import components.HintTextField;
+import components.HintTextFieldUnderlined;
 import components.ImageButton;
 import components.OverlayBackground;
 import resources.Images;
@@ -37,24 +38,9 @@ public class EditContactForm extends OverlayBackground {
         deleteButton = new ImageButton(Images.getRemoveContact());
         saveButton = new ImageButton(Images.getUpdateContact());
 
-        firstNameTextField = new HintTextField("", "Имя", false) {
-            @Override
-            protected void paintBorder(Graphics graphics) {
-                //super.paintBorder(graphics);
-            }
-        };
-        lastNameTextField = new HintTextField("", "Фамилия", false) {
-            @Override
-            protected void paintBorder(Graphics graphics) {
-                //super.paintBorder(graphics);
-            }
-        };
-        phoneTextField = new HintTextField("", "Телефон", false) {
-            @Override
-            protected void paintBorder(Graphics graphics) {
-                //super.paintBorder(graphics);
-            }
-        };
+        firstNameTextField = new HintTextFieldUnderlined("", "Имя", false, true);
+        lastNameTextField = new HintTextFieldUnderlined("", "Фамилия", false, true);
+        phoneTextField = new HintTextFieldUnderlined("", "Телефон", false, true);
     }
 
     public void setContactInfo(ContactInfo info) {

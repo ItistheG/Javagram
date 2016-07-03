@@ -1,11 +1,11 @@
 package overlays;
 
-import components.HintTextField;
-import components.ImageButton;
-import components.OverlayBackground;
+import components.*;
 import resources.Images;
 
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -24,6 +24,9 @@ public class AddContactForm extends OverlayBackground {
 
     {
         setContactInfo(new ContactInfo());
+        Document document = phoneTextField.getDocument();
+        if(document instanceof AbstractDocument)
+            ((AbstractDocument) document).setDocumentFilter(new PhoneNumberDocumentFilter());
     }
 
     private void createUIComponents() {
@@ -33,24 +36,9 @@ public class AddContactForm extends OverlayBackground {
         closeButton = new ImageButton(Images.getCloseOverlay());
         addButton = new ImageButton(Images.getAddContact());
 
-        firstNameTextField = new HintTextField("", "Имя", false) {
-            @Override
-            protected void paintBorder(Graphics graphics) {
-                //super.paintBorder(graphics);
-            }
-        };
-        lastNameTextField = new HintTextField("", "Фамилия", false) {
-            @Override
-            protected void paintBorder(Graphics graphics) {
-                //super.paintBorder(graphics);
-            }
-        };
-        phoneTextField = new HintTextField("", "Телефон", false) {
-            @Override
-            protected void paintBorder(Graphics graphics) {
-                //super.paintBorder(graphics);
-            }
-        };
+        firstNameTextField = new HintTextFieldUnderlined("", "Имя", false, true);
+        lastNameTextField = new HintTextFieldUnderlined("", "Фамилия", false, true);
+        phoneTextField = new HintTextFieldUnderlined("", "Телефон", false, true);
     }
 
     public void setContactInfo(ContactInfo info) {

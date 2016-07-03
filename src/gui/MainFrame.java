@@ -449,6 +449,7 @@ public class MainFrame extends JFrame {
         if(person == null) {
             mainForm.setBuddyText(null);
             mainForm.setBuddyPhoto(null);
+            mainForm.setBuddyEditEnabled(false);
         } else {
             mainForm.setBuddyText(person.getFirstName() + " " + person.getLastName());
             try {
@@ -461,6 +462,7 @@ public class MainFrame extends JFrame {
                 mainForm.setBuddyPhoto(Images.getSmallUserImage());
                 e.printStackTrace();
             }
+            mainForm.setBuddyEditEnabled(person instanceof Contact);
         }
     }
 

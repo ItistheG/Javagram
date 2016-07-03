@@ -35,7 +35,8 @@ public class ImageButton extends JButton {
         if(image == null) {
             super.paintComponent(graphics);
         } else  {
-            GuiHelper.drawImage(graphics, image, 0, 0, this.getWidth(), this.getHeight());
+            if(isEnabled())
+                GuiHelper.drawImage(graphics, image, 0, 0, this.getWidth(), this.getHeight());
         }
     }
 
