@@ -1,5 +1,6 @@
 package gui;
 
+import components.ExtendedImageButton;
 import components.GuiHelper;
 import components.ImagePanel;
 import resources.Images;
@@ -38,9 +39,6 @@ public class PhoneForm extends ImagePanel {
             e.printStackTrace();
         }
 
-        this.okButton.setContentAreaFilled(false);
-        this.okButton.setOpaque(true);
-
         this.iconPanel.setBorder(BorderFactory.createEmptyBorder());
     }
 
@@ -69,6 +67,8 @@ public class PhoneForm extends ImagePanel {
         rootPanel = this;
 
         iconPanel = new ImagePanel(Images.getLogo(), false, true, 0);
+
+        okButton = new ExtendedImageButton(Images.getBlueButton());
     }
 
     public void clear() {

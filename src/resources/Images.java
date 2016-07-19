@@ -26,6 +26,7 @@ public class Images {
     private static BufferedImage removeContact;
     private static BufferedImage closeOverlay;
     private static BufferedImage logoutIcon;
+    private static BufferedImage blueButton;
 
     public synchronized static BufferedImage getBackground() {
         if (background == null)
@@ -109,6 +110,12 @@ public class Images {
         if(logoutIcon == null)
             logoutIcon = loadImage("logout-icon.png");
         return logoutIcon;
+    }
+
+    public static BufferedImage getBlueButton() {
+        if(blueButton == null)
+            blueButton = loadImage("expences-button-png-hi.png");
+        return blueButton;
     }
 
     public synchronized static BufferedImage getSmallUserImage() {

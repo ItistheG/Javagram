@@ -97,7 +97,7 @@
           </component>
         </children>
       </grid>
-      <component id="5a20a" class="javax.swing.JButton" binding="okButton">
+      <component id="5a20a" class="javax.swing.JButton" binding="okButton" custom-create="true">
         <constraints>
           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="0.5"/>

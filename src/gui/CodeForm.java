@@ -1,5 +1,6 @@
 package gui;
 
+import components.ExtendedImageButton;
 import components.GuiHelper;
 import components.ImagePanel;
 import components.MaxLengthDocumentFilter;
@@ -30,9 +31,6 @@ public class CodeForm extends ImagePanel {
         if(codePasswordField.getDocument() instanceof AbstractDocument)
             ((AbstractDocument) codePasswordField.getDocument()).setDocumentFilter(new MaxLengthDocumentFilter(5));
 
-        this.okButton.setContentAreaFilled(false);
-        this.okButton.setOpaque(true);
-
         this.iconPanel.setBorder(BorderFactory.createEmptyBorder());
     }
 
@@ -49,6 +47,8 @@ public class CodeForm extends ImagePanel {
         rootPanel = this;
 
         iconPanel = new ImagePanel(Images.getLogo(), false, true, 0);
+
+        okButton = new ExtendedImageButton(Images.getBlueButton());
     }
 
     public void addActionListenerForConfirm(ActionListener actionListener) {

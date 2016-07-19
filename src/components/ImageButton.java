@@ -10,13 +10,19 @@ import java.awt.image.BufferedImage;
 public class ImageButton extends JButton {
 
     private BufferedImage image;
+    private boolean keepRatio;
 
     {
         setOpaque(false);
     }
 
     public ImageButton(BufferedImage image) {
+        this(image, true);
+    }
+
+    public ImageButton(BufferedImage image, boolean keepRatio) {
         this.image = image;
+        this.keepRatio = keepRatio;
     }
 
     public BufferedImage getImage() {
@@ -39,8 +45,12 @@ public class ImageButton extends JButton {
                 graphics.setColor(getBackground());
                 graphics.fillRect(0, 0, getWidth(), getHeight());
             }
-            if(isEnabled())
-                GuiHelper.drawImage(graphics, image, 0, 0, this.getWidth(), this.getHeight());
+            if(isEnabled()) {
+                if(keepRatio)
+                    GuiHelper.drawImage(graphics, image, 0, 0, this.getWidth(), this.getHeight());
+                else
+                    graphics.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), null);
+            }
         }
     }
 
