@@ -35,6 +35,10 @@ public class ImageButton extends JButton {
         if(image == null) {
             super.paintComponent(graphics);
         } else  {
+            if(isOpaque()) {
+                graphics.setColor(getBackground());
+                graphics.fillRect(0, 0, getWidth(), getHeight());
+            }
             if(isEnabled())
                 GuiHelper.drawImage(graphics, image, 0, 0, this.getWidth(), this.getHeight());
         }

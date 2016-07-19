@@ -1,14 +1,12 @@
 package overlays;
 
-import components.HintTextField;
-import components.HintTextFieldUnderlined;
-import components.ImageButton;
-import components.OverlayBackground;
+import components.*;
 import resources.Images;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 /**
  * Created by HerrSergio on 02.07.2016.
@@ -16,18 +14,20 @@ import java.awt.event.ActionListener;
 public class EditContactForm extends OverlayBackground {
     private JButton closeButton;
     private JButton saveButton;
-    private JPanel photoPanel;
+    private JPanel contactPanel;
     private JPanel rootPanel;
     private JLabel nameLabel;
     private JTextField firstNameTextField;
     private JTextField lastNameTextField;
     private JTextField phoneTextField;
     private JButton deleteButton;
+    private JPanel photoPanel;
 
     private int id;
 
     {
         setContactInfo(new ContactInfo());
+        setPhoto(null);
     }
 
     private void createUIComponents() {
@@ -41,6 +41,8 @@ public class EditContactForm extends OverlayBackground {
         firstNameTextField = new HintTextFieldUnderlined("", "Имя", false, true);
         lastNameTextField = new HintTextFieldUnderlined("", "Фамилия", false, true);
         phoneTextField = new HintTextFieldUnderlined("", "Телефон", false, true);
+
+        photoPanel = new ImagePanel(null, false, true, 0);
     }
 
     public void setContactInfo(ContactInfo info) {
@@ -55,6 +57,14 @@ public class EditContactForm extends OverlayBackground {
                 firstNameTextField.getText().trim(),
                 lastNameTextField.getText().trim(),
                 id);
+    }
+
+    public void setPhoto(BufferedImage photo) {
+        ((ImagePanel)photoPanel).setImage(photo);
+    }
+
+    public BufferedImage getPhoto() {
+        return ((ImagePanel)photoPanel).getImage();
     }
 
     public void addActionListenerForSave(ActionListener actionListener) {

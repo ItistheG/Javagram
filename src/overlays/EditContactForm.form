@@ -9,7 +9,7 @@
     </properties>
     <border type="none"/>
     <children>
-      <grid id="3fbdb" binding="photoPanel" layout-manager="GridBagLayout">
+      <grid id="3fbdb" binding="contactPanel" layout-manager="GridBagLayout">
         <constraints>
           <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="0.0"/>
@@ -24,10 +24,10 @@
         <children>
           <component id="3f802" class="javax.swing.JTextField" binding="firstNameTextField" custom-create="true">
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
-              <gridbag weightx="1.0" weighty="1.0"/>
+              <gridbag weightx="0.0" weighty="1.0"/>
             </constraints>
             <properties>
               <caretColor color="-1"/>
@@ -41,10 +41,10 @@
           </component>
           <component id="fb782" class="javax.swing.JTextField" binding="lastNameTextField" custom-create="true">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
-              <gridbag weightx="1.0" weighty="1.0"/>
+              <gridbag weightx="0.0" weighty="1.0"/>
             </constraints>
             <properties>
               <caretColor color="-1"/>
@@ -58,10 +58,10 @@
           </component>
           <component id="a9284" class="javax.swing.JTextField" binding="phoneTextField" custom-create="true">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
-              <gridbag weightx="1.0" weighty="1.0"/>
+              <gridbag weightx="0.0" weighty="1.0"/>
             </constraints>
             <properties>
               <caretColor color="-1"/>
@@ -74,6 +74,19 @@
               <preferredSize width="320" height="36"/>
             </properties>
           </component>
+          <grid id="e7ba5" binding="photoPanel" custom-create="true" layout-manager="GridBagLayout">
+            <constraints>
+              <grid row="0" column="0" row-span="3" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="10" left="10" bottom="10" right="10" weightx="0.0" weighty="0.0"/>
+            </constraints>
+            <properties>
+              <minimumSize width="150" height="150"/>
+              <opaque value="false"/>
+              <preferredSize width="150" height="150"/>
+            </properties>
+            <border type="none"/>
+            <children/>
+          </grid>
         </children>
       </grid>
       <component id="afbfe" class="javax.swing.JLabel">

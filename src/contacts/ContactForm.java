@@ -1,5 +1,6 @@
 package contacts;
 
+import components.GuiHelper;
 import org.javagram.dao.Person;
 import org.javagram.dao.Dialog;
 import org.javagram.dao.proxy.TelegramProxy;
@@ -48,18 +49,7 @@ public class ContactForm extends JPanel implements ListCellRenderer <Person>{
             protected void paintComponent(Graphics graphics) {
                 super.paintComponent(graphics);
 
-                boolean small = true;
-                BufferedImage image;
-
-                try {
-                    image = telegramProxy.getPhoto(person, small);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    image = null;
-                }
-
-                if(image == null)
-                    image = Images.getUserImage(small);
+                BufferedImage image = GuiHelper.getPhoto(telegramProxy, person, true);
 
                 graphics.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), null);
 

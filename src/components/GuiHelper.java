@@ -1,5 +1,9 @@
 package components;
 
+import org.javagram.dao.Person;
+import org.javagram.dao.proxy.TelegramProxy;
+import resources.Images;
+
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -119,5 +123,20 @@ public class GuiHelper {
         SimpleAttributeSet attribs = new SimpleAttributeSet();
         StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
         textPane.setParagraphAttributes(attribs, false);
+    }
+
+    public static BufferedImage getPhoto(TelegramProxy telegramProxy, Person person, boolean small) {
+        BufferedImage image;
+
+        try {
+            image = telegramProxy.getPhoto(person, small);
+        } catch (Exception e) {
+            e.printStackTrace();
+            image = null;
+        }
+
+        if(image == null)
+            image = Images.getUserImage(small);
+        return image;
     }
 }

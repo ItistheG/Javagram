@@ -1,5 +1,6 @@
 package gui;
 
+import components.GuiHelper;
 import contacts.ContactsList;
 import messsages.MessagesForm;
 import org.javagram.dao.*;
@@ -185,6 +186,7 @@ public class MainFrame extends JFrame {
                 Person person = contactsList.getSelectedValue();
                 if(person instanceof Contact) {
                     editContactForm.setContactInfo(new ContactInfo((Contact) person));
+                    editContactForm.setPhoto(GuiHelper.getPhoto(telegramProxy, person, false));
                     mainWindowManager.setIndex(EDIT_CONTACT_FORM);
                 }
             }
@@ -357,15 +359,15 @@ public class MainFrame extends JFrame {
 
     private void createTelegramProxy() {
         telegramProxy = new TelegramProxy(telegramDAO);
-        updateTeleramProxy();
+        updateTelegramProxy();
     }
 
     private void destroyTelegramProxy() {
         telegramProxy = null;
-        updateTeleramProxy();
+        updateTelegramProxy();
     }
 
-    private void updateTeleramProxy() {
+    private void updateTelegramProxy() {
         messagesFrozen++;
         try {
             contactsList.setTelegramProxy(telegramProxy);

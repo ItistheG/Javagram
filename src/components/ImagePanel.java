@@ -41,4 +41,47 @@ public class ImagePanel extends JPanel {
             g.drawImage(image, insetX, insetY, width, height, null);
     }
 
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        if(image != this.image) {
+            this.image = image;
+            repaint();
+        }
+    }
+
+    public boolean isKeepRatio() {
+        return keepRatio;
+    }
+
+    public void setKeepRatio(boolean keepRatio) {
+        if(keepRatio !=this.keepRatio) {
+            this.keepRatio = keepRatio;
+            repaint();
+        }
+    }
+
+    public int getInsetX() {
+        return insetX;
+    }
+
+    public void setInsetX(int insetX) {
+        if(insetX != this.insetX) {
+            this.insetX = insetX;
+            repaint();
+        }
+    }
+
+    public int getInsetY() {
+        return insetY;
+    }
+
+    public void setInsetY(int insetY) {
+        if(insetY != this.insetY) {
+            this.insetY = insetY;
+            repaint();
+        }
+    }
 }
