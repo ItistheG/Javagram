@@ -186,7 +186,7 @@ public class MainFrame extends JFrame {
                 Person person = contactsList.getSelectedValue();
                 if(person instanceof Contact) {
                     editContactForm.setContactInfo(new ContactInfo((Contact) person));
-                    editContactForm.setPhoto(GuiHelper.getPhoto(telegramProxy, person, false));
+                    editContactForm.setPhoto(GuiHelper.getPhoto(telegramProxy, person, false, true));
                     mainWindowManager.setIndex(EDIT_CONTACT_FORM);
                 }
             }
@@ -434,16 +434,7 @@ public class MainFrame extends JFrame {
             mainForm.setMePhoto(null);
         } else {
             mainForm.setMeText(me.getFirstName() + " " + me.getLastName());
-            try {
-                BufferedImage meImage = telegramProxy.getPhoto(me, true);
-                if (meImage == null)
-                    mainForm.setMePhoto(Images.getSmallUserImage());
-                else
-                    mainForm.setMePhoto(meImage);
-            } catch (IOException e) {
-                mainForm.setMePhoto(Images.getSmallUserImage());
-                e.printStackTrace();
-            }
+            mainForm.setMePhoto(GuiHelper.getPhoto(telegramProxy, me, true, true));
         }
     }
 
@@ -454,16 +445,7 @@ public class MainFrame extends JFrame {
             mainForm.setBuddyEditEnabled(false);
         } else {
             mainForm.setBuddyText(person.getFirstName() + " " + person.getLastName());
-            try {
-                BufferedImage buddyImage = telegramProxy.getPhoto(person, true);
-                if (buddyImage == null)
-                    mainForm.setBuddyPhoto(Images.getSmallUserImage());
-                else
-                    mainForm.setBuddyPhoto(buddyImage);
-            } catch (IOException e) {
-                mainForm.setBuddyPhoto(Images.getSmallUserImage());
-                e.printStackTrace();
-            }
+            mainForm.setBuddyPhoto(GuiHelper.getPhoto(telegramProxy, person, true, true));
             mainForm.setBuddyEditEnabled(person instanceof Contact);
         }
     }

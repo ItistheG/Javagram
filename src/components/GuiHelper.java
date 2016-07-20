@@ -8,8 +8,11 @@ import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
+import java.awt.color.ColorSpace;
 import java.awt.font.LineMetrics;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
 
 /**
  * Created by HerrSergio on 14.06.2016.
@@ -138,5 +141,30 @@ public class GuiHelper {
         if(image == null)
             image = Images.getUserImage(small);
         return image;
+    }
+
+    private static ColorConvertOp grayOp = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+
+    public static BufferedImage makeGray(BufferedImage image){
+        return grayOp.filter(image, null);
+    }
+
+    public static BufferedImage makeCircle(BufferedImage image) {
+        BufferedImage circle = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics2D g2d = circle.createGraphics();
+        try {
+            g2d.clip(new Ellipse2D.Double(0, 0, circle.getWidth(), circle.getHeight()));
+            g2d.drawImage(image, 0, 0, null);
+        } finally {
+            g2d.dispose();
+        }
+        return circle;
+    }
+
+    public static BufferedImage getPhoto(TelegramProxy telegramProxy, Person person, boolean small, boolean circle) {
+        BufferedImage photo = getPhoto(telegramProxy, person, small);
+        if(circle)
+            photo = makeCircle(photo);
+        return photo;
     }
 }

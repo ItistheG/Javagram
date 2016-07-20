@@ -195,10 +195,8 @@ public class MainForm extends JPanel {
     }
 
     public void setMePhoto(BufferedImage mePhoto) {
-        if(this.mePhoto != mePhoto) {
-            this.mePhoto = mePhoto;
-            repaint();
-        }
+        this.mePhoto = mePhoto;
+        repaint();
     }
 
     public String getBuddyText() {

@@ -42,7 +42,7 @@ public class EditContactForm extends OverlayBackground {
         lastNameTextField = new HintTextFieldUnderlined("", "Фамилия", false, true);
         phoneTextField = new HintTextFieldUnderlined("", "Телефон", false, true);
 
-        photoPanel = new ImagePanel(null, false, true, 0);
+        photoPanel = new ImagePanel(null, true, false, 0);
     }
 
     public void setContactInfo(ContactInfo info) {

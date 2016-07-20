@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.Objects;
 
 /**
  * Created by HerrSergio on 29.04.2016.
@@ -15,6 +16,7 @@ public class HintTextField extends JTextField {
     private Font hintFont;
     private Color hintForeground;
     private boolean hideOnFocus = true;
+    private int hintAlignment = JTextField.LEFT;
 
     public HintTextField(String text, String hint, boolean hideOnFocus) {
         super();
@@ -57,6 +59,13 @@ public class HintTextField extends JTextField {
     protected void focusLost() {
         if(hideOnFocus)
             repaint();
+    }
+
+    public void setHint(String hint) {
+        if(!Objects.equals(this.hint, hint)){
+            this.hint = hint;
+            repaint();
+        }
     }
 
     public String getHint() {
@@ -105,8 +114,21 @@ public class HintTextField extends JTextField {
     }
 
     public void setHideOnFocus(boolean hideOnFocus) {
-        this.hideOnFocus = hideOnFocus;
-        repaint();
+        if(this.hideOnFocus != hideOnFocus) {
+            this.hideOnFocus = hideOnFocus;
+            repaint();
+        }
+    }
+
+    public int getHintAlignment() {
+        return hintAlignment;
+    }
+
+    public void setHintAlignment(int hintAlignment) {
+        if(this.hintAlignment != hintAlignment) {
+            this.hintAlignment = hintAlignment;
+            repaint();
+        }
     }
 
     @Override
@@ -131,6 +153,11 @@ public class HintTextField extends JTextField {
                 }
             }
             int x = left;
+            if(hintAlignment == JTextField.RIGHT) {
+                x += maxWidth - fontMetrics.stringWidth(hint);
+            } else if(hintAlignment == JTextField.CENTER) {
+                x += (maxWidth - fontMetrics.stringWidth(hint)) / 2;
+            }
             int y = getBaseline(getWidth(), getHeight());
             g.drawString(hint, x, y);
         }

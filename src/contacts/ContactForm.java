@@ -1,6 +1,8 @@
 package contacts;
 
 import components.GuiHelper;
+import components.PhotoPanel;
+import gui.PhoneForm;
 import org.javagram.dao.Person;
 import org.javagram.dao.Dialog;
 import org.javagram.dao.proxy.TelegramProxy;
@@ -24,11 +26,9 @@ public class ContactForm extends JPanel implements ListCellRenderer <Person>{
     private JButton button1;
 
     private TelegramProxy telegramProxy;
-    private Person person;
     private boolean hasFocus;
 
     private final int focusMarkerWidth = 4;
-    private final double onlineSignSize = 0.3;
 
     public ContactForm(TelegramProxy telegramProxy) {
         this.telegramProxy = telegramProxy;
@@ -44,34 +44,7 @@ public class ContactForm extends JPanel implements ListCellRenderer <Person>{
 
         rootPanel = this;
 
-        photoPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics graphics) {
-                super.paintComponent(graphics);
-
-                BufferedImage image = GuiHelper.getPhoto(telegramProxy, person, true);
-
-                graphics.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), null);
-
-                if(telegramProxy.isOnline(person)) {
-
-                    int dx = (int)(this.getWidth() * onlineSignSize);
-                    int dy = (int)(this.getHeight() * onlineSignSize);
-
-                    int x = this.getWidth() - dx;
-                    int y = this.getHeight() - dy;
-
-                    dx -= 2;
-                    dy -= 2;
-
-                    graphics.setColor(new Color(0x00B000));
-                    graphics.fillRoundRect(x, y, dx, dy, dx, dy);
-
-                    graphics.setColor(new Color(0x0000B0));
-                    graphics.drawRoundRect(x, y, dx, dy, dx, dy);
-                }
-            }
-        };
+        photoPanel = new PhotoPanel(null, true, false, 0, false);
     }
 
     @Override
@@ -90,7 +63,6 @@ public class ContactForm extends JPanel implements ListCellRenderer <Person>{
                                                   Person person,
                                                   int index, boolean selected, boolean hasFocus) {
 
-        this.person = person;
         Dialog dialog = telegramProxy.getDialog(person);
         this.nameLabel.setText(person.getFirstName() + " " + person.getLastName());
 
@@ -107,6 +79,9 @@ public class ContactForm extends JPanel implements ListCellRenderer <Person>{
         }
 
         this.hasFocus = hasFocus;
+
+        ((PhotoPanel)photoPanel).setImage(GuiHelper.getPhoto(telegramProxy, person, true, true));
+        ((PhotoPanel)photoPanel).setOnline(telegramProxy.isOnline(person));
 
         return this;
     }
