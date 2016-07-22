@@ -116,7 +116,7 @@ public class GuiHelper {
             return x + fontMetrics.stringWidth(line) + inset;
     }
 
-    public static Color makeTransparent(Color color,float transparency) {
+    public static Color makeTransparent(Color color, float transparency) {
         if(transparency < 0.0f || transparency > 1.0f)
             throw new IllegalArgumentException();
         return new Color(color.getRed(),color.getGreen(), color.getBlue(), (int)Math.round(color.getAlpha() * transparency));
@@ -166,5 +166,64 @@ public class GuiHelper {
         if(circle)
             photo = makeCircle(photo);
         return photo;
+    }
+
+    public static BufferedImage scaleImage(Image image, int width, int height) {
+        BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics2D g2d = result.createGraphics();
+        try {
+            g2d.drawImage(image, 0, 0, width, height, null);
+        } finally {
+            g2d.dispose();
+        }
+        return result;
+    }
+
+    public static BufferedImage copyImage(Image image) {
+        return scaleImage(image, image.getWidth(null), image.getHeight(null));
+    }
+
+    public static void decorateAsImageButton(JButton button, Dimension size, BufferedImage image) {
+        decorateAsImageButton(button, size, image, null);
+    }
+
+    public static void decorateAsImageButton(JButton button, BufferedImage image, BufferedImage disabledImage) {
+        decorateAsImageButton(button, button.getPreferredSize(), image, disabledImage);
+    }
+
+    public static void decorateAsImageButton(JButton button, BufferedImage image) {
+        decorateAsImageButton(button, button.getPreferredSize(), image, null);
+    }
+
+    public static void decorateAsImageButton(JButton button, Dimension size, BufferedImage image, BufferedImage disabledImage) {
+        button.setContentAreaFilled(false);
+        button.setText("");
+        button.setBorder(null);
+        button.setIcon(getImageIconFor(image, size));
+        button.setHorizontalTextPosition(SwingConstants.RIGHT);
+        if(image == null)
+            disabledImage = null;
+        else if(disabledImage == null)
+            disabledImage = makeGray(image);
+        button.setDisabledIcon(getImageIconFor(disabledImage, size));
+
+        button.setSelectedIcon(null);
+        button.setDisabledSelectedIcon(null);
+        button.setRolloverIcon(null);
+        button.setRolloverSelectedIcon(null);
+    }
+
+    public static ImageIcon getImageIconFor(Image image, Dimension size) {
+        if(image == null)
+            return null;
+        if(size != null)
+            image = scaleImage(image, size.width, size.height);
+        else
+            image = copyImage(image);
+        return new ImageIcon(image);
+    }
+
+    public static BufferedImage createTransparentImage(int width, int height) {
+        return new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
     }
 }

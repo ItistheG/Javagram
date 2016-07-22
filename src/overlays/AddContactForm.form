@@ -87,7 +87,7 @@
           <text value=""/>
         </properties>
       </component>
-      <component id="305e7" class="javax.swing.JButton" binding="closeButton" custom-create="true">
+      <component id="305e7" class="javax.swing.JButton" binding="closeButton">
         <constraints>
           <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="0.0"/>
@@ -100,7 +100,7 @@
           <text value="Button"/>
         </properties>
       </component>
-      <component id="3bee0" class="javax.swing.JButton" binding="addButton" custom-create="true">
+      <component id="3bee0" class="javax.swing.JButton" binding="addButton">
         <constraints>
           <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="0.0"/>

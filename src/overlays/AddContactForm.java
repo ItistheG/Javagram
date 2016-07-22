@@ -31,14 +31,18 @@ public class AddContactForm extends OverlayBackground {
         ((HintTextField)firstNameTextField).setHintAlignment(JTextField.CENTER);
         ((HintTextField)lastNameTextField).setHintAlignment(JTextField.CENTER);
         ((HintTextField)phoneTextField).setHintAlignment(JTextField.CENTER);
+
+        GuiHelper.decorateAsImageButton(closeButton, Images.getCloseOverlay());
+        GuiHelper.decorateAsImageButton(addButton, Images.getAddContact());
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
         rootPanel = this;
 
-        closeButton = new ImageButton(Images.getCloseOverlay());
-        addButton = new ImageButton(Images.getAddContact());
+        //Альтернтивное решение
+        //closeButton = new ImageButton(Images.getCloseOverlay());
+        //addButton = new ImageButton(Images.getAddContact());
 
         firstNameTextField = new HintTextFieldUnderlined("", "Имя", true, true);
         lastNameTextField = new HintTextFieldUnderlined("", "Фамилия", true, true);

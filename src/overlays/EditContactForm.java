@@ -32,15 +32,20 @@ public class EditContactForm extends OverlayBackground {
         ((HintTextField)firstNameTextField).setHintAlignment(JTextField.CENTER);
         ((HintTextField)lastNameTextField).setHintAlignment(JTextField.CENTER);
         ((HintTextField)phoneTextField).setHintAlignment(JTextField.CENTER);
+
+        GuiHelper.decorateAsImageButton(closeButton, Images.getCloseOverlay());
+        GuiHelper.decorateAsImageButton(deleteButton, Images.getRemoveContact());
+        GuiHelper.decorateAsImageButton(saveButton, Images.getUpdateContact());
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
         rootPanel = this;
 
-        closeButton = new ImageButton(Images.getCloseOverlay());
-        deleteButton = new ImageButton(Images.getRemoveContact());
-        saveButton = new ImageButton(Images.getUpdateContact());
+        //Альтернтивное решение
+        //closeButton = new ImageButton(Images.getCloseOverlay());
+        //deleteButton = new ImageButton(Images.getRemoveContact());
+        //saveButton = new ImageButton(Images.getUpdateContact());
 
         firstNameTextField = new HintTextFieldUnderlined("", "Имя", true, true);
         lastNameTextField = new HintTextFieldUnderlined("", "Фамилия", true, true);

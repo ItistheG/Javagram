@@ -19,7 +19,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="1d958" class="javax.swing.JButton" binding="gearButton" custom-create="true">
+          <component id="1d958" class="javax.swing.JButton" binding="gearButton">
             <constraints/>
             <properties>
               <maximumSize width="60" height="60"/>
@@ -50,7 +50,7 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="c114b" class="javax.swing.JButton" binding="buddyEditButton" custom-create="true">
+                  <component id="c114b" class="javax.swing.JButton" binding="buddyEditButton">
                     <constraints/>
                     <properties>
                       <maximumSize width="30" height="30"/>
@@ -91,7 +91,7 @@
                   </component>
                 </children>
               </scrollpane>
-              <component id="792e" class="javax.swing.JButton" binding="sendMessageButton" custom-create="true">
+              <component id="792e" class="javax.swing.JButton" binding="sendMessageButton">
                 <constraints border-constraint="East"/>
                 <properties>
                   <maximumSize width="80" height="80"/>

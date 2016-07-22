@@ -11,7 +11,7 @@
       <size top="70" left="70" bottom="70" right="70"/>
     </border>
     <children>
-      <component id="de9e3" class="javax.swing.JButton" binding="plusButton" custom-create="true">
+      <component id="de9e3" class="javax.swing.JButton" binding="plusButton">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="0.0"/>
@@ -21,7 +21,6 @@
           <minimumSize width="66" height="66"/>
           <opaque value="false"/>
           <preferredSize width="66" height="66"/>
-          <meText value="Button"/>
         </properties>
       </component>
       <component id="9f8e3" class="javax.swing.JLabel">
@@ -29,18 +28,14 @@
           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="1.0"/>
         </constraints>
-        <properties>
-          <meText value=""/>
-        </properties>
+        <properties/>
       </component>
       <component id="30e5d" class="javax.swing.JLabel">
         <constraints>
           <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
           <gridbag weightx="1.0" weighty="0.0"/>
         </constraints>
-        <properties>
-          <meText value=""/>
-        </properties>
+        <properties/>
       </component>
       <component id="f2022" class="javax.swing.JLabel">
         <constraints>
@@ -51,7 +46,6 @@
           <maximumSize width="38" height="38"/>
           <minimumSize width="38" height="38"/>
           <preferredSize width="38" height="38"/>
-          <meText value=""/>
         </properties>
       </component>
       <component id="55242" class="javax.swing.JLabel">
@@ -63,7 +57,6 @@
           <maximumSize width="38" height="38"/>
           <minimumSize width="38" height="38"/>
           <preferredSize width="38" height="38"/>
-          <meText value=""/>
         </properties>
       </component>
     </children>

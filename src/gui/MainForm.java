@@ -40,6 +40,10 @@ public class MainForm extends JPanel {
         messagesPanel.add(new JPanel());
 
         GuiHelper.decorateScrollPane(messageTextScrollPane);
+
+        GuiHelper.decorateAsImageButton(gearButton, Images.getGearIcon());
+        GuiHelper.decorateAsImageButton(buddyEditButton, Images.getPencilIcon(), GuiHelper.createTransparentImage(1, 1));
+        GuiHelper.decorateAsImageButton(sendMessageButton, Images.getSendMessageImage());
     }
 
     private void createUIComponents() {
@@ -78,9 +82,10 @@ public class MainForm extends JPanel {
             }
         };
 
-        gearButton = new ImageButton(Images.getGearIcon());
-
-        sendMessageButton = new ImageButton(Images.getSendMessageImage());
+        //Альтернтивное решение
+        //gearButton = new ImageButton(Images.getGearIcon());
+        //sendMessageButton = new ImageButton(Images.getSendMessageImage());
+        //buddyEditButton = new ImageButton(Images.getPencilIcon());
 
         buddyPanel = new JPanel() {
             @Override
@@ -109,8 +114,6 @@ public class MainForm extends JPanel {
 
             }
         };
-
-        buddyEditButton = new ImageButton(Images.getPencilIcon());
 
         searchTextField = new HintTextFieldUnderlined("", "Поиск...", false, false);
 

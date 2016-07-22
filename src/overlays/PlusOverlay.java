@@ -1,6 +1,7 @@
 package overlays;
 
 import components.GuiHelper;
+import components.ImageButton;
 import resources.Images;
 
 import javax.swing.*;
@@ -14,22 +15,16 @@ public class PlusOverlay extends JPanel {
     private JButton plusButton;
     private JPanel rootPanel;
 
+    {
+        GuiHelper.decorateAsImageButton(plusButton,Images.getPlus());
+    }
+
     private void createUIComponents() {
         // TODO: place custom component creation code here
         rootPanel = this;
 
-        plusButton = new JButton() {
-            @Override
-            protected void paintComponent(Graphics graphics) {
-                //super.paintComponent(graphics);
-                GuiHelper.drawImage(graphics, Images.getPlus(), 0, 0, this.getWidth(), this.getHeight());
-            }
-
-            @Override
-            protected void paintBorder(Graphics graphics) {
-                //super.paintBorder(graphics);
-            }
-        };
+        //Альтернтивное решение
+        //plusButton = new ImageButton(Images.getPlus());
     }
 
     public void addActionListener(ActionListener actionListener) {
