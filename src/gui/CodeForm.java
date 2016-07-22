@@ -1,9 +1,6 @@
 package gui;
 
-import components.ExtendedImageButton;
-import components.GuiHelper;
-import components.ImagePanel;
-import components.MaxLengthDocumentFilter;
+import components.*;
 import resources.Images;
 
 import javax.swing.*;
@@ -48,7 +45,7 @@ public class CodeForm extends ImagePanel {
 
         iconPanel = new ImagePanel(Images.getLogo(), false, true, 0);
 
-        okButton = new ExtendedImageButton(Images.getBlueButton());
+        okButton = new BlueButton();
     }
 
     public void addActionListenerForConfirm(ActionListener actionListener) {
@@ -59,6 +56,10 @@ public class CodeForm extends ImagePanel {
     public void removeActionListenerForConfirm(ActionListener actionListener) {
         okButton.removeActionListener(actionListener);
         codePasswordField.removeActionListener(actionListener);
+    }
+
+    public void transferFocusTo() {
+        codePasswordField.requestFocusInWindow();
     }
 
     public String getCode() {

@@ -33,7 +33,7 @@
               <caretColor color="-1"/>
               <font name="Liberation Mono" size="24"/>
               <foreground color="-1"/>
-              <horizontalAlignment value="10"/>
+              <horizontalAlignment value="0"/>
               <minimumSize width="320" height="36"/>
               <opaque value="false"/>
               <preferredSize width="320" height="36"/>
@@ -50,7 +50,7 @@
               <caretColor color="-1"/>
               <font name="Liberation Mono" size="24"/>
               <foreground color="-1"/>
-              <horizontalAlignment value="10"/>
+              <horizontalAlignment value="0"/>
               <minimumSize width="320" height="36"/>
               <opaque value="false"/>
               <preferredSize width="320" height="36"/>
@@ -67,7 +67,7 @@
               <caretColor color="-1"/>
               <font name="Liberation Mono" size="24"/>
               <foreground color="-1"/>
-              <horizontalAlignment value="10"/>
+              <horizontalAlignment value="0"/>
               <minimumSize width="320" height="36"/>
               <opaque value="false"/>
               <preferredSize width="320" height="36"/>

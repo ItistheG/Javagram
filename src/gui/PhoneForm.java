@@ -1,6 +1,6 @@
 package gui;
 
-import components.ExtendedImageButton;
+import components.BlueButton;
 import components.GuiHelper;
 import components.ImagePanel;
 import resources.Images;
@@ -61,6 +61,9 @@ public class PhoneForm extends ImagePanel {
         phoneTextField.removeActionListener(actionListener);
     }
 
+    public void transferFocusTo() {
+        phoneTextField.requestFocusInWindow();
+    }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
@@ -68,7 +71,7 @@ public class PhoneForm extends ImagePanel {
 
         iconPanel = new ImagePanel(Images.getLogo(), false, true, 0);
 
-        okButton = new ExtendedImageButton(Images.getBlueButton());
+        okButton = new BlueButton();
     }
 
     public void clear() {

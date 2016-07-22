@@ -27,6 +27,10 @@ public class AddContactForm extends OverlayBackground {
         Document document = phoneTextField.getDocument();
         if(document instanceof AbstractDocument)
             ((AbstractDocument) document).setDocumentFilter(new PhoneNumberDocumentFilter());
+
+        ((HintTextField)firstNameTextField).setHintAlignment(JTextField.CENTER);
+        ((HintTextField)lastNameTextField).setHintAlignment(JTextField.CENTER);
+        ((HintTextField)phoneTextField).setHintAlignment(JTextField.CENTER);
     }
 
     private void createUIComponents() {
@@ -36,9 +40,9 @@ public class AddContactForm extends OverlayBackground {
         closeButton = new ImageButton(Images.getCloseOverlay());
         addButton = new ImageButton(Images.getAddContact());
 
-        firstNameTextField = new HintTextFieldUnderlined("", "Имя", false, true);
-        lastNameTextField = new HintTextFieldUnderlined("", "Фамилия", false, true);
-        phoneTextField = new HintTextFieldUnderlined("", "Телефон", false, true);
+        firstNameTextField = new HintTextFieldUnderlined("", "Имя", true, true);
+        lastNameTextField = new HintTextFieldUnderlined("", "Фамилия", true, true);
+        phoneTextField = new HintTextFieldUnderlined("", "Телефон", true, true);
     }
 
     public void setContactInfo(ContactInfo info) {

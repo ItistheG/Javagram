@@ -4,6 +4,7 @@ import resources.Fonts;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
@@ -302,39 +303,50 @@ public class Undecorated extends JPanel {
 
     //--------------------------------------------------------------------------//
 
-    public static int showDialog(Frame frame, Object message, String title, int optionType, int messageType, Icon icon, Object[] options, Object initialValue) {
-        return showDialog(new JDialog(frame, title, true), message, optionType, messageType, icon, options, initialValue);
+    public static int showDialog(Frame frame, Object message, String title, int messageType, int optionType, Icon icon, Object[] options, Object initialValue) {
+        return showDialog(new JDialog(frame, title, true), message, messageType, optionType, icon, options, initialValue);
     }
 
-    public static int showDialog(Dialog dialog, Object message, String title, int optionType, int messageType, Icon icon, Object[] options, Object initialValue) {
-        return showDialog(new JDialog(dialog, title, true), message, optionType, messageType, icon, options, initialValue);
+    public static int showDialog(Dialog dialog, Object message, String title, int messageType, int optionType, Icon icon, Object[] options, Object initialValue) {
+        return showDialog(new JDialog(dialog, title, true), message, messageType, optionType, icon, options, initialValue);
     }
 
-    public static int showDialog(Frame frame, Object message, String title, int optionType, int messageType, Icon icon) {
-        return showDialog(new JDialog(frame, title, true), message, optionType, messageType, icon, null, null);
+    public static int showDialog(Frame frame, Object message, String title, int messageType, int optionType, Icon icon) {
+        return showDialog(new JDialog(frame, title, true), message, messageType, optionType, icon, null, null);
     }
 
-    public static int showDialog(Dialog dialog, Object message, String title, int optionType, int messageType, Icon icon) {
-        return showDialog(new JDialog(dialog, title, true), message, optionType, messageType, icon, null, null);
+    public static int showDialog(Dialog dialog, Object message, String title, int messageType, int optionType, Icon icon) {
+        return showDialog(new JDialog(dialog, title, true), message, messageType, optionType, icon, null, null);
     }
 
-    public static int showDialog(Frame frame, Object message, String title, int optionType, int messageType) {
-        return showDialog(new JDialog(frame, title, true), message, optionType, messageType, null, null, null);
+    public static int showDialog(Frame frame, Object message, String title, int messageType, int optionType) {
+        return showDialog(new JDialog(frame, title, true), message, messageType, optionType, null, null, null);
     }
 
-    public static int showDialog(Dialog dialog, Object message, String title, int optionType, int messageType) {
-        return showDialog(new JDialog(dialog, title, true), message, optionType, messageType, null, null, null);
+    public static int showDialog(Dialog dialog, Object message, String title, int messageType, int optionType) {
+        return showDialog(new JDialog(dialog, title, true), message, messageType, optionType, null, null, null);
     }
 
-    private static int showDialog(JDialog dialog, Object message, int optionType, int messageType, Icon icon, Object[] options, Object initialValue) {
-        JOptionPane optionPane = new JOptionPane(message, optionType, messageType, icon, options, initialValue);
+    private static int showDialog(JDialog dialog, Object message, int messageType, int optionType, Icon icon, Object[] options, Object initialValue) {
+        JOptionPane optionPane = new JOptionPane(message, messageType, optionType, icon, options, initialValue);
         dialog.setModal(true);
         dialog.setContentPane(optionPane);
         dialog.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         new Undecorated(dialog);
         dialog.pack();
         dialog.setLocationRelativeTo(dialog.getParent());
-        //optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
+        if(options != null) {
+            for (Object option : options) {
+                if(option instanceof AbstractButton) {
+                    ((AbstractButton) option).addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent actionEvent) {
+                            optionPane.setValue(option);
+                        }
+                    });
+                }
+            }
+        }
         PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent propertyChangeEvent) {

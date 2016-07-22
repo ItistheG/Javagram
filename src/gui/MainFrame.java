@@ -1,5 +1,6 @@
 package gui;
 
+import components.BlueButton;
 import components.GuiHelper;
 import contacts.ContactsList;
 import messsages.MessagesForm;
@@ -55,6 +56,7 @@ public class MainFrame extends JFrame {
 
     {
         setTitle("Javagram");
+        setIconImage(Images.getAppIcon());
         undecoratedFrame = new Undecorated(this, ComponentResizerAbstract.KEEP_RATIO_CENTER);
 
         changeContentPanel(phoneForm);
@@ -71,6 +73,11 @@ public class MainFrame extends JFrame {
                 if(showQuestionMessage("Уверены, что хотите выйти?", "Вопрос"))
                     exit();
             }
+
+            @Override
+            public void windowOpened(WindowEvent windowEvent) {
+                phoneForm.transferFocusTo();
+            }
         });
 
         phoneForm.addActionListenerForConfirm(new ActionListener() {
@@ -79,6 +86,7 @@ public class MainFrame extends JFrame {
                String phoneNumber = phoneForm.getPhoneNumber();
                 if(phoneNumber == null) {
                     showErrorMessage("Введите корректный номер телефона!", "Ошибка!");
+                    phoneForm.transferFocusTo();
                 } else {
                     switchFromPhoneToCode(phoneNumber);
                 }
@@ -270,7 +278,8 @@ public class MainFrame extends JFrame {
         try {
             telegramDAO.acceptNumber(phoneNumber.replaceAll("[\\D]+", ""));
         } catch (IOException | NullPointerException e) {
-            showErrorMessage("Номер телефона введене неверно", "Ошибка!");
+            showWarningMessage("Номер телефона введене неверно", "Ошибка!");
+            phoneForm.transferFocusTo();
             return;
         }
 
@@ -286,6 +295,7 @@ public class MainFrame extends JFrame {
             }
         } else if(telegramDAO.canSignUp()) {
             showWarningMessage("Пользователь незарегистрирован", "Внимание!");
+            phoneForm.transferFocusTo();
             return;
         } else {
             abort(null);
@@ -299,6 +309,7 @@ public class MainFrame extends JFrame {
             createTelegramProxy();
         } catch (Exception e) {
             showWarningMessage("Неверный код", "Внимание!");
+            codeForm.transferFocusTo();
         }
     }
 
@@ -310,6 +321,7 @@ public class MainFrame extends JFrame {
             this.phoneForm.clear();
             mainWindowManager.setIndex(MAIN_WINDOW);
             changeContentPanel(phoneForm);
+            phoneForm.transferFocusTo();
             telegramDAO.logOut();
         } catch (Exception e) {
             showErrorMessage("Продолжение работы не возможно", "Критическая ошибка!");
@@ -529,19 +541,27 @@ public class MainFrame extends JFrame {
 
 
     private void showErrorMessage(String text, String title) {
-        Undecorated.showDialog(this, text, title, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION);
+        BlueButton okButton = BlueButton.createOkButton();
+        Undecorated.showDialog(this, text, title, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, Images.getErrorIcon(),
+                new Object[] {okButton}, okButton);
     }
 
     private void showWarningMessage(String text, String title) {
-        Undecorated.showDialog(this, text, title, JOptionPane.WARNING_MESSAGE, JOptionPane.DEFAULT_OPTION);
+        BlueButton okButton = BlueButton.createOkButton();
+        Undecorated.showDialog(this, text, title, JOptionPane.WARNING_MESSAGE, JOptionPane.DEFAULT_OPTION, Images.getWarningIcon(),
+                new Object[] {okButton}, okButton);
     }
 
     private void showInformationMessage(String text, String title) {
-        Undecorated.showDialog(this, text, title, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION);
+        BlueButton okButton = BlueButton.createOkButton();
+        Undecorated.showDialog(this, text, title, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, Images.getInformationIcon(),
+                new Object[] {okButton}, okButton);
     }
 
     private boolean showQuestionMessage(String text, String title) {
-        return Undecorated.showDialog(this, text, title, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+        BlueButton yesNoButotns[] = BlueButton.createYesNoButtons();
+        return Undecorated.showDialog(this, text, title, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, Images.getQuestionIcon(),
+                yesNoButotns, yesNoButotns[0]) == 0;
     }
 
 }

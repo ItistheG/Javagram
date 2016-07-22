@@ -1,6 +1,8 @@
 package resources;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -27,6 +29,11 @@ public class Images {
     private static BufferedImage closeOverlay;
     private static BufferedImage logoutIcon;
     private static BufferedImage blueButton;
+    private static Icon warningIcon;
+    private static Icon questionIcon;
+    private static Icon errorIcon;
+    private static Icon informationIcon;
+    private static BufferedImage appIcon;
 
     public synchronized static BufferedImage getBackground() {
         if (background == null)
@@ -118,6 +125,36 @@ public class Images {
         return blueButton;
     }
 
+    public static Icon getWarningIcon() {
+        if(warningIcon == null)
+            warningIcon = scaleImageToIcon(loadImage("2000px-Warning_icon.svg.png"));
+        return warningIcon;
+    }
+
+    public static Icon getErrorIcon() {
+        if(errorIcon == null)
+            errorIcon = scaleImageToIcon(loadImage("1195445190322000997molumen_red_round_error_warning_icon.svg.hi.png"));
+        return errorIcon;
+    }
+
+    public static Icon getQuestionIcon() {
+        if(questionIcon == null)
+            questionIcon = scaleImageToIcon(loadImage("Icon-question.png"));
+        return questionIcon;
+    }
+
+    public static Icon getInformationIcon() {
+        if(informationIcon == null)
+            informationIcon = scaleImageToIcon(loadImage("2000px-Circle-information.svg.png"));
+        return informationIcon;
+    }
+
+    public static BufferedImage getAppIcon() {
+        if(appIcon == null)
+            appIcon = loadImage("iMessage-icon.png");
+        return appIcon;
+    }
+
     public synchronized static BufferedImage getSmallUserImage() {
         if (smallUserImage == null)
             smallUserImage = loadImage("images (2).jpg");
@@ -141,5 +178,20 @@ public class Images {
             e.printStackTrace();
             return new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
         }
+    }
+
+    private static BufferedImage scaleImage(BufferedImage image, int width, int height) {
+        BufferedImage result = new BufferedImage(width, height, image.getType());
+        Graphics2D g2d = result.createGraphics();
+        try {
+            g2d.drawImage(image, 0, 0, width, height, null);
+        } finally {
+            g2d.dispose();
+        }
+        return result;
+    }
+
+    private static Icon scaleImageToIcon(BufferedImage image) {
+        return new ImageIcon(scaleImage(image, 50, 50));
     }
 }

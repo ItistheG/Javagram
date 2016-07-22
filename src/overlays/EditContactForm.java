@@ -28,6 +28,10 @@ public class EditContactForm extends OverlayBackground {
     {
         setContactInfo(new ContactInfo());
         setPhoto(null);
+
+        ((HintTextField)firstNameTextField).setHintAlignment(JTextField.CENTER);
+        ((HintTextField)lastNameTextField).setHintAlignment(JTextField.CENTER);
+        ((HintTextField)phoneTextField).setHintAlignment(JTextField.CENTER);
     }
 
     private void createUIComponents() {
@@ -38,9 +42,9 @@ public class EditContactForm extends OverlayBackground {
         deleteButton = new ImageButton(Images.getRemoveContact());
         saveButton = new ImageButton(Images.getUpdateContact());
 
-        firstNameTextField = new HintTextFieldUnderlined("", "Имя", false, true);
-        lastNameTextField = new HintTextFieldUnderlined("", "Фамилия", false, true);
-        phoneTextField = new HintTextFieldUnderlined("", "Телефон", false, true);
+        firstNameTextField = new HintTextFieldUnderlined("", "Имя", true, true);
+        lastNameTextField = new HintTextFieldUnderlined("", "Фамилия", true, true);
+        phoneTextField = new HintTextFieldUnderlined("", "Телефон", true, true);
 
         photoPanel = new ImagePanel(null, true, false, 0);
     }
