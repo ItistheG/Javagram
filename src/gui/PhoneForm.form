@@ -52,13 +52,23 @@
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
-          <minimumSize width="300" height="50"/>
+          <minimumSize width="350" height="50"/>
           <opaque value="false"/>
-          <preferredSize width="300" height="50"/>
+          <preferredSize width="350" height="50"/>
           <requestFocusEnabled value="true"/>
         </properties>
         <border type="none"/>
         <children>
+          <grid id="e1721" binding="phoneIcon" custom-create="true" layout-manager="GridBagLayout">
+            <constraints/>
+            <properties>
+              <minimumSize width="25" height="25"/>
+              <opaque value="false"/>
+              <preferredSize width="25" height="25"/>
+            </properties>
+            <border type="none"/>
+            <children/>
+          </grid>
           <component id="3e521" class="javax.swing.JFormattedTextField" binding="phoneTextField">
             <constraints/>
             <properties>
@@ -77,10 +87,10 @@
             <properties>
               <background color="-1"/>
               <foreground color="-1"/>
-              <minimumSize width="280" height="3"/>
+              <minimumSize width="320" height="3"/>
               <opaque value="true"/>
               <orientation value="1"/>
-              <preferredSize width="280" height="3"/>
+              <preferredSize width="320" height="3"/>
             </properties>
           </component>
         </children>

@@ -8,6 +8,7 @@ import java.awt.*;
 public class HintTextFieldUnderlined extends HintTextField {
 
     private boolean underlined;
+    private Color underlineColor;
 
     public HintTextFieldUnderlined(String text, String hint, boolean hideOnFocus, boolean underlined) {
         super(text, hint, hideOnFocus);
@@ -25,6 +26,17 @@ public class HintTextFieldUnderlined extends HintTextField {
         }
     }
 
+    public Color getUnderlineColor() {
+        return underlineColor;
+    }
+
+    public void setUnderlineColor(Color underlineColor) {
+        if(this.underlineColor != underlineColor) {
+            this.underlineColor = underlineColor;
+            repaint();
+        }
+    }
+
     @Override
     protected void paintBorder(Graphics graphics) {
         //super.paintBorder(graphics);
@@ -34,6 +46,11 @@ public class HintTextFieldUnderlined extends HintTextField {
             Graphics2D g2d = (Graphics2D) graphics.create();
             try {
                 g2d.setStroke(new BasicStroke(lineHalfWidth));
+                Color uColor = getUnderlineColor();
+                if(uColor != null)
+                    g2d.setColor(uColor);
+                else
+                    g2d.setColor(getForeground());
                 g2d.drawLine(0, y, this.getWidth(), y);
             } finally {
                 g2d.dispose();

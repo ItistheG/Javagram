@@ -15,9 +15,10 @@ public class CodeForm extends ImagePanel {
     private JLabel phoneLabel;
     private JTextPane hintTextPane;
     private JPanel rootPanel;
-    private JPanel phonePanel;
+    private JPanel codePanel;
     private JPasswordField codePasswordField;
     private JButton okButton;
+    private JPanel codeIcon;
 
     public CodeForm() {
         super(Images.getBackground(), true, false, 0);
@@ -44,6 +45,8 @@ public class CodeForm extends ImagePanel {
         rootPanel = this;
 
         iconPanel = new ImagePanel(Images.getLogo(), false, true, 0);
+
+        codeIcon = new ImagePanel(Images.getLockIcon(), false, true, 0);
 
         okButton = new BlueButton();
     }

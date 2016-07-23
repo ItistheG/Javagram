@@ -288,9 +288,11 @@ public class MainFrame extends JFrame {
                 telegramDAO.sendCode();
                 codeForm.setPhoneLabelText(phoneNumber);
                 changeContentPanel(codeForm);
+                codeForm.transferFocusTo();
             } catch (Exception e) {
                 showErrorMessage("Потеряно соединение с сервером", "Ошибка!");
                 changeContentPanel(phoneForm);
+                phoneForm.transferFocusTo();
                 return;
             }
         } else if(telegramDAO.canSignUp()) {

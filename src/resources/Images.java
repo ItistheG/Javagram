@@ -34,6 +34,8 @@ public class Images {
     private static Icon errorIcon;
     private static Icon informationIcon;
     private static BufferedImage appIcon;
+    private static BufferedImage phoneIcon;
+    private static BufferedImage lockIcon;
 
     public synchronized static BufferedImage getBackground() {
         if (background == null)
@@ -153,6 +155,18 @@ public class Images {
         if(appIcon == null)
             appIcon = loadImage("iMessage-icon.png");
         return appIcon;
+    }
+
+    public static BufferedImage getPhoneIcon() {
+        if(phoneIcon == null)
+            phoneIcon = loadImage("phone-icon-hi.png");
+        return phoneIcon;
+    }
+
+    public static BufferedImage getLockIcon() {
+        if(lockIcon == null)
+            lockIcon = loadImage("padlock_closed_inv.png");
+        return lockIcon;
     }
 
     public synchronized static BufferedImage getSmallUserImage() {

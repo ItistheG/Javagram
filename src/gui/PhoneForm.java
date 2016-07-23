@@ -21,6 +21,7 @@ public class PhoneForm extends ImagePanel {
     private JFormattedTextField phoneTextField;
     private JPanel phonePanel;
     private JButton okButton;
+    private JPanel phoneIcon;
 
     public PhoneForm() {
 
@@ -70,6 +71,8 @@ public class PhoneForm extends ImagePanel {
         rootPanel = this;
 
         iconPanel = new ImagePanel(Images.getLogo(), false, true, 0);
+
+        phoneIcon = new ImagePanel(Images.getPhoneIcon(), false, true, 0);
 
         okButton = new BlueButton();
     }
