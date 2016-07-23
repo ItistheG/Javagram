@@ -68,11 +68,11 @@ public class EditContactForm extends OverlayBackground {
                 id);
     }
 
-    public void setPhoto(BufferedImage photo) {
+    public void setPhoto(Image photo) {
         ((ImagePanel)photoPanel).setImage(photo);
     }
 
-    public BufferedImage getPhoto() {
+    public Image getPhoto() {
         return ((ImagePanel)photoPanel).getImage();
     }
 

@@ -9,31 +9,31 @@ import java.awt.image.BufferedImage;
  */
 public class ImageButton extends JButton {
 
-    private BufferedImage image;
+    private Image image;
     private boolean keepRatio;
-    private BufferedImage disabledImage;
+    private Image disabledImage;
     private boolean keepDisabledRatio;
 
     {
         setOpaque(false);
     }
 
-    public ImageButton(BufferedImage image) {
+    public ImageButton(Image image) {
         this(image, true, null, true);
     }
 
-    public ImageButton(BufferedImage image, boolean keepRatio, BufferedImage disabledImage, boolean keepDisabledRatio) {
+    public ImageButton(Image image, boolean keepRatio, Image disabledImage, boolean keepDisabledRatio) {
         this.image = image;
         this.keepRatio = keepRatio;
         this.disabledImage = disabledImage;
         this.keepDisabledRatio = keepDisabledRatio;
     }
 
-    public BufferedImage getImage() {
+    public Image getImage() {
         return image;
     }
 
-    public void setImage(BufferedImage image) {
+    public void setImage(Image image) {
         if(this.image != image) {
             this.image = image;
             repaint();

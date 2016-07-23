@@ -11,12 +11,12 @@ public class PhotoPanel extends ImagePanel {
 
     private boolean online;
 
-    public PhotoPanel(BufferedImage image, boolean opaque, boolean keepRatio, int insetX, int insetY, boolean online) {
-        super(image, opaque, keepRatio, insetX, insetY);
+    public PhotoPanel(Image image, boolean opaque, boolean keepRatio, Insets insets, boolean online) {
+        super(image, opaque, keepRatio, insets);
         this.online = online;
     }
 
-    public PhotoPanel(BufferedImage image, boolean opaque, boolean keepRatio, int inset, boolean online) {
+    public PhotoPanel(Image image, boolean opaque, boolean keepRatio, int inset, boolean online) {
         super(image, opaque, keepRatio, inset);
         this.online = online;
     }

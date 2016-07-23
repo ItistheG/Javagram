@@ -15,12 +15,12 @@ public class ExtendedImageButton extends ImageButton {
 
     private int inset = 5;
 
-    public ExtendedImageButton(BufferedImage image) {
-        this(image, GuiHelper.makeGray(image));
+    public ExtendedImageButton(Image image) {
+        this(image, null);
     }
 
-    public ExtendedImageButton(BufferedImage image, BufferedImage disabledImage) {
-        super(image, false, disabledImage, false);
+    public ExtendedImageButton(Image image, Image disabledImage) {
+        super(image, false, assureImages(disabledImage, image), false);
     }
 
     @Override
@@ -71,5 +71,13 @@ public class ExtendedImageButton extends ImageButton {
             graphics.drawLine(x1, y0, x2, y0);
         }
 
+    }
+
+    private static Image assureImages(Image disabledImage, Image image) {
+        if(image == null)
+            throw new NullPointerException("ExtendedImageButton requires an image");
+        if(disabledImage == null)
+            disabledImage = GuiHelper.makeGray(image);
+        return disabledImage;
     }
 }

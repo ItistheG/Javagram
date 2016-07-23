@@ -42,8 +42,8 @@ public class GuiHelper {
         }
     }
 
-    public static Rectangle drawImage(Graphics g, BufferedImage image, int x, int y, int width, int height) {
-        Rectangle rect = getAreaFor(new Rectangle(x, y, width, height), new Dimension(image.getWidth(), image.getHeight()));
+    public static Rectangle drawImage(Graphics g, Image image, int x, int y, int width, int height) {
+        Rectangle rect = getAreaFor(new Rectangle(x, y, width, height), new Dimension(image.getWidth(null), image.getHeight(null)));
         g.drawImage(image, rect.x, rect.y, rect.width, rect.height, null);
         return rect;
     }
@@ -149,8 +149,12 @@ public class GuiHelper {
         return grayOp.filter(image, null);
     }
 
-    public static BufferedImage makeCircle(BufferedImage image) {
-        BufferedImage circle = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+    public static BufferedImage makeGray(Image image){
+        return makeGray(copyImage(image));
+    }
+
+    public static BufferedImage makeCircle(Image image) {
+        BufferedImage circle = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g2d = circle.createGraphics();
         try {
             g2d.clip(new Ellipse2D.Double(0, 0, circle.getWidth(), circle.getHeight()));
@@ -183,19 +187,19 @@ public class GuiHelper {
         return scaleImage(image, image.getWidth(null), image.getHeight(null));
     }
 
-    public static void decorateAsImageButton(JButton button, Dimension size, BufferedImage image) {
+    public static void decorateAsImageButton(JButton button, Dimension size, Image image) {
         decorateAsImageButton(button, size, image, null);
     }
 
-    public static void decorateAsImageButton(JButton button, BufferedImage image, BufferedImage disabledImage) {
+    public static void decorateAsImageButton(JButton button, Image image, Image disabledImage) {
         decorateAsImageButton(button, button.getPreferredSize(), image, disabledImage);
     }
 
-    public static void decorateAsImageButton(JButton button, BufferedImage image) {
+    public static void decorateAsImageButton(JButton button, Image image) {
         decorateAsImageButton(button, button.getPreferredSize(), image, null);
     }
 
-    public static void decorateAsImageButton(JButton button, Dimension size, BufferedImage image, BufferedImage disabledImage) {
+    public static void decorateAsImageButton(JButton button, Dimension size, Image image, Image disabledImage) {
         button.setContentAreaFilled(false);
         button.setText("");
         button.setBorder(null);
@@ -209,6 +213,7 @@ public class GuiHelper {
 
         button.setSelectedIcon(null);
         button.setDisabledSelectedIcon(null);
+        button.setPressedIcon(null);
         button.setRolloverIcon(null);
         button.setRolloverSelectedIcon(null);
     }

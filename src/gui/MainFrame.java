@@ -537,31 +537,27 @@ public class MainFrame extends JFrame {
         System.exit(0);
     }
 
-
-
+    private BlueButton[] okButton = new BlueButton[] {BlueButton.createOkButton()};
+    private BlueButton[] yesNoButtons = BlueButton.createYesNoButtons();
 
     private void showErrorMessage(String text, String title) {
-        BlueButton okButton = BlueButton.createOkButton();
         Undecorated.showDialog(this, text, title, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, Images.getErrorIcon(),
-                new Object[] {okButton}, okButton);
+                okButton, okButton[0]);
     }
 
     private void showWarningMessage(String text, String title) {
-        BlueButton okButton = BlueButton.createOkButton();
         Undecorated.showDialog(this, text, title, JOptionPane.WARNING_MESSAGE, JOptionPane.DEFAULT_OPTION, Images.getWarningIcon(),
-                new Object[] {okButton}, okButton);
+                okButton, okButton[0]);
     }
 
     private void showInformationMessage(String text, String title) {
-        BlueButton okButton = BlueButton.createOkButton();
         Undecorated.showDialog(this, text, title, JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, Images.getInformationIcon(),
-                new Object[] {okButton}, okButton);
+                okButton, okButton[0]);
     }
 
     private boolean showQuestionMessage(String text, String title) {
-        BlueButton yesNoButotns[] = BlueButton.createYesNoButtons();
         return Undecorated.showDialog(this, text, title, JOptionPane.QUESTION_MESSAGE, JOptionPane.DEFAULT_OPTION, Images.getQuestionIcon(),
-                yesNoButotns, yesNoButotns[0]) == 0;
+                yesNoButtons, yesNoButtons[0]) == 0;
     }
 
 }

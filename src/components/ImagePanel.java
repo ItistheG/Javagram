@@ -9,43 +9,42 @@ import java.awt.image.BufferedImage;
  */
 public class ImagePanel extends JPanel {
 
-    private BufferedImage image;
+    private Image image;
     private boolean keepRatio;
-    private int insetX, insetY;
+    private Insets insets;
 
-    public ImagePanel(BufferedImage image, boolean opaque, boolean keepRatio, int insetX, int insetY) {
+    public ImagePanel(Image image, boolean opaque, boolean keepRatio, Insets insets) {
         this.image = image;
         setOpaque(opaque);
         this.keepRatio = keepRatio;
-        this.insetX = insetX;
-        this.insetY = insetY;
+        this.insets = insets;
     }
 
-    public ImagePanel(BufferedImage image, boolean opaque, boolean keepRatio, int inset) {
-        this(image, opaque, keepRatio, inset, inset);
+    public ImagePanel(Image image, boolean opaque, boolean keepRatio, int inset) {
+        this(image, opaque, keepRatio, new Insets(inset, inset, inset, inset));
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        int width = this.getWidth() - insetX * 2;
-        int height = this.getHeight() - insetY * 2;
+        int width = this.getWidth() - (insets.left + insets.right);
+        int height = this.getHeight() - (insets.top + insets.bottom);
 
         if (image == null || width <= 0 || height <= 0)
             return;
 
         if(keepRatio)
-            GuiHelper.drawImage(g, image, insetX, insetY, width, height);
+            GuiHelper.drawImage(g, image, insets.left, insets.top, width, height);
         else
-            g.drawImage(image, insetX, insetY, width, height, null);
+            g.drawImage(image, insets.left, insets.top, width, height, null);
     }
 
-    public BufferedImage getImage() {
+    public Image getImage() {
         return image;
     }
 
-    public void setImage(BufferedImage image) {
+    public void setImage(Image image) {
         if(image != this.image) {
             this.image = image;
             repaint();
@@ -63,24 +62,13 @@ public class ImagePanel extends JPanel {
         }
     }
 
-    public int getInsetX() {
-        return insetX;
+    public Insets getInsets() {
+        return insets;
     }
 
-    public void setInsetX(int insetX) {
-        if(insetX != this.insetX) {
-            this.insetX = insetX;
-            repaint();
-        }
-    }
-
-    public int getInsetY() {
-        return insetY;
-    }
-
-    public void setInsetY(int insetY) {
-        if(insetY != this.insetY) {
-            this.insetY = insetY;
+    public void setInsets(Insets insets) {
+        if(insets != this.insets) {
+            this.insets = insets;
             repaint();
         }
     }

@@ -9,6 +9,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by HerrSergio on 24.05.2016.
@@ -335,27 +338,23 @@ public class Undecorated extends JPanel {
         new Undecorated(dialog);
         dialog.pack();
         dialog.setLocationRelativeTo(dialog.getParent());
+        Map<ActionListener, AbstractButton> listeners = new HashMap<>();
         if(options != null) {
             for (Object option : options) {
                 if(option instanceof AbstractButton) {
-                    ((AbstractButton) option).addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent actionEvent) {
-                            optionPane.setValue(option);
-                        }
-                    });
+                    AbstractButton abstractButton = (AbstractButton)option;
+                    ActionListener actionListener = actionEvent -> optionPane.setValue(option);
+                    abstractButton.addActionListener(actionListener);
+                    listeners.put(actionListener, abstractButton);
                 }
             }
         }
-        PropertyChangeListener propertyChangeListener = new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-                dialog.setVisible(false);
-            }
-        };
+        PropertyChangeListener propertyChangeListener = propertyChangeEvent -> dialog.setVisible(false);
         optionPane.addPropertyChangeListener("value", propertyChangeListener);
         dialog.setVisible(true);
         optionPane.removePropertyChangeListener("value", propertyChangeListener);
+        for(Map.Entry<ActionListener, AbstractButton> entry : listeners.entrySet())
+            entry.getValue().removeActionListener(entry.getKey());
         Object selectedValue = optionPane.getValue();
         if(selectedValue == null)
             return JOptionPane.CLOSED_OPTION;
