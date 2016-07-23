@@ -150,6 +150,8 @@ public class GuiHelper {
     }
 
     public static BufferedImage makeGray(Image image){
+        if(image instanceof BufferedImage)
+            return makeGray((BufferedImage)image);
         return makeGray(copyImage(image));
     }
 
