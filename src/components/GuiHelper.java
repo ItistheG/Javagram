@@ -23,25 +23,6 @@ public class GuiHelper {
 
     }
 
-    public static void decorateScrollPane(JScrollPane scrollPane) {
-        int width = 3;
-
-        JScrollBar verticalScrollBar =  scrollPane.getVerticalScrollBar();
-        verticalScrollBar.setUI(new MyScrollbarUI());
-        verticalScrollBar.setPreferredSize(new Dimension(width, Integer.MAX_VALUE));
-
-        JScrollBar horizontalScrollBar =  scrollPane.getHorizontalScrollBar();
-        horizontalScrollBar.setUI(new MyScrollbarUI());
-        horizontalScrollBar.setPreferredSize(new Dimension(Integer.MAX_VALUE, width));
-
-        for (String corner : new String[] {ScrollPaneConstants.LOWER_RIGHT_CORNER, ScrollPaneConstants.LOWER_LEFT_CORNER,
-                ScrollPaneConstants.UPPER_LEFT_CORNER, ScrollPaneConstants.UPPER_RIGHT_CORNER}) {
-            JPanel panel = new JPanel();
-            panel.setBackground(Color.white);
-            scrollPane.setCorner(corner, panel);
-        }
-    }
-
     public static Rectangle drawImage(Graphics g, Image image, int x, int y, int width, int height) {
         Rectangle rect = getAreaFor(new Rectangle(x, y, width, height), new Dimension(image.getWidth(null), image.getHeight(null)));
         g.drawImage(image, rect.x, rect.y, rect.width, rect.height, null);
@@ -122,37 +103,15 @@ public class GuiHelper {
         return new Color(color.getRed(),color.getGreen(), color.getBlue(), (int)Math.round(color.getAlpha() * transparency));
     }
 
-    public static void adjustTextPane(JTextPane textPane) {
-        SimpleAttributeSet attribs = new SimpleAttributeSet();
-        StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
-        textPane.setParagraphAttributes(attribs, false);
-    }
-
-    public static BufferedImage getPhoto(TelegramProxy telegramProxy, Person person, boolean small) {
-        BufferedImage image;
-
-        try {
-            image = telegramProxy.getPhoto(person, small);
-        } catch (Exception e) {
-            e.printStackTrace();
-            image = null;
-        }
-
-        if(image == null)
-            image = Images.getUserImage(small);
-        return image;
-    }
-
     private static ColorConvertOp grayOp = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
 
-    public static BufferedImage makeGray(BufferedImage image){
-        return grayOp.filter(image, null);
-    }
-
     public static BufferedImage makeGray(Image image){
+        BufferedImage bufferedImage = null;
         if(image instanceof BufferedImage)
-            return makeGray((BufferedImage)image);
-        return makeGray(copyImage(image));
+            bufferedImage = (BufferedImage) image;
+        else
+            bufferedImage = copyImage(image);
+        return grayOp.filter(bufferedImage, null);
     }
 
     public static BufferedImage makeCircle(Image image) {
@@ -165,13 +124,6 @@ public class GuiHelper {
             g2d.dispose();
         }
         return circle;
-    }
-
-    public static BufferedImage getPhoto(TelegramProxy telegramProxy, Person person, boolean small, boolean circle) {
-        BufferedImage photo = getPhoto(telegramProxy, person, small);
-        if(circle)
-            photo = makeCircle(photo);
-        return photo;
     }
 
     public static BufferedImage scaleImage(Image image, int width, int height) {

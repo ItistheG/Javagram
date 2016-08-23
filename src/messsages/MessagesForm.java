@@ -1,6 +1,7 @@
 package messsages;
 
 import components.GuiHelper;
+import gui.Helper;
 import org.javagram.dao.Me;
 import org.javagram.dao.Message;
 import org.javagram.dao.Person;
@@ -28,7 +29,7 @@ public class MessagesForm extends JPanel {
     private Person person;
 
     {
-        GuiHelper.decorateScrollPane(scrollPane);
+        Helper.decorateScrollPane(scrollPane);
     }
 
     public MessagesForm(TelegramProxy telegramProxy) {

@@ -1,6 +1,7 @@
 package contacts;
 
 import components.GuiHelper;
+import gui.Helper;
 import org.javagram.dao.Person;
 import org.javagram.dao.proxy.TelegramProxy;
 
@@ -19,7 +20,7 @@ public class ContactsList extends JPanel {
     private TelegramProxy telegramProxy;
 
     {
-        GuiHelper.decorateScrollPane(scrollPane);
+        Helper.decorateScrollPane(scrollPane);
     }
 
     private void createUIComponents() {

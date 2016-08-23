@@ -23,7 +23,7 @@ public class CodeForm extends ImagePanel {
     public CodeForm() {
         super(Images.getBackground(), true, false, 0);
 
-        GuiHelper.adjustTextPane(hintTextPane);
+        Helper.adjustTextPane(hintTextPane);
 
         codePasswordField.setBorder(BorderFactory.createEmptyBorder());
         if(codePasswordField.getDocument() instanceof AbstractDocument)

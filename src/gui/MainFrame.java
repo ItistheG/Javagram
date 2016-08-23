@@ -158,7 +158,7 @@ public class MainFrame extends JFrame {
                     try {
                         telegramProxy.sendMessage(buddy, text);
                         mainForm.setMessageText("");
-                        checkForUpdates();
+                        checkForUpdates(true);
                     } catch (Exception e) {
                         showErrorMessage("Не могу отправить сообщение", "Ошибка!");
                     }
@@ -194,7 +194,7 @@ public class MainFrame extends JFrame {
                 Person person = contactsList.getSelectedValue();
                 if(person instanceof Contact) {
                     editContactForm.setContactInfo(new ContactInfo((Contact) person));
-                    editContactForm.setPhoto(GuiHelper.getPhoto(telegramProxy, person, false, true));
+                    editContactForm.setPhoto(Helper.getPhoto(telegramProxy, person, false, true));
                     mainWindowManager.setIndex(EDIT_CONTACT_FORM);
                 }
             }
@@ -224,7 +224,7 @@ public class MainFrame extends JFrame {
         timer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                checkForUpdates();
+                checkForUpdates(false);
             }
         });
         timer.start();
@@ -234,9 +234,9 @@ public class MainFrame extends JFrame {
         this.telegramDAO = telegramDAO;
     }
 
-    protected void checkForUpdates() {
+    protected void checkForUpdates(boolean force) {
         if (telegramProxy != null) {
-            UpdateChanges updateChanges = telegramProxy.update();
+            UpdateChanges updateChanges = telegramProxy.update(force ? TelegramProxy.FORCE_SYNC_UPDATE : TelegramProxy.USE_SYNC_UPDATE);
 
             int photosChangedCount = updateChanges.getLargePhotosChanged().size() +
                     updateChanges.getSmallPhotosChanged().size() +
@@ -324,7 +324,8 @@ public class MainFrame extends JFrame {
             mainWindowManager.setIndex(MAIN_WINDOW);
             changeContentPanel(phoneForm);
             phoneForm.transferFocusTo();
-            telegramDAO.logOut();
+            if(!telegramDAO.logOut())
+                throw new RuntimeException("Отказ сервера разорвать соединение");
         } catch (Exception e) {
             showErrorMessage("Продолжение работы не возможно", "Критическая ошибка!");
             abort(e);
@@ -448,7 +449,7 @@ public class MainFrame extends JFrame {
             mainForm.setMePhoto(null);
         } else {
             mainForm.setMeText(me.getFirstName() + " " + me.getLastName());
-            mainForm.setMePhoto(GuiHelper.getPhoto(telegramProxy, me, true, true));
+            mainForm.setMePhoto(Helper.getPhoto(telegramProxy, me, true, true));
         }
     }
 
@@ -459,7 +460,7 @@ public class MainFrame extends JFrame {
             mainForm.setBuddyEditEnabled(false);
         } else {
             mainForm.setBuddyText(person.getFirstName() + " " + person.getLastName());
-            mainForm.setBuddyPhoto(GuiHelper.getPhoto(telegramProxy, person, true, true));
+            mainForm.setBuddyPhoto(Helper.getPhoto(telegramProxy, person, true, true));
             mainForm.setBuddyEditEnabled(person instanceof Contact);
         }
     }
@@ -490,7 +491,7 @@ public class MainFrame extends JFrame {
         }
 
         mainWindowManager.setIndex(MAIN_WINDOW);
-        checkForUpdates();
+        checkForUpdates(true);
         return true;
     }
 
@@ -508,7 +509,7 @@ public class MainFrame extends JFrame {
         }
 
         mainWindowManager.setIndex(MAIN_WINDOW);
-        checkForUpdates();
+        checkForUpdates(true);
         return true;
     }
 
@@ -521,11 +522,11 @@ public class MainFrame extends JFrame {
         }
 
         mainWindowManager.setIndex(MAIN_WINDOW);
-        checkForUpdates();
+        checkForUpdates(true);
         return true;
     }
 
-    private void abort(Exception e) {
+    private void abort(Throwable e) {
         if(e != null)
             e.printStackTrace();
         else

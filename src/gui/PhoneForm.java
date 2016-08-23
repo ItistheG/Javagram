@@ -27,7 +27,7 @@ public class PhoneForm extends ImagePanel {
 
         super(Images.getBackground(), true, false, 0);
 
-        GuiHelper.adjustTextPane(hintTextPane);
+        Helper.adjustTextPane(hintTextPane);
 
         phoneTextField.setBorder(BorderFactory.createEmptyBorder());
 

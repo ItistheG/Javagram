@@ -2,6 +2,7 @@ package contacts;
 
 import components.GuiHelper;
 import components.PhotoPanel;
+import gui.Helper;
 import gui.PhoneForm;
 import org.javagram.dao.Person;
 import org.javagram.dao.Dialog;
@@ -80,7 +81,7 @@ public class ContactForm extends JPanel implements ListCellRenderer <Person>{
 
         this.hasFocus = hasFocus;
 
-        ((PhotoPanel)photoPanel).setImage(GuiHelper.getPhoto(telegramProxy, person, true, true));
+        ((PhotoPanel)photoPanel).setImage(Helper.getPhoto(telegramProxy, person, true, true));
         ((PhotoPanel)photoPanel).setOnline(telegramProxy.isOnline(person));
 
         return this;
