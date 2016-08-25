@@ -20,7 +20,7 @@ public class ContactsList extends JPanel {
     private TelegramProxy telegramProxy;
 
     {
-        Helper.decorateScrollPane(scrollPane);
+        GuiHelper.decorateScrollPane(scrollPane);
     }
 
     private void createUIComponents() {

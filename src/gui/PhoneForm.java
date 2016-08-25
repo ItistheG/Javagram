@@ -8,6 +8,7 @@ import resources.Images;
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
+import java.awt.*;
 import java.awt.event.*;
 import java.text.ParseException;
 
@@ -41,6 +42,9 @@ public class PhoneForm extends ImagePanel {
         }
 
         this.iconPanel.setBorder(BorderFactory.createEmptyBorder());
+
+        //Альтернативное решение
+        //BlueButton.decorateButton(okButton);
     }
 
     public String getPhoneNumber() {

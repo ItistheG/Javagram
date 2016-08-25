@@ -39,10 +39,10 @@ public class MainForm extends JPanel {
         contactsPanel.add(new JPanel());
         messagesPanel.add(new JPanel());
 
-        Helper.decorateScrollPane(messageTextScrollPane);
+        GuiHelper.decorateScrollPane(messageTextScrollPane);
 
         GuiHelper.decorateAsImageButton(gearButton, Images.getGearIcon());
-        GuiHelper.decorateAsImageButton(buddyEditButton, Images.getPencilIcon(), GuiHelper.createTransparentImage(1, 1));
+        GuiHelper.decorateAsImageButton(buddyEditButton, Images.getPencilIcon());
         GuiHelper.decorateAsImageButton(sendMessageButton, Images.getSendMessageImage());
     }
 

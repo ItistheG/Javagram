@@ -30,6 +30,9 @@ public class CodeForm extends ImagePanel {
             ((AbstractDocument) codePasswordField.getDocument()).setDocumentFilter(new MaxLengthDocumentFilter(5));
 
         this.iconPanel.setBorder(BorderFactory.createEmptyBorder());
+
+        //Альтернативное решение
+        //BlueButton.decorateButton(okButton);
     }
 
     public void setPhoneLabelText(String text) {

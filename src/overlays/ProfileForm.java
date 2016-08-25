@@ -29,6 +29,9 @@ public class ProfileForm extends OverlayBackground {
     {
         nameLabel.setFont(Fonts.getNameFont().deriveFont(0, 45));
         nameLabel.setForeground(Color.white);
+
+        GuiHelper.decorateAsImageButton(closeButton, Images.getCloseOverlay());
+        GuiHelper.decorateAsImageButton(logoutButton, Images.getLogoutIcon());
     }
 
     private void createUIComponents() {
@@ -53,8 +56,9 @@ public class ProfileForm extends OverlayBackground {
             }
         };
 
-        closeButton = new ImageButton(Images.getCloseOverlay());
-        logoutButton = new ImageButton(Images.getLogoutIcon());
+        //Альтернтивное решение
+        //closeButton = new ImageButton(Images.getCloseOverlay());
+        //logoutButton = new ImageButton(Images.getLogoutIcon());
     }
 
     public TelegramProxy getTelegramProxy() {

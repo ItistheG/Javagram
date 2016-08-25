@@ -29,7 +29,7 @@ public class MessagesForm extends JPanel {
     private Person person;
 
     {
-        Helper.decorateScrollPane(scrollPane);
+        GuiHelper.decorateScrollPane(scrollPane);
     }
 
     public MessagesForm(TelegramProxy telegramProxy) {

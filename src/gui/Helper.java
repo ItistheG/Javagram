@@ -20,25 +20,6 @@ public class Helper {
     private Helper() {
     }
 
-    public static void decorateScrollPane(JScrollPane scrollPane) {
-        int width = 3;
-
-        JScrollBar verticalScrollBar =  scrollPane.getVerticalScrollBar();
-        verticalScrollBar.setUI(new MyScrollbarUI());
-        verticalScrollBar.setPreferredSize(new Dimension(width, Integer.MAX_VALUE));
-
-        JScrollBar horizontalScrollBar =  scrollPane.getHorizontalScrollBar();
-        horizontalScrollBar.setUI(new MyScrollbarUI());
-        horizontalScrollBar.setPreferredSize(new Dimension(Integer.MAX_VALUE, width));
-
-        for (String corner : new String[] {ScrollPaneConstants.LOWER_RIGHT_CORNER, ScrollPaneConstants.LOWER_LEFT_CORNER,
-                ScrollPaneConstants.UPPER_LEFT_CORNER, ScrollPaneConstants.UPPER_RIGHT_CORNER}) {
-            JPanel panel = new JPanel();
-            panel.setBackground(Color.white);
-            scrollPane.setCorner(corner, panel);
-        }
-    }
-
     public static void adjustTextPane(JTextPane textPane) {
         SimpleAttributeSet attribs = new SimpleAttributeSet();
         StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);

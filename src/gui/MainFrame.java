@@ -130,7 +130,11 @@ public class MainFrame extends JFrame {
         plusOverlay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                addContactForm.setContactInfo(new ContactInfo());
+                ContactInfo contactInfo = new ContactInfo();
+                Person person = contactsList.getSelectedValue();
+                if(person instanceof KnownPerson && ! (person instanceof Contact))
+                    contactInfo.setPhone(((KnownPerson) person).getPhoneNumber());
+                addContactForm.setContactInfo(contactInfo);
                 mainWindowManager.setIndex(ADD_CONTACT_FORM);
             }
         });
@@ -540,8 +544,12 @@ public class MainFrame extends JFrame {
         System.exit(0);
     }
 
-    private BlueButton[] okButton = new BlueButton[] {BlueButton.createOkButton()};
-    private BlueButton[] yesNoButtons = BlueButton.createYesNoButtons();
+    //Альтернативное решение
+    //private BlueButton[] okButton = new BlueButton[] {BlueButton.createOkButton()};
+    //private BlueButton[] yesNoButtons = BlueButton.createYesNoButtons();
+
+    private JButton[] okButton = new JButton[] {BlueButton.createDecoratedOkButton()};
+    private JButton[] yesNoButtons = BlueButton.createDecoratedYesNoButtons();
 
     private void showErrorMessage(String text, String title) {
         Undecorated.showDialog(this, text, title, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, Images.getErrorIcon(),
