@@ -190,6 +190,8 @@ public class GuiHelper {
 
     public static void decorateAsImageButton(Color foreground, JButton button, Dimension size, Image image, Image disabledImage) {
         button.setContentAreaFilled(false);
+        button.setOpaque(false);
+        button.setBorder(null);
         if(foreground == null)
             button.setText("");
         else
@@ -198,12 +200,14 @@ public class GuiHelper {
         button.setVerticalTextPosition(SwingConstants.CENTER);
         button.setHorizontalAlignment(SwingConstants.CENTER);
         button.setVerticalAlignment(SwingConstants.CENTER);
-        button.setBorder(null);
+
         button.setIcon(getImageIconFor(image, size));
-        if(image == null)
+        if(image == null) {
             disabledImage = null;
-        else if(disabledImage == null)
-            disabledImage = foreground != null ? makeGray(image) : createTransparentImage(1, 1);
+        } else if(disabledImage == null) {
+            if (foreground == null)
+                disabledImage = createTransparentImage(1, 1);
+        }
         button.setDisabledIcon(getImageIconFor(disabledImage, size));
 
         button.setSelectedIcon(null);

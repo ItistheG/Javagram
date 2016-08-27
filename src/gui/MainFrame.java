@@ -545,11 +545,11 @@ public class MainFrame extends JFrame {
     }
 
     //Альтернативное решение
-    //private BlueButton[] okButton = new BlueButton[] {BlueButton.createOkButton()};
-    //private BlueButton[] yesNoButtons = BlueButton.createYesNoButtons();
+    //private BlueButton[] okButton = BlueButton.createButtons(JOptionPane.DEFAULT_OPTION);
+    //private BlueButton[] yesNoButtons = BlueButton.createButtons(JOptionPane.YES_NO_OPTION);
 
-    private JButton[] okButton = new JButton[] {BlueButton.createDecoratedOkButton()};
-    private JButton[] yesNoButtons = BlueButton.createDecoratedYesNoButtons();
+    private JButton[] okButton = BlueButton.createDecoratedButtons(JOptionPane.DEFAULT_OPTION);
+    private JButton[] yesNoButtons = BlueButton.createDecoratedButtons(JOptionPane.YES_NO_OPTION);
 
     private void showErrorMessage(String text, String title) {
         Undecorated.showDialog(this, text, title, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, Images.getErrorIcon(),

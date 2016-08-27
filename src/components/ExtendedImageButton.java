@@ -16,11 +16,11 @@ public class ExtendedImageButton extends ImageButton {
     private int inset = 5;
 
     public ExtendedImageButton(Image image) {
-        this(image, null);
+        this(image, false, null, false);
     }
 
-    public ExtendedImageButton(Image image, Image disabledImage) {
-        super(image, false, assureImages(disabledImage, image), false);
+    public ExtendedImageButton(Image image, boolean keepRatio, Image disabledImage, boolean keepDisabledRatio) {
+        super(image, keepRatio, assureImages(disabledImage, image), keepDisabledRatio);
     }
 
     @Override
@@ -75,9 +75,10 @@ public class ExtendedImageButton extends ImageButton {
 
     private static Image assureImages(Image disabledImage, Image image) {
         if(image == null)
-            throw new NullPointerException("ExtendedImageButton requires an image");
-        if(disabledImage == null)
-            disabledImage = GuiHelper.makeGray(image);
-        return disabledImage;
+            return null;
+        else if(disabledImage == null)
+            return GuiHelper.makeGray(image);
+        else
+            return disabledImage;
     }
 }
