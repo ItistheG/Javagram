@@ -12,9 +12,10 @@ import java.awt.image.BufferedImage;
 public class BlueButton extends ExtendedImageButton {
 
     private static Image blueButtonImage = Images.getBlueButton();
+    private static Image blueButtonDisabledImage = GuiHelper.makeGray(blueButtonImage);
 
     public BlueButton(String text) {
-        super(blueButtonImage);
+        super(blueButtonImage, blueButtonDisabledImage);
         setText(text);
         setForeground(Color.black);
     }

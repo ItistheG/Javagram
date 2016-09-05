@@ -16,7 +16,11 @@ public class ExtendedImageButton extends ImageButton {
     private int inset = 5;
 
     public ExtendedImageButton(Image image) {
-        this(image, false, null, false);
+        this(image, null);
+    }
+
+    public ExtendedImageButton(Image image, Image disabledImage) {
+        this(image, false, disabledImage, false);
     }
 
     public ExtendedImageButton(Image image, boolean keepRatio, Image disabledImage, boolean keepDisabledRatio) {

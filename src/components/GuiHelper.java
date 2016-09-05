@@ -191,6 +191,7 @@ public class GuiHelper {
     public static void decorateAsImageButton(Color foreground, JButton button, Dimension size, Image image, Image disabledImage) {
         button.setContentAreaFilled(false);
         button.setOpaque(false);
+        button.setBorderPainted(false);
         button.setBorder(null);
         if(foreground == null)
             button.setText("");

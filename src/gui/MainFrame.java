@@ -109,7 +109,7 @@ public class MainFrame extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
 
-                if(messagesFrozen != 0)
+                if(listSelectionEvent.getValueIsAdjusting() || messagesFrozen != 0)
                     return;
 
                 if(telegramProxy == null)  {

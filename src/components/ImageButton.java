@@ -24,7 +24,11 @@ public class ImageButton extends JButton {
     }
 
     public ImageButton(Image image) {
-        this(image, true, null, true);
+        this(image, null);
+    }
+
+    public ImageButton(Image image, Image disabledImage) {
+        this(image, true, disabledImage, true);
     }
 
     public ImageButton(Image image, boolean keepRatio, Image disabledImage, boolean keepDisabledRatio) {
