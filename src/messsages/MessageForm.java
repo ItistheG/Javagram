@@ -1,5 +1,7 @@
 package messsages;
 
+import gui.Helper;
+
 import javax.swing.*;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
@@ -37,6 +39,8 @@ public class MessageForm extends JPanel {
         textPane.setOpaque(false);
         textPane.setEditable(false);
         textPane.setMargin(new Insets(MARGIN, MARGIN, MARGIN, MARGIN));
+
+        Helper.clearBoth(textPane);
 
         dateLabel.setText(date);
         this.color = color;

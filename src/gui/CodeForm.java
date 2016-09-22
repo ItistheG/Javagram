@@ -25,7 +25,8 @@ public class CodeForm extends ImagePanel {
 
         Helper.adjustTextPane(hintTextPane);
 
-        codePasswordField.setBorder(BorderFactory.createEmptyBorder());
+        Helper.clearBoth(codePasswordField);
+
         if(codePasswordField.getDocument() instanceof AbstractDocument)
             ((AbstractDocument) codePasswordField.getDocument()).setDocumentFilter(new MaxLengthDocumentFilter(5));
 

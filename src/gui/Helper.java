@@ -1,7 +1,6 @@
 package gui;
 
 import components.GuiHelper;
-import components.MyScrollbarUI;
 import org.javagram.dao.Person;
 import org.javagram.dao.proxy.TelegramProxy;
 import resources.Images;
@@ -24,6 +23,23 @@ public class Helper {
         SimpleAttributeSet attribs = new SimpleAttributeSet();
         StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
         textPane.setParagraphAttributes(attribs, false);
+        //Для Nimbus
+        clearBoth(textPane);
+    }
+
+    public static void clearBoth(JComponent textPane) {
+        clearBackground(textPane);
+        clearBorder(textPane);
+    }
+
+    public static void clearBackground(JComponent component) {
+        component.setOpaque(false);
+        component.setBackground(new Color(0, 0, 0, 0));//Для Nimbus
+
+    }
+
+    public static void clearBorder(JComponent component) {
+        component.setBorder(BorderFactory.createEmptyBorder());
     }
 
     public static BufferedImage getPhoto(TelegramProxy telegramProxy, Person person, boolean small) {

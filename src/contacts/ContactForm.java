@@ -34,6 +34,8 @@ public class ContactForm extends JPanel implements ListCellRenderer <Person>{
     public ContactForm(TelegramProxy telegramProxy) {
         this.telegramProxy = telegramProxy;
 
+        Helper.clearBoth(lastMessageLabel);
+
         //Рекомендуемый размер является минимальным
         //Меньше JScrollPane ужимать не будет
         //setPreferredSize(new Dimension(0, 100));

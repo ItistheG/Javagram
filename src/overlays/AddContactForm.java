@@ -1,6 +1,7 @@
 package overlays;
 
 import components.*;
+import gui.Helper;
 import resources.Images;
 
 import javax.swing.*;
@@ -34,6 +35,10 @@ public class AddContactForm extends OverlayBackground {
 
         GuiHelper.decorateAsImageButton(closeButton, Images.getCloseOverlay());
         GuiHelper.decorateAsImageButton(addButton, Images.getAddContact());
+
+        Helper.clearBoth(firstNameTextField);
+        Helper.clearBoth(lastNameTextField);
+        Helper.clearBoth(phoneTextField);
     }
 
     private void createUIComponents() {

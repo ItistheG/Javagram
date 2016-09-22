@@ -44,6 +44,9 @@ public class MainForm extends JPanel {
         GuiHelper.decorateAsImageButton(gearButton, Images.getGearIcon());
         GuiHelper.decorateAsImageButton(buddyEditButton, Images.getPencilIcon());
         GuiHelper.decorateAsImageButton(sendMessageButton, Images.getSendMessageImage());
+
+        Helper.clearBorder(messageTextArea);
+        Helper.clearBorder(searchTextField);
     }
 
     private void createUIComponents() {

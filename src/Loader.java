@@ -16,7 +16,13 @@ public class Loader {
             @Override
             public void run() {
                 try {
-                    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+                    for(UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                        if(info.getName().equals("Nimbus")) {
+                            UIManager.setLookAndFeel(info.getClassName());
+                            break;
+                        }
+                    }
+                    //UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                     TelegramDAO telegramDAO =  new ApiBridgeTelegramDAO(Config.SERVER, Config.APP_ID, Config.APP_HASH);
                             new DebugTelegramDAO();
                     MainFrame frame = new MainFrame(telegramDAO);

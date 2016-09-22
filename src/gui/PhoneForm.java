@@ -1,7 +1,6 @@
 package gui;
 
 import components.BlueButton;
-import components.GuiHelper;
 import components.ImagePanel;
 import resources.Images;
 
@@ -30,7 +29,8 @@ public class PhoneForm extends ImagePanel {
 
         Helper.adjustTextPane(hintTextPane);
 
-        phoneTextField.setBorder(BorderFactory.createEmptyBorder());
+        Helper.clearBoth(phoneTextField);
+
 
         try {
             MaskFormatter maskFormatter = new MaskFormatter("+7 (###) ###-##-##");

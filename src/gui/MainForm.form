@@ -120,7 +120,9 @@
             <children>
               <grid id="92ccc" layout-manager="BorderLayout" hgap="0" vgap="0">
                 <constraints border-constraint="North"/>
-                <properties/>
+                <properties>
+                  <background color="-1"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <grid id="98f85" binding="searchIconPanel" custom-create="true" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
