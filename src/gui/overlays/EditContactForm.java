@@ -61,17 +61,18 @@ public class EditContactForm extends OverlayBackground {
         firstNameTextField.setText(info.getFirstName());
         lastNameTextField.setText(info.getLastName());
         phoneTextField.setText(info.getPhone());
-        id = info.getId();
         ((ImagePanel)photoPanel).setImage(info.getPhoto());
+        id = info.getId();
     }
 
     public ContactInfo getContactInfo() {
-        return new ContactInfo(phoneTextField.getText().trim(),
-                firstNameTextField.getText().trim(),
-                lastNameTextField.getText().trim(),
-                id,
-                (BufferedImage) ((ImagePanel)photoPanel).getImage()
-        );
+        ContactInfo info = new ContactInfo();
+        info.setPhone(phoneTextField.getText().trim());
+        info.setFirstName(firstNameTextField.getText().trim());
+        info.setLastName(lastNameTextField.getText().trim());
+        info.setPhoto((BufferedImage) ((ImagePanel)photoPanel).getImage());
+        info.setId(id);
+        return info;
     }
 
     public void addActionListenerForSave(ActionListener actionListener) {

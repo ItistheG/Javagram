@@ -8,7 +8,7 @@ import gui.resources.Images;
 import javax.swing.*;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
 
 /**

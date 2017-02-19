@@ -1,7 +1,5 @@
 package components;
 
-import gui.resources.Images;
-
 import javax.swing.*;
 import java.awt.*;
 

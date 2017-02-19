@@ -1,11 +1,7 @@
 package components;
 
-import javafx.scene.paint.*;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 
 /**
  * Created by HerrSergio on 27.06.2016.

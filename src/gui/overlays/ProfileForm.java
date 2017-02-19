@@ -9,6 +9,7 @@ import gui.resources.Images;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 /**
  * Created by HerrSergio on 15.06.2016.
@@ -19,12 +20,19 @@ public class ProfileForm extends OverlayBackground {
     private JPanel photoPanel;
     private JPanel rootPanel;
     private JLabel nameLabel;
+    private JLabel phoneLabel;
 
-    private ContactInfo contactInfo;
+    private final static String phoneRegexFrom = "^\\+?(\\d*)(\\d{3})(\\d{3})(\\d{2})(\\d{2})$", phoneRegexTo = "+$1($2)$3-$4-$5";
+
+    private String phone;
+    private int id = 0;
 
     {
         nameLabel.setFont(Fonts.getNameFont().deriveFont(0, 45));
         nameLabel.setForeground(Color.white);
+
+        phoneLabel.setFont(Fonts.getNameFont().deriveFont(0, 30));
+        phoneLabel.setForeground(Color.white);
 
         GuiHelper.decorateAsImageButton(closeButton, Images.getCloseOverlay());
         GuiHelper.decorateAsImageButton(logoutButton, Images.getLogoutIcon());
@@ -42,20 +50,32 @@ public class ProfileForm extends OverlayBackground {
     }
 
     public ContactInfo getContactInfo() {
-        return contactInfo;
+        ContactInfo info = new ContactInfo();
+        String[] data = nameLabel.getText().trim().split("\\s+", 2); //На случай редактирования, которого пока нет
+        info.setFirstName(data.length > 0 ? data[0] : "");
+        info.setLastName(data.length > 1 ? data[1] : "");
+        info.setPhone(phone);
+        info.setPhoto((BufferedImage) ((ImagePanel)photoPanel).getImage());
+        info.setId(id);
+        return info;
     }
 
     public void setContactInfo(ContactInfo contactInfo) {
-        if(this.contactInfo != contactInfo) {
-            this.contactInfo = contactInfo;
-            if(contactInfo != null){
-                ((ImagePanel)photoPanel).setImage(contactInfo.getPhoto());
-                nameLabel.setText(contactInfo.getFirstName() + " " + contactInfo.getLastName());
-            } else {
-                ((ImagePanel)photoPanel).setImage(null);
-                nameLabel.setText("");
-            }
+
+        if (contactInfo != null) {
+            ((ImagePanel) photoPanel).setImage(contactInfo.getPhoto());
+            nameLabel.setText(contactInfo.getFirstName() + " " + contactInfo.getLastName());
+            phone = contactInfo.getPhone();
+            phoneLabel.setText(contactInfo.getClearedPhone().replaceAll(phoneRegexFrom, phoneRegexTo));
+            id = contactInfo.getId();
+        } else {
+            ((ImagePanel) photoPanel).setImage(null);
+            nameLabel.setText("");
+            phone = "";
+            phoneLabel.setText("");
+            id = 0;
         }
+
     }
 
     public void addActionListenerForLogout(ActionListener actionListener) {

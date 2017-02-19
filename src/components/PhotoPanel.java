@@ -1,8 +1,6 @@
 package components;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImage;
 
 /**
  * Created by HerrSergio on 20.07.2016.

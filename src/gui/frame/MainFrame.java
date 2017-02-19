@@ -3,19 +3,18 @@ package gui.frame;
 import components.BlueButton;
 import components.MyBufferedOverlayDialog;
 import components.MyLayeredPane;
-import gui.overlays.ContactInfo;
+import gui.Helper;
 import gui.contacts.ContactsList;
 import gui.intro.CodeForm;
-import gui.Helper;
-import gui.main.MainForm;
 import gui.intro.PhoneForm;
+import gui.main.MainForm;
 import gui.messsages.MessagesForm;
+import gui.overlays.*;
+import gui.resources.Images;
 import org.javagram.dao.*;
 import org.javagram.dao.Dialog;
 import org.javagram.dao.proxy.TelegramProxy;
 import org.javagram.dao.proxy.changes.UpdateChanges;
-import gui.overlays.*;
-import gui.resources.Images;
 import undecorated.ComponentResizerAbstract;
 import undecorated.Undecorated;
 
@@ -220,6 +219,7 @@ public class MainFrame extends JFrame {
         editContactForm.addActionListenerForSave(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+
                 tryUpdateContact(editContactForm.getContactInfo());
             }
         });

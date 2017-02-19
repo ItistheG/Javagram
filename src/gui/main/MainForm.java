@@ -1,6 +1,8 @@
 package gui.main;
 
-import components.*;
+import components.GuiHelper;
+import components.HintTextFieldUnderlined;
+import components.ImagePanel;
 import gui.Helper;
 import gui.resources.Fonts;
 import gui.resources.Images;

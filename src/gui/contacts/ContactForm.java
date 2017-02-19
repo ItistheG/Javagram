@@ -2,8 +2,8 @@ package gui.contacts;
 
 import components.PhotoPanel;
 import gui.Helper;
-import org.javagram.dao.Person;
 import org.javagram.dao.Dialog;
+import org.javagram.dao.Person;
 import org.javagram.dao.proxy.TelegramProxy;
 
 import javax.swing.*;

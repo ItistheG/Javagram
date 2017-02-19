@@ -1,7 +1,8 @@
 package gui.intro;
 
-import components.*;
 import components.BlueButton;
+import components.ImagePanel;
+import components.MaxLengthDocumentFilter;
 import gui.Helper;
 import gui.resources.Images;
 

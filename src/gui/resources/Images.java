@@ -2,7 +2,6 @@ package gui.resources;
 
 import components.GuiHelper;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 
@@ -29,7 +28,6 @@ public class Images {
     private static BufferedImage removeContact;
     private static BufferedImage closeOverlay;
     private static BufferedImage logoutIcon;
-  //  private static BufferedImage blueButton;
     private static Icon warningIcon;
     private static Icon questionIcon;
     private static Icon errorIcon;

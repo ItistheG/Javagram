@@ -2,10 +2,10 @@ package gui;
 
 import components.GuiHelper;
 import gui.overlays.ContactInfo;
+import gui.resources.Images;
 import org.javagram.dao.KnownPerson;
 import org.javagram.dao.Person;
 import org.javagram.dao.proxy.TelegramProxy;
-import gui.resources.Images;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;

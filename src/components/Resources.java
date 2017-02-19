@@ -1,5 +1,7 @@
 package components;
 
+import gui.resources.Images;
+
 import java.awt.image.BufferedImage;
 
 /**
@@ -14,7 +16,11 @@ class Resources {
 
     public static BufferedImage getBlueButton() {
         if(blueButton == null)
-            blueButton = GuiHelper.loadImage("expences-button-png-hi.png", Resources.class);
+            blueButton = loadImage("expences-button-png-hi.png");
         return blueButton;
+    }
+
+    private static BufferedImage loadImage(String name) {
+        return GuiHelper.loadImage(name, Resources.class);
     }
 }
