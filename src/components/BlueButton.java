@@ -1,17 +1,17 @@
 package components;
 
-import resources.Images;
+import gui.resources.Images;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 /**
  * Created by HerrSergio on 22.07.2016.
  */
 public class BlueButton extends ExtendedImageButton {
 
-    private static Image blueButtonImage = Images.getBlueButton();
+    //Разделение ресурсов на пакеты
+    private static Image blueButtonImage = Resources.getBlueButton();
     private static Image blueButtonDisabledImage = GuiHelper.makeGray(blueButtonImage);
 
     public BlueButton(String text) {

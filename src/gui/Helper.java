@@ -1,9 +1,11 @@
 package gui;
 
 import components.GuiHelper;
+import gui.overlays.ContactInfo;
+import org.javagram.dao.KnownPerson;
 import org.javagram.dao.Person;
 import org.javagram.dao.proxy.TelegramProxy;
-import resources.Images;
+import gui.resources.Images;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -62,5 +64,16 @@ public class Helper {
         if(circle)
             photo = GuiHelper.makeCircle(photo);
         return photo;
+    }
+
+    public static ContactInfo toContactInfo(KnownPerson person, TelegramProxy proxy, boolean small, boolean makeCircle) {
+        ContactInfo info = toContactInfo(person);
+        if(proxy != null)
+            info.setPhoto(getPhoto(proxy, person, small, makeCircle));
+        return info;
+    }
+
+    public static ContactInfo toContactInfo(KnownPerson person) {
+        return new ContactInfo(person.getPhoneNumber(), person.getFirstName(), person.getLastName(), person.getId());
     }
 }

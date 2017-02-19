@@ -1,8 +1,7 @@
-import gui.MainFrame;
+import gui.frame.MainFrame;
 import org.javagram.dao.ApiBridgeTelegramDAO;
 import org.javagram.dao.DebugTelegramDAO;
 import org.javagram.dao.TelegramDAO;
-import resources.Config;
 
 import javax.swing.*;
 

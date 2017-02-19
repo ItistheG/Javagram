@@ -1,11 +1,6 @@
 package components;
 
-import resources.Images;
-
-import javax.swing.plaf.ButtonUI;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 
 /**
