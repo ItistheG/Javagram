@@ -7,6 +7,7 @@ import gui.Helper;
 import gui.contacts.ContactsList;
 import gui.intro.CodeForm;
 import gui.intro.PhoneForm;
+import gui.intro.Registration;
 import gui.main.MainForm;
 import gui.messsages.MessagesForm;
 import gui.overlays.*;
@@ -42,6 +43,7 @@ public class MainFrame extends JFrame {
     private TelegramProxy telegramProxy;
 
     private PhoneForm phoneForm = new PhoneForm();
+    private Registration registrationForm = new Registration();
     private CodeForm codeForm = new CodeForm();
     private MainForm mainForm = new MainForm();
     private ContactsList contactsList = new ContactsList();
@@ -74,7 +76,7 @@ public class MainFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                if(showQuestionMessage("Уверены, что хотите выйти?", "Вопрос"))
+                if (showQuestionMessage("Уверены, что хотите выйти?", "Вопрос"))
                     exit();
             }
 
@@ -87,9 +89,9 @@ public class MainFrame extends JFrame {
         phoneForm.addActionListenerForConfirm(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-               String phoneNumber = phoneForm.getPhoneNumber();
-                if(phoneNumber == null) {
-                    showErrorMessage("Введите корректный номер телефона!", "Ошибка!");
+                String phoneNumber = phoneForm.getPhoneNumber();
+                if (phoneNumber == null) {
+                    showWarningMessage("Введите корректный номер телефона!", "Ошибка!");
                     phoneForm.transferFocusTo();
                 } else {
                     switchFromPhoneToCode(phoneNumber);
@@ -101,22 +103,37 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String authCode = codeForm.getCode();
-                switchFromCodeToMain(authCode);
+                if(authCode == null || authCode.isEmpty()) {
+                    showWarningMessage("Введите корректный код!", "Ошибка!");
+                    codeForm.transferFocusTo();
+                } else {
+                    switchFromCode(authCode);
+                }
+            }
+        });
+
+        registrationForm.addActionListenerForConfirm(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String firstName = registrationForm.getFirstName();
+                String lastName = registrationForm.getLastNameText();
+
+                switchFromRegistration(firstName, lastName, codeForm.getCode());
             }
         });
 
         mainForm.setContactsPanel(contactsLayeredPane);
         contactsLayeredPane.add(contactsList, new Integer(0));
-        contactsLayeredPane.add(plusOverlay,new Integer(1));
+        contactsLayeredPane.add(plusOverlay, new Integer(1));
 
         contactsList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
 
-                if(listSelectionEvent.getValueIsAdjusting() || messagesFrozen != 0)
+                if (listSelectionEvent.getValueIsAdjusting() || messagesFrozen != 0)
                     return;
 
-                if(telegramProxy == null)  {
+                if (telegramProxy == null) {
                     displayDialog(null);
                 } else {
                     displayDialog(contactsList.getSelectedValue());
@@ -136,7 +153,7 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 ContactInfo contactInfo = new ContactInfo();
                 Person person = contactsList.getSelectedValue();
-                if(person instanceof KnownPerson && ! (person instanceof Contact))
+                if (person instanceof KnownPerson && !(person instanceof Contact))
                     contactInfo.setPhone(((KnownPerson) person).getPhoneNumber());
                 addContactForm.setContactInfo(contactInfo);
                 mainWindowManager.setIndex(ADD_CONTACT_FORM);
@@ -160,15 +177,15 @@ public class MainFrame extends JFrame {
         mainForm.addSendMessageListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                Person buddy =  contactsList.getSelectedValue();
+                Person buddy = contactsList.getSelectedValue();
                 String text = mainForm.getMessageText().trim();
-                if(telegramProxy != null && buddy != null && !text.isEmpty()) {
+                if (telegramProxy != null && buddy != null && !text.isEmpty()) {
                     try {
                         telegramProxy.sendMessage(buddy, text);
                         mainForm.setMessageText("");
                         checkForUpdates(true);
                     } catch (Exception e) {
-                        showErrorMessage("Не могу отправить сообщение", "Ошибка!");
+                        showWarningMessage("Не могу отправить сообщение", "Ошибка!");
                     }
                 }
             }
@@ -202,7 +219,7 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 Person person = contactsList.getSelectedValue();
-                if(person instanceof Contact) {
+                if (person instanceof Contact) {
                     editContactForm.setContactInfo(Helper.toContactInfo((Contact) person, telegramProxy, false, true));
                     mainWindowManager.setIndex(EDIT_CONTACT_FORM);
                 }
@@ -219,7 +236,6 @@ public class MainFrame extends JFrame {
         editContactForm.addActionListenerForSave(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
                 tryUpdateContact(editContactForm.getContactInfo());
             }
         });
@@ -268,13 +284,13 @@ public class MainFrame extends JFrame {
                     //updateChanges.getDialogsChanged().getChanged().containsKey(currentDialog) ||
                     updateChanges.getDialogsChanged().getDeleted().contains(currentDialog)) {
                 updateMessages();
-            } else if(updateChanges.getPersonsChanged().getChanged().containsKey(currentBuddy)
+            } else if (updateChanges.getPersonsChanged().getChanged().containsKey(currentBuddy)
                     || updateChanges.getSmallPhotosChanged().contains(currentBuddy)
                     || updateChanges.getLargePhotosChanged().contains(currentBuddy)) {
                 displayBuddy(targetPerson);
             }
 
-            if(updateChanges.getPersonsChanged().getChanged().containsKey(telegramProxy.getMe())
+            if (updateChanges.getPersonsChanged().getChanged().containsKey(telegramProxy.getMe())
                     || updateChanges.getSmallPhotosChanged().contains(telegramProxy.getMe())
                     || updateChanges.getLargePhotosChanged().contains(telegramProxy.getMe())) {
                 displayMe(telegramProxy.getMe());
@@ -286,65 +302,156 @@ public class MainFrame extends JFrame {
     private void switchFromPhoneToCode(String phoneNumber) {
 
         try {
-            telegramDAO.acceptNumber(phoneNumber.replaceAll("[\\D]+", ""));
-        } catch (IOException | NullPointerException e) {
-            showWarningMessage("Номер телефона введене неверно", "Ошибка!");
-            phoneForm.transferFocusTo();
-            return;
-        }
-
-        if(telegramDAO.canSignIn()) {
             try {
-                telegramDAO.sendCode();
-                codeForm.setPhoneLabelText(phoneNumber);
-                changeContentPanel(codeForm);
-                codeForm.transferFocusTo();
-            } catch (Exception e) {
-                showErrorMessage("Потеряно соединение с сервером", "Ошибка!");
-                changeContentPanel(phoneForm);
-                phoneForm.transferFocusTo();
-                return;
+                telegramDAO.acceptNumber(phoneNumber.replaceAll("[\\D]+", ""));
+                // Я расширил DebugTelegramDAO, так что теперь номера имеют смысл.
+                // Он определется последней цифрой:
+                // 0 - NOT_REGISTERED
+                // 1 - REGISTERED
+                // 2 - INVITED
+                // 3 - INVALID
+                // 4 - IOException
+                // 5-7 - те же 0-2, но код устарел при signIn
+                // 8-9 - те же 0,2, но код устарел при signIn и Up
+
+                if(telegramDAO.canSignUp()) {
+                    // Здесь можно перейти на форму регистрации и не заморачиваться с UNOCCUPIED
+                    if(!showQuestionMessage("Пользователь не зарегистрирован. Будет регистрироваться?", "Внимание!")) {
+                        return;
+                    }
+                }
+
+                // Можно и без защиты от ошибочного DAO
+                if (telegramDAO.canSignIn() || telegramDAO.canSignUp()) {
+                    telegramDAO.sendCode();
+                    codeForm.setPhoneLabelText(phoneNumber);
+                    changeContentPanel(codeForm);
+                    codeForm.transferFocusTo();
+                } else {
+                    throw new ApiException();
+                }
+            } catch (ApiException e) {
+                if (e.isPhoneNumberInvalid()) {
+                    showWarningMessage("Номер телефона введен не верно", "Ошибка!");
+                    phoneForm.transferFocusTo();
+                    return;
+                }
+                throw e;
             }
-        } else if(telegramDAO.canSignUp()) {
-            showWarningMessage("Пользователь незарегистрирован", "Внимание!");
-            phoneForm.transferFocusTo();
-            return;
-        } else {
-            abort(null);
-        }
-    }
-
-    private void switchFromCodeToMain(String code) {
-        try {
-            telegramDAO.signIn(code);
-            changeContentPanel(mainWindowManager);
-            createTelegramProxy();
         } catch (Exception e) {
-            showWarningMessage("Неверный код", "Внимание!");
-            codeForm.transferFocusTo();
+            catchException(e);
         }
     }
 
+    private void switchFromCode(String code) {
+        try {
+            try {
+                //Можно без ветвления. Только signIn
+                if(telegramDAO.canSignUp()) {
+                    telegramDAO.signIn(code);
+                    showInformationMessage("Кажется, номер был зарегистрирован другими средствами", "Странно...");
+                } else if(telegramDAO.canSignIn()) {
+                    telegramDAO.signIn(code);
+                } else {
+                    throw new ApiException();
+                }
+                switchToMainScreen();
+            } catch (ApiException e) {
+                if (e.isCodeInvalid()) {
+                    showWarningMessage("Неверный код", "Внимание!");
+                    codeForm.clear();
+                    codeForm.transferFocusTo();
+                    return;
+                }
+                if (e.isCodeEmpty()) {
+                    showWarningMessage("Не введен код", "Внимание!");
+                    codeForm.clear();
+                    codeForm.transferFocusTo();
+                    return;
+                }
+                if(e.isCodeExpired()) {
+                    showWarningMessage("Код устарел. Отправляю новый", "Внимание!");
+                    telegramDAO.sendCode();
+                    codeForm.clear();
+                    codeForm.transferFocusTo();
+                    return;
+                }
+                if (e.isPhoneNumberUnoccupied()) {
+                    changeContentPanel(registrationForm);
+                    return;
+                }
+                throw e;
+            }
+        } catch (Exception e) {
+            catchException(e);
+        }
+    }
+
+    private void switchToMainScreen() throws ApiException {
+        changeContentPanel(mainWindowManager);
+        createTelegramProxy();
+    }
+
+    private void switchFromRegistration(String firstName, String lastName, String code) {
+        try {
+            try {
+                //Можно без ветвления. Только signUp
+                if (telegramDAO.canSignUp()) {
+                    telegramDAO.signUp(code, firstName, lastName);
+                } else {
+                    throw new ApiException();
+                }
+                switchToMainScreen();
+            }
+            catch (ApiException e) {
+                if (e.isNameInvalid()) {
+                    showWarningMessage("Неверные регистрационные данные", "Внимание!");
+                    return;
+                }
+                if(e.isCodeExpired()) {
+                    showWarningMessage("Код устарел. Отправляю новый", "Внимание!");
+                    changeContentPanel(codeForm);
+                    telegramDAO.sendCode();
+                    codeForm.clear();
+                    codeForm.transferFocusTo();
+                    return;
+                }
+                throw e;
+            }
+        } catch (Exception e) {
+            catchException(e);
+        }
+    }
+
+    private void catchException(Exception e) {
+        if (e instanceof IOException) {
+            showErrorMessage("Потеряно соединение с сервером", "Ошибка!");
+        } else if (e instanceof ApiException) {
+            showErrorMessage("Непредвиденная ошибка API :: " + e.getMessage(), "Ошибка!");
+        } else {
+            showErrorMessage("Непредвиденная ошибка", "Ошибка!");
+        }
+        abort(e);
+    }
 
     private void switchToBegin() {
         try {
             destroyTelegramProxy();
             this.codeForm.clear();
             this.phoneForm.clear();
+            this.registrationForm.clear();
             mainWindowManager.setIndex(MAIN_WINDOW);
             changeContentPanel(phoneForm);
             phoneForm.transferFocusTo();
-            if(!telegramDAO.logOut())
-                throw new RuntimeException("Отказ сервера разорвать соединение");
+            telegramDAO.logOut();
         } catch (Exception e) {
-            showErrorMessage("Продолжение работы не возможно", "Критическая ошибка!");
-            abort(e);
+            catchException(e);
         }
     }
 
     private void searchFor(String text) {
         text = text.trim();
-        if(text.isEmpty()) {
+        if (text.isEmpty()) {
             return;
         }
         String[] words = text.toLowerCase().split("\\s+");
@@ -352,17 +459,17 @@ public class MainFrame extends JFrame {
         Person person = contactsList.getSelectedValue();
         person = searchFor(text.toLowerCase(), words, persons, person);
         contactsList.setSelectedValue(person);
-        if(person == null)
+        if (person == null)
             showInformationMessage("Ничего не найдено", "Поиск");
     }
 
     private static Person searchFor(String text, String[] words, List<? extends Person> persons, Person current) {
         int currentIndex = persons.indexOf(current);
 
-        for(int i = 1; i <= persons.size(); i++) {
+        for (int i = 1; i <= persons.size(); i++) {
             int index = (currentIndex + i) % persons.size();
             Person person = persons.get(index);
-            if(contains(person.getFirstName().toLowerCase(), words)
+            if (contains(person.getFirstName().toLowerCase(), words)
                     || contains(person.getLastName().toLowerCase(), words)) {
                 return person;
             }
@@ -371,8 +478,8 @@ public class MainFrame extends JFrame {
     }
 
     private static boolean contains(String text, String... words) {
-        for(String word : words) {
-            if(text.contains(word))
+        for (String word : words) {
+            if (text.contains(word))
                 return true;
         }
         return false;
@@ -382,7 +489,7 @@ public class MainFrame extends JFrame {
         undecoratedFrame.setContentPanel(contentPanel);
     }
 
-    private void createTelegramProxy() {
+    private void createTelegramProxy() throws ApiException {
         telegramProxy = new TelegramProxy(telegramDAO);
         updateTelegramProxy();
     }
@@ -399,7 +506,7 @@ public class MainFrame extends JFrame {
             contactsList.setSelectedValue(null);
             createMessagesForm();
             displayDialog(null);
-            displayMe(telegramProxy!= null ? telegramProxy.getMe() : null);
+            displayMe(telegramProxy != null ? telegramProxy.getMe() : null);
         } finally {
             messagesFrozen--;
         }
@@ -434,7 +541,7 @@ public class MainFrame extends JFrame {
     }
 
     private MessagesForm getMessagesForm() {
-        if(mainForm.getMessagesPanel() instanceof MessagesForm) {
+        if (mainForm.getMessagesPanel() instanceof MessagesForm) {
             return (MessagesForm) mainForm.getMessagesPanel();
         } else {
             return createMessagesForm();
@@ -450,11 +557,12 @@ public class MainFrame extends JFrame {
             repaint();
         } catch (Exception e) {
             showErrorMessage("Проблема соединения с сервером", "проблемы в сети");
+            abort(e);
         }
     }
 
     private void displayMe(Me me) {
-        if(me == null) {
+        if (me == null) {
             mainForm.setMeText(null);
             mainForm.setMePhoto(null);
         } else {
@@ -464,7 +572,7 @@ public class MainFrame extends JFrame {
     }
 
     private void displayBuddy(Person person) {
-        if(person == null) {
+        if (person == null) {
             mainForm.setBuddyText(null);
             mainForm.setBuddyPhoto(null);
             mainForm.setBuddyEditEnabled(false);
@@ -477,27 +585,28 @@ public class MainFrame extends JFrame {
 
     private boolean tryAddContact(ContactInfo info) {
 
-        String phone = info.getClearedPhone() ;
-        if(phone.isEmpty()) {
+        String phone = info.getClearedPhone();
+        if (phone.isEmpty()) {
             showWarningMessage("Пожалуйста, введите номер телефона", "Ошибка");
             return false;
         }
-        if(info.getFirstName().isEmpty() && info.getLastName().isEmpty()) {
+        if (info.getFirstName().isEmpty() && info.getLastName().isEmpty()) {
             showWarningMessage("Пожалуйста, введите имя и/или фамилию", "Ошибка");
             return false;
         }
-        for(Person person : telegramProxy.getPersons()) {
-            if(person instanceof Contact) {
-                if(((Contact) person).getPhoneNumber().replaceAll("\\D+", "").equals(phone)) {
+        for (Person person : telegramProxy.getPersons()) {
+            if (person instanceof Contact) {
+                if (((Contact) person).getPhoneNumber().replaceAll("\\D+", "").equals(phone)) {
                     showWarningMessage("Контакт с таким номером уже существует", "Ошибка");
                     return false;
                 }
             }
         }
-
-        if(!telegramProxy.importContact(info.getPhone(), info.getFirstName(), info.getLastName())) {
-            showErrorMessage("Ошибка на сервере при добавлении контакта", "Ошибка");
-            return  false;
+        try {
+            telegramProxy.importContact(info.getPhone(), info.getFirstName(), info.getLastName());
+        } catch (Exception e) {
+            showWarningMessage("Ошибка на сервере при добавлении контакта", "Ошибка");
+            return false;
         }
 
         mainWindowManager.setIndex(MAIN_WINDOW);
@@ -506,16 +615,19 @@ public class MainFrame extends JFrame {
     }
 
     private boolean tryUpdateContact(ContactInfo info) {
-        String phone = info.getClearedPhone() ;
 
-        if(info.getFirstName().isEmpty() && info.getLastName().isEmpty()) {
+        String phone = info.getClearedPhone();
+
+        if (info.getFirstName().isEmpty() && info.getLastName().isEmpty()) {
             showWarningMessage("Пожалуйста, введите имя и/или фамилию", "Ошибка");
             return false;
         }
 
-        if(!telegramProxy.importContact(info.getPhone(), info.getFirstName(), info.getLastName())) {
-            showErrorMessage("Ошибка на сервере при изменении контакта", "Ошибка");
-            return  false;
+        try {
+            telegramProxy.importContact(info.getPhone(), info.getFirstName(), info.getLastName());
+        } catch (Exception e) {
+            showWarningMessage("Ошибка на сервере при изменении контакта", "Ошибка");
+            return false;
         }
 
         mainWindowManager.setIndex(MAIN_WINDOW);
@@ -524,11 +636,13 @@ public class MainFrame extends JFrame {
     }
 
     private boolean tryDeleteContact(ContactInfo info) {
-       int id = info.getId();
+        int id = info.getId();
 
-        if(!telegramProxy.deleteContact(id)) {
-            showErrorMessage("Ошибка на сервере при удалении контакта", "Ошибка");
-            return  false;
+        try {
+            telegramProxy.deleteContact(id);
+        } catch (Exception e) {
+            showWarningMessage("Ошибка на сервере при удалении контакта", "Ошибка");
+            return false;
         }
 
         mainWindowManager.setIndex(MAIN_WINDOW);
@@ -537,17 +651,26 @@ public class MainFrame extends JFrame {
     }
 
     private void abort(Throwable e) {
-        if(e != null)
+        if (e != null)
             e.printStackTrace();
         else
             System.err.println("Unknown Error");
-        telegramDAO.close();
+        try {
+            telegramDAO.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         System.exit(-1);
     }
 
     private void exit() {
-        telegramDAO.close();
-        System.exit(0);
+        try {
+            telegramDAO.close();
+            System.exit(0);
+        } catch (Exception e) {
+            abort(e);
+        }
+
     }
 
     //Альтернативное решение

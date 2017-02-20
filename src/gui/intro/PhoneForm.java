@@ -14,7 +14,7 @@ import java.text.ParseException;
 /**
  * Created by HerrSergio on 05.04.2016.
  */
-public class PhoneForm extends ImagePanel {
+public class PhoneForm extends LetterBackground {
     private JPanel rootPanel;
     private JPanel iconPanel;
     private JTextPane hintTextPane;
@@ -24,8 +24,6 @@ public class PhoneForm extends ImagePanel {
     private JPanel phoneIcon;
 
     public PhoneForm() {
-
-        super(Images.getBackground(), true, false, 0);
 
         Helper.adjustTextPane(hintTextPane);
 

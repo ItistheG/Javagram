@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by HerrSergio on 06.04.2016.
  */
-public class CodeForm extends ImagePanel {
+public class CodeForm extends LetterBackground {
     private JPanel iconPanel;
     private JLabel phoneLabel;
     private JTextPane hintTextPane;
@@ -24,7 +24,6 @@ public class CodeForm extends ImagePanel {
     private JPanel codeIcon;
 
     public CodeForm() {
-        super(Images.getBackground(), true, false, 0);
 
         Helper.adjustTextPane(hintTextPane);
 
