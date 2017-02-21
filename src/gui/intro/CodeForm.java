@@ -77,6 +77,5 @@ public class CodeForm extends LetterBackground {
 
     public void clear() {
         codePasswordField.setText("");
-        phoneLabel.setText("");
     }
 }

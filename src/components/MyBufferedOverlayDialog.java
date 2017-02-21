@@ -91,6 +91,23 @@ public class MyBufferedOverlayDialog extends JPanel {
         return index;
     }
 
+    public void invalidateFakeBackground() {
+        image = null;
+        repaint();
+    }
+
+    public Component getBackgroundComponent() {
+        return background;
+    }
+
+    public Component getForegroundComponent(int i) {
+        return foregrounds[i];
+    }
+
+    public int getForegroundComponentsCount() {
+        return foregrounds.length;
+    }
+
     @Override
     public boolean isOptimizedDrawingEnabled() {
         return false;
