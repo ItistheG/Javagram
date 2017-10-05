@@ -1,16 +1,19 @@
 package gui;
 
 import components.GuiHelper;
-import components.MyScrollbarUI;
+import gui.overlays.ContactInfo;
+import gui.resources.Images;
+import mvp.model.abs.TelegramModel;
+import org.javagram.dao.KnownPerson;
 import org.javagram.dao.Person;
 import org.javagram.dao.proxy.TelegramProxy;
-import resources.Images;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 
 /**
  * Created by HerrSergio on 23.08.2016.
@@ -20,50 +23,49 @@ public class Helper {
     private Helper() {
     }
 
-    public static void decorateScrollPane(JScrollPane scrollPane) {
-        int width = 3;
-
-        JScrollBar verticalScrollBar =  scrollPane.getVerticalScrollBar();
-        verticalScrollBar.setUI(new MyScrollbarUI());
-        verticalScrollBar.setPreferredSize(new Dimension(width, Integer.MAX_VALUE));
-
-        JScrollBar horizontalScrollBar =  scrollPane.getHorizontalScrollBar();
-        horizontalScrollBar.setUI(new MyScrollbarUI());
-        horizontalScrollBar.setPreferredSize(new Dimension(Integer.MAX_VALUE, width));
-
-        for (String corner : new String[] {ScrollPaneConstants.LOWER_RIGHT_CORNER, ScrollPaneConstants.LOWER_LEFT_CORNER,
-                ScrollPaneConstants.UPPER_LEFT_CORNER, ScrollPaneConstants.UPPER_RIGHT_CORNER}) {
-            JPanel panel = new JPanel();
-            panel.setBackground(Color.white);
-            scrollPane.setCorner(corner, panel);
-        }
-    }
-
     public static void adjustTextPane(JTextPane textPane) {
         SimpleAttributeSet attribs = new SimpleAttributeSet();
         StyleConstants.setAlignment(attribs, StyleConstants.ALIGN_CENTER);
         textPane.setParagraphAttributes(attribs, false);
+        //Для Nimbus
+        clearBoth(textPane);
     }
 
-    public static BufferedImage getPhoto(TelegramProxy telegramProxy, Person person, boolean small) {
-        BufferedImage image;
+    public static void clearBoth(JComponent textPane) {
+        clearBackground(textPane);
+        clearBorder(textPane);
+    }
 
-        try {
-            image = telegramProxy.getPhoto(person, small);
-        } catch (Exception e) {
-            e.printStackTrace();
-            image = null;
-        }
+    public static void clearBackground(JComponent component) {
+        component.setOpaque(false);
+        component.setBackground(new Color(0, 0, 0, 0));//Для Nimbus
 
+    }
+
+    public static void clearBorder(JComponent component) {
+        component.setBorder(BorderFactory.createEmptyBorder());
+    }
+
+
+    public static BufferedImage makeCircle(BufferedImage image) {
+        return image != null ? GuiHelper.makeCircle(image) : null ;
+    }
+
+    public static BufferedImage getPhoto(BufferedImage image, boolean small) {
         if(image == null)
             image = Images.getUserImage(small);
         return image;
     }
 
-    public static BufferedImage getPhoto(TelegramProxy telegramProxy, Person person, boolean small, boolean circle) {
-        BufferedImage photo = getPhoto(telegramProxy, person, small);
+    public static BufferedImage getPhoto(Map<Person, BufferedImage> photos, Person person, boolean small) {
+        return getPhoto(photos.get(person), small);
+    }
+
+    public static BufferedImage getPhoto(Map<Person, BufferedImage> photos, Person person, boolean small, boolean circle) {
+        BufferedImage photo = getPhoto(photos, person, small);
         if(circle)
             photo = GuiHelper.makeCircle(photo);
         return photo;
     }
+
 }

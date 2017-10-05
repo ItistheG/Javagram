@@ -1,11 +1,6 @@
 package components;
 
-import resources.Images;
-
-import javax.swing.plaf.ButtonUI;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 
 /**
@@ -20,7 +15,11 @@ public class ExtendedImageButton extends ImageButton {
     }
 
     public ExtendedImageButton(Image image, Image disabledImage) {
-        super(image, false, assureImages(disabledImage, image), false);
+        this(image, false, disabledImage, false);
+    }
+
+    public ExtendedImageButton(Image image, boolean keepRatio, Image disabledImage, boolean keepDisabledRatio) {
+        super(image, keepRatio, assureImages(disabledImage, image), keepDisabledRatio);
     }
 
     @Override
@@ -75,9 +74,10 @@ public class ExtendedImageButton extends ImageButton {
 
     private static Image assureImages(Image disabledImage, Image image) {
         if(image == null)
-            throw new NullPointerException("ExtendedImageButton requires an image");
-        if(disabledImage == null)
-            disabledImage = GuiHelper.makeGray(image);
-        return disabledImage;
+            return null;
+        else if(disabledImage == null)
+            return GuiHelper.makeGray(image);
+        else
+            return disabledImage;
     }
 }

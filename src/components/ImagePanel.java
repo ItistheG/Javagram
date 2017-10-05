@@ -2,7 +2,6 @@ package components;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 /**
  * Created by HerrSergio on 27.06.2016.

@@ -2,7 +2,6 @@ package components;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 /**
  * Created by HerrSergio on 27.06.2016.
@@ -16,57 +15,49 @@ public class ImageButton extends JButton {
 
     {
         setOpaque(false);
+        setBorder(null);
+        setBorderPainted(false);
     }
 
     public ImageButton(Image image) {
-        this(image, true, null, true);
+        this(image, null);
+    }
+
+    public ImageButton(Image image, Image disabledImage) {
+        this(image, true, disabledImage, true);
     }
 
     public ImageButton(Image image, boolean keepRatio, Image disabledImage, boolean keepDisabledRatio) {
         this.image = image;
         this.keepRatio = keepRatio;
-        this.disabledImage = disabledImage;
+        this.disabledImage = image == null ? null : disabledImage;
         this.keepDisabledRatio = keepDisabledRatio;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        if(this.image != image) {
-            this.image = image;
-            repaint();
-        }
     }
 
     @Override
     protected void paintComponent(Graphics graphics) {
-        if(image == null) {
-            super.paintComponent(graphics);
-        } else  {
-            if(isOpaque()) {
-                graphics.setColor(getBackground());
-                graphics.fillRect(0, 0, getWidth(), getHeight());
-            }
-            if(isEnabled()) {
-                if(keepRatio)
-                    GuiHelper.drawImage(graphics, image, 0, 0, this.getWidth(), this.getHeight());
+        if (isOpaque()) {
+            graphics.setColor(getBackground());
+            graphics.fillRect(0, 0, getWidth(), getHeight());
+        }
+        if(image != null) {
+            Insets insets = getInsets();
+            int width = this.getWidth() - (insets.left + insets.right);
+            int height = this.getHeight() - (insets.top + insets.bottom);
+            int x = insets.left;
+            int y = insets.top;
+            if (isEnabled()) {
+                if (keepRatio)
+                    GuiHelper.drawImage(graphics, image, x, y, width, height);
                 else
-                    graphics.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), null);
-            } else if(disabledImage != null) {
-                if(keepDisabledRatio)
-                    GuiHelper.drawImage(graphics, disabledImage, 0, 0, this.getWidth(), this.getHeight());
+                    graphics.drawImage(image, x, y, width, height, null);
+            } else if (disabledImage != null) {
+                if (keepDisabledRatio)
+                    GuiHelper.drawImage(graphics, disabledImage, x, y, width, height);
                 else
-                    graphics.drawImage(disabledImage, 0, 0, this.getWidth(), this.getHeight(), null);
+                    graphics.drawImage(disabledImage, x, y, width, height, null);
             }
         }
-    }
 
-    @Override
-    protected void paintBorder(Graphics graphics) {
-        if(image == null) {
-            super.paintBorder(graphics);
-        }
     }
 }

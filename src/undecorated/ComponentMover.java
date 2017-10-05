@@ -1,9 +1,9 @@
 package undecorated;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  *  This class allows you to move a Component by using a mouse. The Component

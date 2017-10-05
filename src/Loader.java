@@ -1,8 +1,9 @@
-import gui.MainFrame;
-import org.javagram.dao.ApiBridgeTelegramDAO;
-import org.javagram.dao.DebugTelegramDAO;
-import org.javagram.dao.TelegramDAO;
-import resources.Config;
+import mvp.controller.concrete.ApplicationController;
+import mvp.controller.abs.Controller;
+import mvp.model.abs.TelegramModel;
+import mvp.model.concrete.ApiBridgeTelegramModel;
+import mvp.model.concrete.DebugTelegramModel;
+import mvp.presenters.abs.root.RootPresenter;
 
 import javax.swing.*;
 
@@ -16,11 +17,19 @@ public class Loader {
             @Override
             public void run() {
                 try {
-                    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-                    TelegramDAO telegramDAO =  new ApiBridgeTelegramDAO(Config.SERVER, Config.APP_ID, Config.APP_HASH);
-                            new DebugTelegramDAO();
-                    MainFrame frame = new MainFrame(telegramDAO);
-                    frame.setVisible(true);
+                    for(UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                        if(info.getName().equals("Nimbus")) {
+                            UIManager.setLookAndFeel(info.getClassName());
+                            break;
+                        }
+                    }
+                    //UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+                    TelegramModel telegramModel =  new ApiBridgeTelegramModel(Config.SERVER, Config.APP_ID, Config.APP_HASH);
+                            //new DebugTelegramModel();
+                    Controller controller = new ApplicationController(telegramModel);
+                    RootPresenter presenter = controller.getRootPresenter();
+                    presenter.start();
+                    //frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.exit(1);

@@ -1,18 +1,14 @@
 package components;
 
-import org.javagram.dao.Person;
-import org.javagram.dao.proxy.TelegramProxy;
-import resources.Images;
-
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.font.LineMetrics;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
+import java.net.URL;
 
 /**
  * Created by HerrSergio on 14.06.2016.
@@ -141,28 +137,74 @@ public class GuiHelper {
         return scaleImage(image, image.getWidth(null), image.getHeight(null));
     }
 
+    public static void decorateScrollPane(JScrollPane scrollPane) {
+        int width = 3;
+
+        JScrollBar verticalScrollBar =  scrollPane.getVerticalScrollBar();
+        verticalScrollBar.setUI(new MyScrollbarUI());
+        verticalScrollBar.setPreferredSize(new Dimension(width, Integer.MAX_VALUE));
+
+        JScrollBar horizontalScrollBar =  scrollPane.getHorizontalScrollBar();
+        horizontalScrollBar.setUI(new MyScrollbarUI());
+        horizontalScrollBar.setPreferredSize(new Dimension(Integer.MAX_VALUE, width));
+
+        for (String corner : new String[] {ScrollPaneConstants.LOWER_RIGHT_CORNER, ScrollPaneConstants.LOWER_LEFT_CORNER,
+                ScrollPaneConstants.UPPER_LEFT_CORNER, ScrollPaneConstants.UPPER_RIGHT_CORNER}) {
+            JPanel panel = new JPanel();
+            panel.setBackground(Color.white);
+            scrollPane.setCorner(corner, panel);
+        }
+    }
+
     public static void decorateAsImageButton(JButton button, Dimension size, Image image) {
-        decorateAsImageButton(button, size, image, null);
+        decorateAsImageButton(null, button, size, image, null);
+    }
+
+    public static void decorateAsImageButton(Color foreground, JButton button, Dimension size, Image image) {
+        decorateAsImageButton(foreground, button, size, image, null);
     }
 
     public static void decorateAsImageButton(JButton button, Image image, Image disabledImage) {
-        decorateAsImageButton(button, button.getPreferredSize(), image, disabledImage);
+        decorateAsImageButton(null, button, button.getPreferredSize(), image, disabledImage);
+    }
+
+    public static void decorateAsImageButton(Color foreground, JButton button, Image image, Image disabledImage) {
+        decorateAsImageButton(foreground, button, button.getPreferredSize(), image, disabledImage);
     }
 
     public static void decorateAsImageButton(JButton button, Image image) {
-        decorateAsImageButton(button, button.getPreferredSize(), image, null);
+        decorateAsImageButton(null, button, button.getPreferredSize(), image, null);
+    }
+
+    public static void decorateAsImageButton(Color foreground, JButton button, Image image) {
+        decorateAsImageButton(foreground, button, button.getPreferredSize(), image, null);
     }
 
     public static void decorateAsImageButton(JButton button, Dimension size, Image image, Image disabledImage) {
+        decorateAsImageButton(null, button, size, image, disabledImage);
+    }
+
+    public static void decorateAsImageButton(Color foreground, JButton button, Dimension size, Image image, Image disabledImage) {
         button.setContentAreaFilled(false);
-        button.setText("");
+        button.setOpaque(false);
+        button.setBorderPainted(false);
         button.setBorder(null);
+        if(foreground == null)
+            button.setText("");
+        else
+            button.setForeground(foreground);
+        button.setHorizontalTextPosition(SwingConstants.CENTER);
+        button.setVerticalTextPosition(SwingConstants.CENTER);
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setVerticalAlignment(SwingConstants.CENTER);
+
         button.setIcon(getImageIconFor(image, size));
-        button.setHorizontalTextPosition(SwingConstants.RIGHT);
-        if(image == null)
+        if(image == null) {
             disabledImage = null;
-        else if(disabledImage == null)
-            disabledImage = makeGray(image);
+        } else if(disabledImage == null) {
+            if (foreground == null)
+                disabledImage = createTransparentImage(1, 1);
+        }
         button.setDisabledIcon(getImageIconFor(disabledImage, size));
 
         button.setSelectedIcon(null);
@@ -184,5 +226,25 @@ public class GuiHelper {
 
     public static BufferedImage createTransparentImage(int width, int height) {
         return new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+    }
+
+    public static BufferedImage scaleImage(BufferedImage image, int width, int height) {
+        BufferedImage result = new BufferedImage(width, height, image.getType());
+        Graphics2D g2d = result.createGraphics();
+        try {
+            g2d.drawImage(image, 0, 0, width, height, null);
+        } finally {
+            g2d.dispose();
+        }
+        return result;
+    }
+
+    public static BufferedImage loadImage(String name, Class root) {
+        try {
+            return ImageIO.read(root != null ? root.getResource(name) : new URL(name));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
+        }
     }
 }
